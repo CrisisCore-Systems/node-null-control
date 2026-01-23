@@ -154,3 +154,11 @@ Do not store copyrighted assets, personal data, or platform credentials here.
 - Phase: **Ghost Network (Harvest)**
 - Goal: **Extract the winning vertical + hook pattern**
 - Next: **Brand Emergence (Forge) only after dominance**
+
+---
+
+## Forge (Routing Interface)
+
+Neutral conversion interface (no personal branding):
+
+- Forge node: [forge/README.md](forge/README.md)
