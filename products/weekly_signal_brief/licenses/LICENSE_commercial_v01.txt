@@ -1,0 +1,24 @@
+Node-Null Weekly Signal Brief — Commercial License (Client Work) (v01)
+
+This license applies to the Weekly Signal Brief generator kit (templates + scripts + schemas + fixture inputs) distributed as a zip.
+
+Grant
+- You may install and use the kit within a single organization (one legal entity).
+- You may use the kit to produce outputs for internal use and for client work.
+- You may deliver outputs to clients as part of paid services or deliverables.
+
+Restrictions
+- You may not share, redistribute, resell, sublicense, or publish the kit (in whole or in part) to clients or third parties.
+- You may not offer the kit as a standalone product, template pack, or “done-for-you generator” for resale.
+- You may not remove or alter notices within the kit.
+
+Outputs you generate
+- You may publish or deliver outputs generated from your own inputs (or client-provided inputs you are authorized to use).
+- You are responsible for ensuring outputs comply with platform Terms, privacy expectations, and any third‑party rights.
+
+No warranty
+- The kit is provided “as is”, without warranties of any kind.
+
+Definitions
+- “Kit” means the contents of the distributed zip (scripts/templates/schemas/docs/fixture).
+- “Outputs” means files you generate by running the kit.

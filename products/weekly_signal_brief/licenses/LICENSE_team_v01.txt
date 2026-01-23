@@ -1,0 +1,25 @@
+Node-Null Weekly Signal Brief — Team License (Internal Sharing) (v01)
+
+This license applies to the Weekly Signal Brief generator kit (templates + scripts + schemas + fixture inputs) distributed as a zip.
+
+Grant
+- You may install and use the kit within a single organization (one legal entity).
+- You may share the kit internally with team members and contractors working on behalf of that organization.
+- You may generate outputs (briefs, appendices, manifests) from your organization’s inputs.
+
+Restrictions
+- You may not share, redistribute, resell, sublicense, or publish the kit outside your organization.
+- Contractors may access the kit only while engaged by you and only for your internal work.
+- You may not remove or alter notices within the kit.
+
+Outputs you generate
+- You may share outputs internally.
+- You may provide outputs to clients only as part of your organization’s normal reporting, provided you do not provide the kit itself.
+- You are responsible for ensuring outputs comply with platform Terms, privacy expectations, and any third‑party rights.
+
+No warranty
+- The kit is provided “as is”, without warranties of any kind.
+
+Definitions
+- “Kit” means the contents of the distributed zip (scripts/templates/schemas/docs/fixture).
+- “Outputs” means files you generate by running the kit.
