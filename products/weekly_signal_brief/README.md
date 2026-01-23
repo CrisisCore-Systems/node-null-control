@@ -116,6 +116,26 @@ Recommended minimal schemas:
 
 ---
 
+## Aggregation (low-infra)
+
+If you do not have an automated data warehouse, you can still generate the required rollups deterministically from a small weekly export.
+
+Workflow:
+
+1) Populate `inputs/posts_export.csv` (one row per post; keep invalid rows for auditability).
+2) Run the aggregator to produce `hooks_rollup.csv`, `verticals_rollup.csv`, and `dataset_health.json`.
+
+Command:
+
+- `python scripts/aggregate_weekly_inputs.py --run-json products/weekly_signal_brief/runs/YYYY-Www/run.json`
+
+Notes:
+
+- Rollups are computed from **valid-only** rows.
+- If `valid_posts` is below the default threshold (10), the script adds a `low_sample_size` drift flag and writes a clear low-confidence note into `dataset_health.json`.
+
+---
+
 ## Governance
 
 - No urgency/scarcity tactics.
