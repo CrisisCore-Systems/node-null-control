@@ -10,6 +10,11 @@ Thumbs.db
 __pycache__/
 *.pyc
 
+# Local build outputs
+build/
+dist/
+.venv/
+
 # Product runs: outputs are generated artifacts (store externally)
 products/**/runs/**/outputs/**
 

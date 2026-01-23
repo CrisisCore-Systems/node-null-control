@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://crisiscore.systems/node-null-control/artifacts/manifest.schema.json",
+  "title": "Node-Null Artifact Manifest (v01)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "run_id",
+    "week_id",
+    "asset_id",
+    "asset_version",
+    "repo_commit",
+    "generated_at_utc",
+    "inputs",
+    "outputs"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "enum": ["v01"]
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Run identifier (typically week_id like 2026-W04)."
+    },
+    "week_id": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-W[0-9]{2}.*$"
+    },
+    "asset_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "asset_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "repo_commit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{7,40}$"
+    },
+    "generated_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "unresolved_template_vars": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "If non-empty, the build rendered only a partial context (placeholders remained)."
+    },
+    "inputs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "path", "sha256"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "path": { "type": "string", "minLength": 1 },
+          "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+        }
+      }
+    },
+    "outputs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "filename", "sha256", "size_bytes", "content_type"],
+        "properties": {
+          "type": { "type": "string", "minLength": 1 },
+          "filename": { "type": "string", "minLength": 1 },
+          "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "size_bytes": { "type": "integer", "minimum": 0 },
+          "content_type": { "type": "string", "minLength": 1 },
+          "storage": { "type": ["string", "null"] },
+          "url": { "type": ["string", "null"], "format": "uri" },
+          "release_asset_name": { "type": ["string", "null"] }
+        }
+      }
+    }
+  }
+}
