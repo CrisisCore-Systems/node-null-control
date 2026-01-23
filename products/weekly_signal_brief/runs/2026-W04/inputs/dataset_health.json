@@ -1,0 +1,19 @@
+{
+  "week_id": "2026-W04",
+  "posts_source": "NODE_NULL_TRACKER",
+  "posts_range": "TBD",
+  "counts": {
+    "total_posts": 0,
+    "valid_posts": 0,
+    "invalid_posts": 0
+  },
+  "rates": {
+    "invalid_rate": 0.0,
+    "missing_metrics_rate": 0.0
+  },
+  "top_invalid_reasons": [],
+  "drift_flags": [],
+  "incident_flags": [],
+  "notes": "TBD",
+  "computed_at_utc": "TBD"
+}

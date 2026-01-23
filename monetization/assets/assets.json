@@ -1,0 +1,62 @@
+{
+  "version": "v1",
+  "generated_at": "2026-01-23T05:16:54Z",
+  "source_of_truth": "monetization/assets/registry.md",
+  "notes": "Registry is SSOT; this JSON mirrors it for automation reads.",
+  "assets": [
+    {
+      "asset_id": "NNASSET-0001-weekly-signal-brief",
+      "asset_slug": "0001-weekly-signal-brief",
+      "asset_version": "v01",
+      "asset_name": "Weekly Signal Brief",
+      "surface_type": "data",
+      "value_type": "data",
+      "risk_level": "low",
+      "monetization_fit": "data",
+      "lifecycle_status": "active",
+      "validation": {
+        "last_check_utc": "2026-01-23T05:16:54Z",
+        "status": "pass",
+        "run_id": "VAL-2026-01-23-0001",
+        "checked_by": "governor"
+      },
+      "integrity": {
+        "entry_hash_sha256": "5b06dfdfb3e7b16a8c9b48b4eded45aa8d7f1e02c9a84909b42f1ae1ed69d069"
+      },
+      "telemetry_dry_run_event": {
+        "hybrid_event_id": "DRYRUN-2026-01-22-0001",
+        "timestamp": "",
+        "surface_type": "data",
+        "asset_id": "NNASSET-0001-weekly-signal-brief",
+        "source_signal_id": "",
+        "source_pattern_id": "",
+        "source_surface": "",
+        "conversion_type": "view",
+        "revenue": 0,
+        "cost": 0,
+        "margin": 0,
+        "confidence": "low"
+      }
+    },
+    {
+      "asset_id": "NNASSET-hook-performance-index",
+      "asset_slug": "hook-performance-index",
+      "asset_version": "v01",
+      "asset_name": "Hook Performance Index",
+      "surface_type": "data",
+      "value_type": "data",
+      "risk_level": "low",
+      "monetization_fit": "data",
+      "lifecycle_status": "draft",
+      "validation": {
+        "last_check_utc": "",
+        "status": "pending",
+        "run_id": "",
+        "checked_by": "operator"
+      },
+      "integrity": {
+        "entry_hash_sha256": ""
+      }
+    }
+  ]
+}

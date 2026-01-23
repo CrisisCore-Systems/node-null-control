@@ -1,0 +1,44 @@
+asset_id: NNASSET-0001-weekly-signal-brief
+asset_slug: 0001-weekly-signal-brief
+asset_version: v01
+
+asset_name: Weekly Signal Brief
+one_sentence_promise: Compressed weekly intelligence on what patterns are winning and why, monetized as system output (not dopamine), without changing content incentives.
+
+deliverable_format: pdf
+
+audience_icp: creators | analysts | operators
+
+surface_type: data
+value_type: data
+risk_level: low
+monetization_fit: data
+
+lifecycle_status: active
+lifecycle_effective_date: 2026-01-22
+
+source_signal_ids: []
+source_pattern_ids: []
+
+pricing_model: license
+price_band: TBD
+currency: USD
+
+delivery_channel: Gumroad | LemonSqueezy | Shopify (digital product)
+
+telemetry_enabled: true
+telemetry_namespace: hybrid
+
+owner: governor
+runbook_link: monetization/assets/validation.md
+
+validation:
+  status: pass
+  checked_by: governor
+
+governance_review_status: approved
+governance_review_date: 2026-01-22
+policy_risk_notes: Data-first routing. No urgency/scarcity tactics. No guarantees. No identity dependence. Routing CTAs remain disabled outside Forge.
+
+kill_switch_ready: true
+kill_switch_notes: Quarantine if it pressures content hooks/CTAs, biases experiments, or introduces analytics contamination.

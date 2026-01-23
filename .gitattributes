@@ -1,0 +1,8 @@
+# Keep canonical hash inputs stable across platforms.
+# This prevents CRLF conversion from changing hash material.
+monetization/assets/asset_0001_canonical.txt text eol=lf
+
+# (Optional) Prefer LF for structured artifacts.
+*.md text eol=lf
+*.json text eol=lf
+*.csv text eol=lf

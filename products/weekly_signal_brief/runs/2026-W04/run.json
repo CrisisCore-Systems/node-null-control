@@ -1,0 +1,30 @@
+{
+  "asset_id": "NNASSET-0001-weekly-signal-brief",
+  "asset_version": "v01",
+  "week_id": "2026-W04",
+  "generated_at_utc": "2026-01-23T05:23:56Z",
+  "repo_commit": "02bed4da7583ddc14f40873d01188b46b47f2fef",
+  "inputs": {
+    "posts_source": "NODE_NULL_TRACKER",
+    "posts_range": "TBD",
+    "included_block_ids": ["TBD"],
+    "excluded_invalid": true,
+    "files": {
+      "posts_export": "inputs/posts_export.csv",
+      "hooks_rollup": "inputs/hooks_rollup.csv",
+      "verticals_rollup": "inputs/verticals_rollup.csv",
+      "decisions": "inputs/decisions.csv",
+      "dataset_health": "inputs/dataset_health.json"
+    }
+  },
+  "outputs": {
+    "pdf": "outputs/NNASSET-0001_weekly-signal-brief_2026-W04_v01.pdf",
+    "appendix_csv": "outputs/NNASSET-0001_weekly-signal-brief_2026-W04_v01_appendix.csv"
+  },
+  "governance": {
+    "rules_version": "docs/01_rules.md@02bed4da7583ddc14f40873d01188b46b47f2fef",
+    "schema_version": "analytics/schema.md@02bed4da7583ddc14f40873d01188b46b47f2fef",
+    "caption_version": "caption_v1",
+    "hooks_version": "hooks_v1"
+  }
+}

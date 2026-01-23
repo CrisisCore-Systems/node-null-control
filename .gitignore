@@ -1,0 +1,17 @@
+# Node
+node_modules/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Python
+__pycache__/
+*.pyc
+
+# Product runs: outputs are generated artifacts (store externally)
+products/**/runs/**/outputs/**
+
+# Allow keeping the outputs directory in-repo
+!products/**/runs/**/outputs/.gitkeep
