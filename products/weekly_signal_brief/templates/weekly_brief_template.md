@@ -37,6 +37,14 @@ Notes:
 
 {{dataset_health_notes}}
 
+### 2.1 Transparency note (sample awareness)
+
+Valid posts: {{dataset_valid_posts}}
+
+Drift flags: {{drift_flags}}
+
+If drift flags include `low_sample_size`, treat this week's rollups as directional signals rather than high-confidence inference.
+
 ---
 
 ## 3) Winners

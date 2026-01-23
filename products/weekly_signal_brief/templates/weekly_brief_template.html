@@ -38,6 +38,17 @@
           <div class="card"><div class="label">Incident flags</div><div class="value">{{incident_flags}}</div></div>
         </div>
         <p class="note">{{dataset_health_notes}}</p>
+
+        <div class="transparency-note">
+          <div class="label">Transparency note (sample awareness)</div>
+          <div class="small">
+            <div><span class="label">Valid posts</span> {{dataset_valid_posts}}</div>
+            <div><span class="label">Drift flags</span> {{drift_flags}}</div>
+          </div>
+          <p class="note">
+            If drift flags include <strong>low_sample_size</strong>, treat this week's rollups as directional signals rather than high-confidence inference.
+          </p>
+        </div>
       </section>
 
       <section>
