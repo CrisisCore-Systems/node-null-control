@@ -15,7 +15,8 @@ window.NODE_NULL_FORGE_CONFIG = {
   ASSETS_URL: "../monetization/assets/assets.json",
 
   // Optional identity capture endpoint (disabled by default).
-  // Example: "https://example.com/forge/identity"
+  // Recommended on Vercel: "/api/identity" (serverless function)
+  // Example: "https://your-domain.vercel.app/api/identity"
   IDENTITY_POST_URL: null,
 
   // UI

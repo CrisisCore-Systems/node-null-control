@@ -134,6 +134,10 @@ input{
 }
 input:focus{border-color: rgba(124,92,255,.55)}
 
+.consent{display:flex; gap:10px; align-items:flex-start}
+.consent input{width:auto; margin-top:2px}
+.consent span{margin:0; font-size:12px; color:rgba(255,255,255,.72)}
+
 .status{margin:0; font-family:var(--mono); font-size:11px}
 .fineprint{margin-top:12px; color:rgba(255,255,255,.60); font-size:12px}
 .footer{margin-top:18px; text-align:center}

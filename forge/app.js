@@ -120,11 +120,19 @@ async function maybePostIdentity(identity){
     body: JSON.stringify({
       schema_version:"v1",
       captured_at_utc: new Date().toISOString(),
+      consent: true,
       identity
     })
   });
   if(!res.ok) throw new Error(`identity post failed: HTTP ${res.status}`);
   return { posted:true };
+}
+
+async function sha256Hex(str){
+  const enc = new TextEncoder();
+  const buf = await crypto.subtle.digest("SHA-256", enc.encode(String(str)));
+  const bytes = Array.from(new Uint8Array(buf));
+  return bytes.map(b => b.toString(16).padStart(2, "0")).join("");
 }
 
 function wireAccess(){
@@ -161,11 +169,26 @@ function wireAccess(){
       token: String(fd.get("token") || "").trim() || null,
     };
 
+    const cfg = getConfig();
+    const consent = Boolean(fd.get("consent"));
+    if(cfg.IDENTITY_POST_URL && !consent){
+      setStatus("consent required to post identity", true);
+      return;
+    }
+
     // Store locally regardless.
     saveIdentity(identity);
 
     try{
-      const r = await maybePostIdentity(identity);
+      // Never send raw token over the network; send hash only.
+      const tokenSha = identity.token ? await sha256Hex(identity.token) : null;
+      const payload = {
+        email: identity.email,
+        handle: identity.handle,
+        token_sha256: tokenSha,
+      };
+
+      const r = await maybePostIdentity(payload);
       if(r.posted){
         setStatus("bound locally + posted to endpoint", false);
       } else {
