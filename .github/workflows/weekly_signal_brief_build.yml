@@ -25,13 +25,31 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r scripts/requirements.txt
 
+      - name: Guardrail: no artifacts tracked
+        run: |
+          set -euo pipefail
+
+          if git ls-files | grep -qE '^build/'; then
+            echo "build/ is tracked";
+            git ls-files | grep -E '^build/' || true
+            exit 1;
+          fi
+
+          if git ls-files | grep -qE '^products/.*/runs/.*/outputs/'; then
+            if git ls-files | grep -E '^products/.*/runs/.*/outputs/' | grep -vE '\\.gitkeep$' | grep -q .; then
+              echo "run outputs tracked";
+              git ls-files | grep -E '^products/.*/runs/.*/outputs/' || true
+              exit 1;
+            fi
+          fi
+
       - name: Build fixture artifacts
         run: |
           python --version
           python scripts/build_weekly_signal_brief.py \
             --run products/weekly_signal_brief/runs/${{ env.RUN_ID }}/run.json \
             --outdir build/weekly_signal_brief/${{ env.RUN_ID }} \
-            --fail-on-unresolved \
+            --strict-context \
             --strict-csv-headers
 
       - name: Upload build artifacts
