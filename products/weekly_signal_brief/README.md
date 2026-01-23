@@ -20,6 +20,12 @@ Hard rule (immutability):
 - `runs/<week>/outputs/*` is generated from those inputs.
 - No edits after publish. Amendments become a new run folder (e.g., `runs/2026-W04-amend1/`).
 
+Outputs policy (repo hygiene):
+
+- `runs/**/outputs/**` are generated artifacts and must not be committed.
+- Outputs belong in GitHub Releases (by `week_id` / run id), an external artifact store (S3/R2/Drive), or a private delivery bucket (Gumroad/LemonSqueezy upload).
+- The repo keeps: templates, `run.json`, inputs (exports/rollups), schemas/allowlists, and a `.gitkeep` to preserve the folder.
+
 ---
 
 ## Folder structure
