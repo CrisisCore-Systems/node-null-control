@@ -6,12 +6,14 @@
   "additionalProperties": false,
   "required": [
     "schema_version",
+    "manifest_schema_ref",
     "run_id",
     "week_id",
     "asset_id",
     "asset_version",
     "repo_commit",
     "generated_at_utc",
+    "builder",
     "inputs",
     "outputs"
   ],
@@ -19,6 +21,11 @@
     "schema_version": {
       "type": "string",
       "enum": ["v01"]
+    },
+    "manifest_schema_ref": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Pinned schema reference, e.g. artifacts/manifest.schema.json@<commit>."
     },
     "run_id": {
       "type": "string",
@@ -49,6 +56,11 @@
       "type": "array",
       "items": { "type": "string" },
       "description": "If non-empty, the build rendered only a partial context (placeholders remained)."
+    },
+    "missing_template_vars": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Allowlisted vars that were missing data and were rendered as placeholders (or caused failure in strict mode)."
     },
     "builder": {
       "type": "object",

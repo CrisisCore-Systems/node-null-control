@@ -4,7 +4,7 @@ This file is the contract.
 
 Rule:
 
-- The v01 templates must not introduce any `{{...}}` variables not listed here.
+- The v01 templates must not introduce any template variables not listed here.
 - If you need a new variable, bump the asset/template version and update this allowlist.
 
 ---

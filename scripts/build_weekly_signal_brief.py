@@ -18,6 +18,7 @@ import csv
 import datetime as dt
 import hashlib
 import json
+import os
 import re
 import shlex
 import subprocess
@@ -32,6 +33,9 @@ VAR_PATTERN = re.compile(r"{{\s*([a-zA-Z0-9_\-\.]+)\s*}}")
 BUILDER_NAME = "build_weekly_signal_brief"
 BUILDER_VERSION = "v01"
 MANIFEST_SCHEMA_VERSION = "v01"
+
+MISSING_TOKEN_PREFIX = "[[MISSING:"
+MISSING_TOKEN_SUFFIX = "]]"
 
 
 class BuildError(RuntimeError):
@@ -192,7 +196,7 @@ def build_context(run: Dict[str, Any], dataset_health: Dict[str, Any]) -> Dict[s
     return ctx
 
 
-def validate_run_schema(run: Dict[str, Any], path: Path) -> None:
+def validate_run_schema(run: Dict[str, Any], path: Path, *, repo_root: Path) -> None:
     """Minimal run.json schema validation (no external deps)."""
 
     def require(key: str, expected_type: type) -> Any:
@@ -210,6 +214,17 @@ def validate_run_schema(run: Dict[str, Any], path: Path) -> None:
     repo_commit = require("repo_commit", str)
     inputs = require("inputs", dict)
     outputs = require("outputs", dict)
+
+    # run.json must be within the repo and under products/weekly_signal_brief/runs/**/run.json
+    try:
+        rel = path.resolve().relative_to(repo_root.resolve()).as_posix()
+    except Exception:
+        raise BuildError(f"run.json must live inside the repo (got '{path}')")
+    if not rel.startswith("products/weekly_signal_brief/runs/") or not rel.endswith("/run.json"):
+        raise BuildError(
+            "run.json must live under products/weekly_signal_brief/runs/**/run.json "
+            f"(got '{rel}')"
+        )
 
     if not re.match(r"^[0-9]{4}-W[0-9]{2}.*$", week_id):
         raise BuildError(f"run.json week_id must match YYYY-Www (got '{week_id}') ({path})")
@@ -230,6 +245,10 @@ def validate_run_schema(run: Dict[str, Any], path: Path) -> None:
             raise BuildError(f"run.json inputs.files.{k} must be a string ({path})")
         if Path(v).is_absolute() or ":" in v:
             raise BuildError(f"run.json inputs.files.{k} must be a relative path (got '{v}') ({path})")
+        # traversal-safe: disallow .. segments
+        posix_parts = Path(v.replace("\\", "/")).parts
+        if ".." in posix_parts:
+            raise BuildError(f"run.json inputs.files.{k} must not contain '..' (got '{v}') ({path})")
         if not v.replace("\\", "/").startswith("inputs/"):
             raise BuildError(f"run.json inputs.files.{k} must live under inputs/ (got '{v}') ({path})")
 
@@ -238,115 +257,92 @@ def validate_run_schema(run: Dict[str, Any], path: Path) -> None:
             raise BuildError(f"run.json outputs.{ok} must be a string ({path})")
         if Path(ov).is_absolute() or ":" in ov:
             raise BuildError(f"run.json outputs.{ok} must be a relative path (got '{ov}') ({path})")
+        posix_parts = Path(ov.replace("\\", "/")).parts
+        if ".." in posix_parts:
+            raise BuildError(f"run.json outputs.{ok} must not contain '..' (got '{ov}') ({path})")
         if not ov.replace("\\", "/").startswith("outputs/"):
             raise BuildError(f"run.json outputs.{ok} must live under outputs/ (got '{ov}') ({path})")
 
 
-def default_value_for_var(var: str) -> str:
-    if var.endswith("_samples"):
-        return "0"
-    if var.startswith("dataset_") and ("posts" in var):
-        return "0"
-    if var.endswith("_rate") or "median" in var or "pct" in var or "ratio" in var or "score" in var:
-        return "0.0"
-    if var.endswith("_notes") or var.endswith("_evidence") or var.endswith("_why") or var.endswith("_reco"):
-        return "TBD"
-    return "TBD"
+def missing_token(var: str) -> str:
+    return f"{MISSING_TOKEN_PREFIX}{var}{MISSING_TOKEN_SUFFIX}"
 
 
-def complete_context(ctx: Dict[str, str], allowed_vars: Set[str]) -> Dict[str, str]:
-    """Ensure every allowlisted variable has a deterministic value.
+def complete_context(
+    ctx: Dict[str, str],
+    allowed_vars: Set[str],
+    *,
+    render_missing_as: str,
+) -> Tuple[Dict[str, str], List[str]]:
+    """Ensure every allowlisted variable is present.
 
-    This makes --fail-on-unresolved a contract check (builder completeness)
-    rather than a data-availability check.
+    Non-strict behavior must never silently blank: missing vars render as a visible token.
+    Strict behavior is enforced by callers using the returned missing list.
     """
 
     out = dict(ctx)
-    for v in allowed_vars:
-        out.setdefault(v, default_value_for_var(v))
+    missing: List[str] = []
+    for v in sorted(allowed_vars):
+        if v in out and out[v] != "":
+            continue
+        missing.append(v)
+        if render_missing_as == "token":
+            out[v] = missing_token(v)
+        elif render_missing_as == "empty":
+            out[v] = ""
+        else:
+            raise BuildError(f"Unknown render_missing_as mode: {render_missing_as}")
+    return out, missing
+
+
+def apply_template_context_overlay(
+    ctx: Dict[str, str],
+    *,
+    overlay: Dict[str, Any],
+    allowed_vars: Set[str],
+    source_path: Path,
+) -> Dict[str, str]:
+    """Overlay explicit template context values.
+
+    Guardrail: overlay keys must be within the allowlist.
+    """
+
+    out = dict(ctx)
+    for k, v in overlay.items():
+        if k not in allowed_vars:
+            raise BuildError(
+                f"template_context contains non-allowlisted key '{k}' ({source_path}). "
+                "Bump template version to expand the allowlist."
+            )
+        out[k] = str(v)
     return out
 
 
-def validate_manifest_v01(manifest: Dict[str, Any], schema_path: Path) -> None:
-    """Validate manifest structure against our v01 schema semantics.
+def validate_manifest_schema(manifest: Dict[str, Any], schema_path: Path) -> None:
+    """Validate manifest against artifacts/manifest.schema.json using jsonschema.
 
-    This is intentionally dependency-free and aligned to artifacts/manifest.schema.json.
+    This is the enforcement point that prevents drift and corrupted manifests.
     """
 
     if not schema_path.exists():
         raise BuildError(f"Manifest schema not found: {schema_path}")
 
-    if not isinstance(manifest, dict):
-        raise BuildError("Manifest must be a JSON object")
+    try:
+        import jsonschema  # type: ignore
+    except Exception as exc:
+        raise BuildError(
+            "Missing dependency 'jsonschema' required for manifest validation. "
+            "Install it (pip install jsonschema) or run via CI. "
+            f"({exc})"
+        )
 
-    required = [
-        "schema_version",
-        "run_id",
-        "week_id",
-        "asset_id",
-        "asset_version",
-        "repo_commit",
-        "generated_at_utc",
-        "inputs",
-        "outputs",
-    ]
-    for k in required:
-        if k not in manifest:
-            raise BuildError(f"Manifest missing key '{k}'")
+    schema = read_json(schema_path)
 
-    if manifest.get("schema_version") != MANIFEST_SCHEMA_VERSION:
-        raise BuildError(f"Manifest schema_version must be '{MANIFEST_SCHEMA_VERSION}'")
-
-    week_id = manifest.get("week_id")
-    if not isinstance(week_id, str) or not re.match(r"^[0-9]{4}-W[0-9]{2}.*$", week_id):
-        raise BuildError("Manifest week_id must match YYYY-Www")
-
-    repo_commit = manifest.get("repo_commit")
-    if not isinstance(repo_commit, str) or not re.match(r"^[0-9a-f]{7,40}$", repo_commit):
-        raise BuildError("Manifest repo_commit must be a hex git hash")
-
-    inputs = manifest.get("inputs")
-    outputs = manifest.get("outputs")
-    if not isinstance(inputs, list) or not inputs:
-        raise BuildError("Manifest inputs must be a non-empty array")
-    if not isinstance(outputs, list) or not outputs:
-        raise BuildError("Manifest outputs must be a non-empty array")
-
-    for item in inputs:
-        if not isinstance(item, dict):
-            raise BuildError("Manifest inputs[] entries must be objects")
-        for k in ["name", "path", "sha256"]:
-            if k not in item:
-                raise BuildError(f"Manifest inputs[] missing '{k}'")
-        if not re.match(r"^[0-9a-f]{64}$", str(item.get("sha256", ""))):
-            raise BuildError("Manifest inputs[].sha256 must be a sha256 hex string")
-
-    for item in outputs:
-        if not isinstance(item, dict):
-            raise BuildError("Manifest outputs[] entries must be objects")
-        for k in ["type", "filename", "sha256", "size_bytes", "content_type"]:
-            if k not in item:
-                raise BuildError(f"Manifest outputs[] missing '{k}'")
-        if not re.match(r"^[0-9a-f]{64}$", str(item.get("sha256", ""))):
-            raise BuildError("Manifest outputs[].sha256 must be a sha256 hex string")
-        if not isinstance(item.get("size_bytes"), int) or item["size_bytes"] < 0:
-            raise BuildError("Manifest outputs[].size_bytes must be a non-negative integer")
-
-    # Optional metadata blocks
-    if "builder" in manifest:
-        b = manifest["builder"]
-        if not isinstance(b, dict):
-            raise BuildError("Manifest builder must be an object")
-        for k in ["name", "version"]:
-            if k not in b or not isinstance(b[k], str) or not b[k]:
-                raise BuildError("Manifest builder.name/version must be non-empty strings")
-
-    if "pdf_adapter" in manifest:
-        a = manifest["pdf_adapter"]
-        if not isinstance(a, dict):
-            raise BuildError("Manifest pdf_adapter must be an object")
-        if "name" not in a or not isinstance(a["name"], str) or not a["name"]:
-            raise BuildError("Manifest pdf_adapter.name must be a non-empty string")
+    try:
+        jsonschema.Draft202012Validator(schema).validate(manifest)
+    except jsonschema.ValidationError as exc:
+        path_str = "/".join(str(p) for p in exc.path) if exc.path else "(root)"
+        raise BuildError(f"Manifest failed schema validation at {path_str}: {exc.message}")
 
 
 def run_pdf_adapter(
@@ -361,8 +357,13 @@ def run_pdf_adapter(
     meta: Dict[str, Any] = {
         "name": adapter,
         "version": None,
-        "command": None,
+        "command_template": None,
+        "command_executed": None,
         "exit_code": None,
+        "stdout_path": None,
+        "stderr_path": None,
+        "stdout_tail": None,
+        "stderr_tail": None,
     }
 
     if adapter == "none":
@@ -370,7 +371,7 @@ def run_pdf_adapter(
 
     if adapter == "wkhtmltopdf":
         cmd = ["wkhtmltopdf", str(html_path), str(pdf_path)]
-        meta["command"] = " ".join(cmd)
+        meta["command_executed"] = " ".join(cmd)
         try:
             v = subprocess.check_output(["wkhtmltopdf", "--version"], stderr=subprocess.STDOUT)
             meta["version"] = v.decode("utf-8", errors="replace").strip()
@@ -378,19 +379,44 @@ def run_pdf_adapter(
             meta["version"] = None
         proc = subprocess.run(cmd, capture_output=True, text=True)
         meta["exit_code"] = proc.returncode
+        stdout = proc.stdout or ""
+        stderr = proc.stderr or ""
+        stdout_path = pdf_path.with_suffix(".wkhtmltopdf.stdout.txt")
+        stderr_path = pdf_path.with_suffix(".wkhtmltopdf.stderr.txt")
+        stdout_path.write_text(stdout, encoding="utf-8", errors="replace")
+        stderr_path.write_text(stderr, encoding="utf-8", errors="replace")
+        meta["stdout_path"] = stdout_path.name
+        meta["stderr_path"] = stderr_path.name
+        meta["stdout_tail"] = stdout[-4000:]
+        meta["stderr_tail"] = stderr[-4000:]
         if proc.returncode != 0:
-            raise BuildError(f"wkhtmltopdf failed (exit {proc.returncode}): {proc.stderr.strip() or proc.stdout.strip()}")
+            raise BuildError(f"wkhtmltopdf failed (exit {proc.returncode}): {stderr.strip() or stdout.strip()}")
+        if not pdf_path.exists() or pdf_path.stat().st_size == 0:
+            raise BuildError("wkhtmltopdf reported success but PDF was not created")
         return meta
 
     if adapter == "command":
         if not pdf_cmd:
             raise BuildError("--pdf-cmd is required when --pdf-adapter=command")
+        meta["command_template"] = pdf_cmd
         cmd_str = pdf_cmd.format(html=str(html_path), pdf=str(pdf_path))
-        meta["command"] = cmd_str
+        meta["command_executed"] = cmd_str
         proc = subprocess.run(cmd_str, shell=True, capture_output=True, text=True)
         meta["exit_code"] = proc.returncode
+        stdout = proc.stdout or ""
+        stderr = proc.stderr or ""
+        stdout_path = pdf_path.with_suffix(".adapter.stdout.txt")
+        stderr_path = pdf_path.with_suffix(".adapter.stderr.txt")
+        stdout_path.write_text(stdout, encoding="utf-8", errors="replace")
+        stderr_path.write_text(stderr, encoding="utf-8", errors="replace")
+        meta["stdout_path"] = stdout_path.name
+        meta["stderr_path"] = stderr_path.name
+        meta["stdout_tail"] = stdout[-4000:]
+        meta["stderr_tail"] = stderr[-4000:]
         if proc.returncode != 0:
-            raise BuildError(f"pdf adapter command failed (exit {proc.returncode}): {proc.stderr.strip() or proc.stdout.strip()}")
+            raise BuildError(f"pdf adapter command failed (exit {proc.returncode}): {stderr.strip() or stdout.strip()}")
+        if not pdf_path.exists() or pdf_path.stat().st_size == 0:
+            raise BuildError("PDF adapter reported success but PDF was not created")
         return meta
 
     raise BuildError(f"Unknown --pdf-adapter: {adapter}")
@@ -457,6 +483,8 @@ def write_manifest(
     unresolved_template_vars: Sequence[str],
     builder_meta: Dict[str, Any],
     pdf_adapter_meta: Optional[Dict[str, Any]],
+    manifest_schema_ref: str,
+    missing_template_vars: Sequence[str],
 ) -> None:
     manifest = {
         "schema_version": MANIFEST_SCHEMA_VERSION,
@@ -464,9 +492,11 @@ def write_manifest(
         "week_id": str(run.get("week_id", "")),
         "asset_id": str(run.get("asset_id", "")),
         "asset_version": str(run.get("asset_version", "")),
+        "manifest_schema_ref": manifest_schema_ref,
         "repo_commit": repo_commit,
         "generated_at_utc": generated_at_utc,
         "unresolved_template_vars": list(sorted(set(unresolved_template_vars))),
+        "missing_template_vars": list(sorted(set(missing_template_vars))),
         "builder": builder_meta,
         "inputs": [],
         "outputs": [],
@@ -559,6 +589,17 @@ def main(argv: Sequence[str]) -> int:
         help="Fail build if any template variables remain unresolved after rendering",
     )
     parser.add_argument(
+        "--strict-context",
+        action="store_true",
+        help="Fail build if any allowlisted template variables are missing data (alias for --fail-on-unresolved)",
+    )
+    parser.add_argument(
+        "--render-missing-as",
+        choices=["token", "empty"],
+        default="token",
+        help="How to render allowlisted-but-missing variables when not strict (default: visible token)",
+    )
+    parser.add_argument(
         "--manifest-schema",
         default=None,
         help="Path to artifacts/manifest.schema.json (defaults to repo-root artifacts/manifest.schema.json)",
@@ -581,6 +622,10 @@ def main(argv: Sequence[str]) -> int:
     )
     args = parser.parse_args(argv)
 
+    # Alias: strict-context is the same enforcement as fail-on-unresolved.
+    if args.strict_context:
+        args.fail_on_unresolved = True
+
     run_file = Path(args.run_file).resolve()
     out_dir = Path(args.out_dir).resolve()
 
@@ -593,9 +638,20 @@ def main(argv: Sequence[str]) -> int:
 
     run = read_json(run_file)
 
-    validate_run_schema(run, run_file)
+    validate_run_schema(run, run_file, repo_root=repo_root)
 
+    # Output dir must never target the immutable run outputs folder.
     run_root = run_file.parent
+    forbidden_outputs_dir = (run_root / "outputs").resolve()
+    try:
+        out_rel = out_dir.resolve().relative_to(repo_root.resolve()).as_posix()
+    except Exception:
+        out_rel = None
+    if out_dir.resolve() == forbidden_outputs_dir or forbidden_outputs_dir in out_dir.resolve().parents:
+        raise BuildError("--out-dir must not be under runs/**/outputs/** (repo hygiene + immutability)")
+    if out_rel and "/products/weekly_signal_brief/runs/" in f"/{out_rel}" and "/outputs/" in f"/{out_rel}/":
+        raise BuildError("--out-dir must not be under products/weekly_signal_brief/runs/**/outputs/**")
+
     inputs_meta = run.get("inputs", {})
     files = inputs_meta.get("files", {})
 
@@ -717,10 +773,27 @@ def main(argv: Sequence[str]) -> int:
             + "\n".join(f"- {v}" for v in unknown_vars)
         )
 
-    # Render artifacts
+    # Build context
     ensure_dir(out_dir)
 
-    ctx = complete_context(build_context(run, dataset_health), allowed_vars)
+    ctx = build_context(run, dataset_health)
+
+    # Optional explicit overlay used for fixture runs and manual runs.
+    if "template_context" in files:
+        overlay_path = (run_root / Path(files["template_context"])).resolve()
+        overlay = read_json(overlay_path)
+        if not isinstance(overlay, dict):
+            raise BuildError(f"template_context must be a JSON object ({overlay_path})")
+        ctx = apply_template_context_overlay(ctx, overlay=overlay, allowed_vars=allowed_vars, source_path=overlay_path)
+
+    ctx, missing_vars = complete_context(ctx, allowed_vars, render_missing_as=args.render_missing_as)
+
+    if missing_vars and args.fail_on_unresolved:
+        raise BuildError(
+            "Missing template context values (strict):\n" + "\n".join(f"- {v}" for v in missing_vars)
+        )
+
+    # Render artifacts
     rendered_md, unresolved_md = render_template(md_template_text, ctx)
     rendered_html, unresolved_html = render_template(html_template_text, ctx)
 
@@ -752,6 +825,8 @@ def main(argv: Sequence[str]) -> int:
     head_commit = git_head_commit(repo_root) or str(run.get("repo_commit", ""))
     manifest_path = out_dir / f"{run['week_id']}.manifest.json"
 
+    manifest_schema_ref = f"artifacts/manifest.schema.json@{head_commit}"
+
     output_files: List[Path] = [out_md, out_html, out_css, out_appendix]
     if out_pdf and out_pdf.exists():
         output_files.append(out_pdf)
@@ -767,10 +842,12 @@ def main(argv: Sequence[str]) -> int:
         unresolved_template_vars=unresolved,
         builder_meta={"name": BUILDER_NAME, "version": BUILDER_VERSION},
         pdf_adapter_meta=pdf_adapter_meta,
+        manifest_schema_ref=manifest_schema_ref,
+        missing_template_vars=missing_vars,
     )
 
     manifest_obj = read_json(manifest_path)
-    validate_manifest_v01(manifest_obj, schema_path)
+    validate_manifest_schema(manifest_obj, schema_path)
 
     if unresolved:
         msg = "Unresolved template variables:\n" + "\n".join(f"- {v}" for v in unresolved)

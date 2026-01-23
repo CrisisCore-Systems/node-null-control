@@ -1,0 +1,31 @@
+{
+  "asset_id": "NNASSET-0001-weekly-signal-brief",
+  "asset_version": "v01",
+  "week_id": "2099-W01-fixture",
+  "generated_at_utc": "2099-01-08T00:00:00Z",
+  "repo_commit": "0000000000000000000000000000000000000000",
+  "inputs": {
+    "posts_source": "FIXTURE",
+    "posts_range": "2099-01-01..2099-01-07",
+    "included_block_ids": ["B-TEST-001"],
+    "excluded_invalid": true,
+    "files": {
+      "posts_export": "inputs/posts_export.csv",
+      "hooks_rollup": "inputs/hooks_rollup.csv",
+      "verticals_rollup": "inputs/verticals_rollup.csv",
+      "decisions": "inputs/decisions.csv",
+      "dataset_health": "inputs/dataset_health.json",
+      "template_context": "inputs/template_context.json"
+    }
+  },
+  "outputs": {
+    "pdf": "outputs/NNASSET-0001_weekly-signal-brief_2099-W01-fixture_v01.pdf",
+    "appendix_csv": "outputs/NNASSET-0001_weekly-signal-brief_2099-W01-fixture_v01_appendix.csv"
+  },
+  "governance": {
+    "rules_version": "docs/01_rules.md@0000000000000000000000000000000000000000",
+    "schema_version": "analytics/schema.md@0000000000000000000000000000000000000000",
+    "caption_version": "caption_v1",
+    "hooks_version": "hooks_v1"
+  }
+}

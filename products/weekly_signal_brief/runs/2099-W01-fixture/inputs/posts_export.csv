@@ -1,0 +1,2 @@
+date,platform,vertical,hook_type,hook_text,duration_sec,visual_style,voice_style,block_id,experiment_id,variant_id,is_control,views_1h,views_24h,avg_view_duration_sec,completion_pct,loop_pct,shares,saves,comments,decision,notes
+2099-01-02,tiktok,ops,claim,"Test hook text",30,minimal,neutral,B-TEST-001,EXP-001,A,true,100,1000,12.3,0.42,0.05,10,7,3,iterate,fixture row

@@ -1,0 +1,2 @@
+week_id,platform,duration_band,block_id,hook_type,hook_samples,hook_win_rate,hook_median_completion,hook_median_loop,hook_median_retention_ratio,hook_median_save_share_rate,hook_score_median
+2099-W01-fixture,tiktok,short,B-TEST-001,claim,10,0.62,0.44,0.06,1.12,0.09,0.77

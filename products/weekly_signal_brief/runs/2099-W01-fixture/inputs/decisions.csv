@@ -1,0 +1,2 @@
+week_id,decision_type,pattern_type,pattern_id,block_id,evidence_summary,next_action,followup_week
+2099-W01-fixture,iterate,hook,claim,B-TEST-001,"Small sample; keep controls",iterate,2099-W02
