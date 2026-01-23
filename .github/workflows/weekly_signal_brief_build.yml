@@ -1,0 +1,33 @@
+name: Weekly Signal Brief build
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build-weekly-signal-brief:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Build 2026-W04 artifacts
+        run: |
+          python --version
+          python scripts/build_weekly_signal_brief.py \
+            --run products/weekly_signal_brief/runs/2026-W04/run.json \
+            --outdir build/weekly_signal_brief/2026-W04 \
+            --fail-on-unresolved \
+            --strict-csv-headers
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: weekly-signal-brief-2026-W04
+          path: build/weekly_signal_brief/2026-W04
+          if-no-files-found: error

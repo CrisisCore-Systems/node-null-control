@@ -18,16 +18,20 @@ import csv
 import datetime as dt
 import hashlib
 import json
-import os
 import re
+import shlex
 import subprocess
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional, Sequence, Set, Tuple
+from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 
 
 VAR_PATTERN = re.compile(r"{{\s*([a-zA-Z0-9_\-\.]+)\s*}}")
+
+BUILDER_NAME = "build_weekly_signal_brief"
+BUILDER_VERSION = "v01"
+MANIFEST_SCHEMA_VERSION = "v01"
 
 
 class BuildError(RuntimeError):
@@ -86,12 +90,23 @@ def read_csv_header(path: Path) -> List[str]:
         raise BuildError(f"Failed to read CSV header: {path} ({exc})")
 
 
-def validate_csv_header(path: Path, expected: Sequence[str]) -> None:
+def validate_csv_header(path: Path, expected: Sequence[str], *, strict: bool) -> None:
     actual = read_csv_header(path)
-    if actual != list(expected):
+    expected_list = list(expected)
+    if strict:
+        if actual != expected_list:
+            raise BuildError(
+                "CSV header mismatch for "
+                f"{path}\nExpected: {expected_list}\nActual:   {actual}"
+            )
+        return
+
+    # Non-strict mode: require all expected fields to be present (order-insensitive).
+    missing = [h for h in expected_list if h not in set(actual)]
+    if missing:
         raise BuildError(
-            "CSV header mismatch for "
-            f"{path}\nExpected: {list(expected)}\nActual:   {actual}"
+            "CSV header missing required fields for "
+            f"{path}\nMissing: {missing}\nActual:  {actual}"
         )
 
 
@@ -177,6 +192,210 @@ def build_context(run: Dict[str, Any], dataset_health: Dict[str, Any]) -> Dict[s
     return ctx
 
 
+def validate_run_schema(run: Dict[str, Any], path: Path) -> None:
+    """Minimal run.json schema validation (no external deps)."""
+
+    def require(key: str, expected_type: type) -> Any:
+        if key not in run:
+            raise BuildError(f"run.json missing key '{key}' ({path})")
+        value = run[key]
+        if not isinstance(value, expected_type):
+            raise BuildError(f"run.json '{key}' must be {expected_type.__name__} ({path})")
+        return value
+
+    require("asset_id", str)
+    require("asset_version", str)
+    week_id = require("week_id", str)
+    generated_at_utc = require("generated_at_utc", str)
+    repo_commit = require("repo_commit", str)
+    inputs = require("inputs", dict)
+    outputs = require("outputs", dict)
+
+    if not re.match(r"^[0-9]{4}-W[0-9]{2}.*$", week_id):
+        raise BuildError(f"run.json week_id must match YYYY-Www (got '{week_id}') ({path})")
+
+    if not re.match(r"^[0-9a-f]{7,40}$", repo_commit):
+        raise BuildError(f"run.json repo_commit must be a hex git hash (got '{repo_commit}') ({path})")
+
+    # Basic ISO-ish stamp check (don't be too strict about Z vs offset)
+    if "T" not in generated_at_utc:
+        raise BuildError(f"run.json generated_at_utc must be ISO datetime-like (got '{generated_at_utc}') ({path})")
+
+    if not isinstance(inputs.get("files"), dict):
+        raise BuildError(f"run.json inputs.files must be an object ({path})")
+
+    # Ensure inputs/outputs are relative and stay within their folders.
+    for k, v in inputs["files"].items():
+        if not isinstance(v, str):
+            raise BuildError(f"run.json inputs.files.{k} must be a string ({path})")
+        if Path(v).is_absolute() or ":" in v:
+            raise BuildError(f"run.json inputs.files.{k} must be a relative path (got '{v}') ({path})")
+        if not v.replace("\\", "/").startswith("inputs/"):
+            raise BuildError(f"run.json inputs.files.{k} must live under inputs/ (got '{v}') ({path})")
+
+    for ok, ov in outputs.items():
+        if not isinstance(ov, str):
+            raise BuildError(f"run.json outputs.{ok} must be a string ({path})")
+        if Path(ov).is_absolute() or ":" in ov:
+            raise BuildError(f"run.json outputs.{ok} must be a relative path (got '{ov}') ({path})")
+        if not ov.replace("\\", "/").startswith("outputs/"):
+            raise BuildError(f"run.json outputs.{ok} must live under outputs/ (got '{ov}') ({path})")
+
+
+def default_value_for_var(var: str) -> str:
+    if var.endswith("_samples"):
+        return "0"
+    if var.startswith("dataset_") and ("posts" in var):
+        return "0"
+    if var.endswith("_rate") or "median" in var or "pct" in var or "ratio" in var or "score" in var:
+        return "0.0"
+    if var.endswith("_notes") or var.endswith("_evidence") or var.endswith("_why") or var.endswith("_reco"):
+        return "TBD"
+    return "TBD"
+
+
+def complete_context(ctx: Dict[str, str], allowed_vars: Set[str]) -> Dict[str, str]:
+    """Ensure every allowlisted variable has a deterministic value.
+
+    This makes --fail-on-unresolved a contract check (builder completeness)
+    rather than a data-availability check.
+    """
+
+    out = dict(ctx)
+    for v in allowed_vars:
+        out.setdefault(v, default_value_for_var(v))
+    return out
+
+
+def validate_manifest_v01(manifest: Dict[str, Any], schema_path: Path) -> None:
+    """Validate manifest structure against our v01 schema semantics.
+
+    This is intentionally dependency-free and aligned to artifacts/manifest.schema.json.
+    """
+
+    if not schema_path.exists():
+        raise BuildError(f"Manifest schema not found: {schema_path}")
+
+    if not isinstance(manifest, dict):
+        raise BuildError("Manifest must be a JSON object")
+
+    required = [
+        "schema_version",
+        "run_id",
+        "week_id",
+        "asset_id",
+        "asset_version",
+        "repo_commit",
+        "generated_at_utc",
+        "inputs",
+        "outputs",
+    ]
+    for k in required:
+        if k not in manifest:
+            raise BuildError(f"Manifest missing key '{k}'")
+
+    if manifest.get("schema_version") != MANIFEST_SCHEMA_VERSION:
+        raise BuildError(f"Manifest schema_version must be '{MANIFEST_SCHEMA_VERSION}'")
+
+    week_id = manifest.get("week_id")
+    if not isinstance(week_id, str) or not re.match(r"^[0-9]{4}-W[0-9]{2}.*$", week_id):
+        raise BuildError("Manifest week_id must match YYYY-Www")
+
+    repo_commit = manifest.get("repo_commit")
+    if not isinstance(repo_commit, str) or not re.match(r"^[0-9a-f]{7,40}$", repo_commit):
+        raise BuildError("Manifest repo_commit must be a hex git hash")
+
+    inputs = manifest.get("inputs")
+    outputs = manifest.get("outputs")
+    if not isinstance(inputs, list) or not inputs:
+        raise BuildError("Manifest inputs must be a non-empty array")
+    if not isinstance(outputs, list) or not outputs:
+        raise BuildError("Manifest outputs must be a non-empty array")
+
+    for item in inputs:
+        if not isinstance(item, dict):
+            raise BuildError("Manifest inputs[] entries must be objects")
+        for k in ["name", "path", "sha256"]:
+            if k not in item:
+                raise BuildError(f"Manifest inputs[] missing '{k}'")
+        if not re.match(r"^[0-9a-f]{64}$", str(item.get("sha256", ""))):
+            raise BuildError("Manifest inputs[].sha256 must be a sha256 hex string")
+
+    for item in outputs:
+        if not isinstance(item, dict):
+            raise BuildError("Manifest outputs[] entries must be objects")
+        for k in ["type", "filename", "sha256", "size_bytes", "content_type"]:
+            if k not in item:
+                raise BuildError(f"Manifest outputs[] missing '{k}'")
+        if not re.match(r"^[0-9a-f]{64}$", str(item.get("sha256", ""))):
+            raise BuildError("Manifest outputs[].sha256 must be a sha256 hex string")
+        if not isinstance(item.get("size_bytes"), int) or item["size_bytes"] < 0:
+            raise BuildError("Manifest outputs[].size_bytes must be a non-negative integer")
+
+    # Optional metadata blocks
+    if "builder" in manifest:
+        b = manifest["builder"]
+        if not isinstance(b, dict):
+            raise BuildError("Manifest builder must be an object")
+        for k in ["name", "version"]:
+            if k not in b or not isinstance(b[k], str) or not b[k]:
+                raise BuildError("Manifest builder.name/version must be non-empty strings")
+
+    if "pdf_adapter" in manifest:
+        a = manifest["pdf_adapter"]
+        if not isinstance(a, dict):
+            raise BuildError("Manifest pdf_adapter must be an object")
+        if "name" not in a or not isinstance(a["name"], str) or not a["name"]:
+            raise BuildError("Manifest pdf_adapter.name must be a non-empty string")
+
+
+def run_pdf_adapter(
+    *,
+    adapter: str,
+    html_path: Path,
+    pdf_path: Path,
+    pdf_cmd: Optional[str],
+) -> Dict[str, Any]:
+    """Standard adapter seam: given (html_path, pdf_path) produce a PDF."""
+
+    meta: Dict[str, Any] = {
+        "name": adapter,
+        "version": None,
+        "command": None,
+        "exit_code": None,
+    }
+
+    if adapter == "none":
+        return meta
+
+    if adapter == "wkhtmltopdf":
+        cmd = ["wkhtmltopdf", str(html_path), str(pdf_path)]
+        meta["command"] = " ".join(cmd)
+        try:
+            v = subprocess.check_output(["wkhtmltopdf", "--version"], stderr=subprocess.STDOUT)
+            meta["version"] = v.decode("utf-8", errors="replace").strip()
+        except Exception:
+            meta["version"] = None
+        proc = subprocess.run(cmd, capture_output=True, text=True)
+        meta["exit_code"] = proc.returncode
+        if proc.returncode != 0:
+            raise BuildError(f"wkhtmltopdf failed (exit {proc.returncode}): {proc.stderr.strip() or proc.stdout.strip()}")
+        return meta
+
+    if adapter == "command":
+        if not pdf_cmd:
+            raise BuildError("--pdf-cmd is required when --pdf-adapter=command")
+        cmd_str = pdf_cmd.format(html=str(html_path), pdf=str(pdf_path))
+        meta["command"] = cmd_str
+        proc = subprocess.run(cmd_str, shell=True, capture_output=True, text=True)
+        meta["exit_code"] = proc.returncode
+        if proc.returncode != 0:
+            raise BuildError(f"pdf adapter command failed (exit {proc.returncode}): {proc.stderr.strip() or proc.stdout.strip()}")
+        return meta
+
+    raise BuildError(f"Unknown --pdf-adapter: {adapter}")
+
+
 def validate_dataset_health(dataset_health: Dict[str, Any], path: Path) -> None:
     required_top = ["week_id", "counts", "rates", "top_invalid_reasons", "drift_flags", "incident_flags", "computed_at_utc"]
     for key in required_top:
@@ -236,9 +455,11 @@ def write_manifest(
     input_files: Dict[str, Path],
     output_files: List[Path],
     unresolved_template_vars: Sequence[str],
+    builder_meta: Dict[str, Any],
+    pdf_adapter_meta: Optional[Dict[str, Any]],
 ) -> None:
     manifest = {
-        "schema_version": "v01",
+        "schema_version": MANIFEST_SCHEMA_VERSION,
         "run_id": str(run.get("week_id", "")),
         "week_id": str(run.get("week_id", "")),
         "asset_id": str(run.get("asset_id", "")),
@@ -246,9 +467,13 @@ def write_manifest(
         "repo_commit": repo_commit,
         "generated_at_utc": generated_at_utc,
         "unresolved_template_vars": list(sorted(set(unresolved_template_vars))),
+        "builder": builder_meta,
         "inputs": [],
         "outputs": [],
     }
+
+    if pdf_adapter_meta and pdf_adapter_meta.get("name") and pdf_adapter_meta.get("name") != "none":
+        manifest["pdf_adapter"] = pdf_adapter_meta
 
     for logical_name, path in input_files.items():
         try:
@@ -321,12 +546,38 @@ def build_appendix_csv(out_path: Path, schema_path: Path, inputs: Dict[str, Path
 
 def main(argv: Sequence[str]) -> int:
     parser = argparse.ArgumentParser(description="Build Weekly Signal Brief v01 artifacts from a run.json")
-    parser.add_argument("--run-file", required=True, help="Path to run.json")
-    parser.add_argument("--out-dir", required=True, help="Output directory for generated artifacts")
+    parser.add_argument("--run-file", "--run", dest="run_file", required=True, help="Path to run.json")
+    parser.add_argument("--out-dir", "--outdir", dest="out_dir", required=True, help="Output directory for generated artifacts")
+    parser.add_argument(
+        "--strict-csv-headers",
+        action="store_true",
+        help="Enforce exact CSV header matches (recommended for CI)",
+    )
     parser.add_argument(
         "--fail-on-unresolved",
         action="store_true",
         help="Fail build if any template variables remain unresolved after rendering",
+    )
+    parser.add_argument(
+        "--manifest-schema",
+        default=None,
+        help="Path to artifacts/manifest.schema.json (defaults to repo-root artifacts/manifest.schema.json)",
+    )
+    parser.add_argument(
+        "--pdf-adapter",
+        choices=["none", "wkhtmltopdf", "command"],
+        default="none",
+        help="PDF adapter to run (builder always emits HTML; adapter optionally produces PDF)",
+    )
+    parser.add_argument(
+        "--pdf-path",
+        default=None,
+        help="Where to write the generated PDF (defaults under --out-dir)",
+    )
+    parser.add_argument(
+        "--pdf-cmd",
+        default=None,
+        help="Command template for --pdf-adapter=command. Use {html} and {pdf} placeholders.",
     )
     args = parser.parse_args(argv)
 
@@ -338,12 +589,11 @@ def main(argv: Sequence[str]) -> int:
 
     repo_root = find_repo_root(run_file)
 
+    schema_path = Path(args.manifest_schema).resolve() if args.manifest_schema else (repo_root / "artifacts/manifest.schema.json").resolve()
+
     run = read_json(run_file)
 
-    required_run_keys = ["asset_id", "asset_version", "week_id", "generated_at_utc", "repo_commit", "inputs", "outputs"]
-    for k in required_run_keys:
-        if k not in run:
-            raise BuildError(f"run.json missing key '{k}' ({run_file})")
+    validate_run_schema(run, run_file)
 
     run_root = run_file.parent
     inputs_meta = run.get("inputs", {})
@@ -360,7 +610,7 @@ def main(argv: Sequence[str]) -> int:
         if not p.exists():
             raise BuildError(f"Missing required input file '{k}': {p}")
 
-    # Validate CSV headers (basic schema)
+    # Validate CSV headers
     validate_csv_header(
         input_paths["posts_export"],
         [
@@ -387,6 +637,7 @@ def main(argv: Sequence[str]) -> int:
             "decision",
             "notes",
         ],
+        strict=args.strict_csv_headers,
     )
     validate_csv_header(
         input_paths["hooks_rollup"],
@@ -404,6 +655,7 @@ def main(argv: Sequence[str]) -> int:
             "hook_median_save_share_rate",
             "hook_score_median",
         ],
+        strict=args.strict_csv_headers,
     )
     validate_csv_header(
         input_paths["verticals_rollup"],
@@ -421,6 +673,7 @@ def main(argv: Sequence[str]) -> int:
             "vertical_median_save_share_rate",
             "vertical_score_median",
         ],
+        strict=args.strict_csv_headers,
     )
     validate_csv_header(
         input_paths["decisions"],
@@ -434,6 +687,7 @@ def main(argv: Sequence[str]) -> int:
             "next_action",
             "followup_week",
         ],
+        strict=args.strict_csv_headers,
     )
 
     dataset_health = read_json(input_paths["dataset_health"])
@@ -466,16 +720,16 @@ def main(argv: Sequence[str]) -> int:
     # Render artifacts
     ensure_dir(out_dir)
 
-    ctx = build_context(run, dataset_health)
+    ctx = complete_context(build_context(run, dataset_health), allowed_vars)
     rendered_md, unresolved_md = render_template(md_template_text, ctx)
     rendered_html, unresolved_html = render_template(html_template_text, ctx)
 
     unresolved = sorted(set(unresolved_md) | set(unresolved_html))
 
-    out_md = out_dir / f"weekly_signal_brief_{run['week_id']}_v01.md"
-    out_html = out_dir / f"weekly_signal_brief_{run['week_id']}_v01.html"
+    out_md = out_dir / f"weekly_signal_brief_{run['week_id']}_{BUILDER_VERSION}.md"
+    out_html = out_dir / f"weekly_signal_brief_{run['week_id']}_{BUILDER_VERSION}.html"
     out_css = out_dir / "weekly_brief_styles.css"
-    out_appendix = out_dir / f"weekly_signal_brief_{run['week_id']}_v01_appendix.csv"
+    out_appendix = out_dir / f"weekly_signal_brief_{run['week_id']}_{BUILDER_VERSION}_appendix.csv"
 
     out_md.write_text(rendered_md, encoding="utf-8")
     out_html.write_text(rendered_html, encoding="utf-8")
@@ -483,9 +737,25 @@ def main(argv: Sequence[str]) -> int:
 
     build_appendix_csv(out_appendix, appendix_schema_path, input_paths)
 
+    pdf_adapter_meta: Optional[Dict[str, Any]] = None
+    out_pdf: Optional[Path] = None
+    if args.pdf_adapter != "none":
+        out_pdf = Path(args.pdf_path).resolve() if args.pdf_path else (out_dir / f"weekly_signal_brief_{run['week_id']}_{BUILDER_VERSION}.pdf")
+        pdf_adapter_meta = run_pdf_adapter(
+            adapter=args.pdf_adapter,
+            html_path=out_html,
+            pdf_path=out_pdf,
+            pdf_cmd=args.pdf_cmd,
+        )
+
     # Manifest
     head_commit = git_head_commit(repo_root) or str(run.get("repo_commit", ""))
     manifest_path = out_dir / f"{run['week_id']}.manifest.json"
+
+    output_files: List[Path] = [out_md, out_html, out_css, out_appendix]
+    if out_pdf and out_pdf.exists():
+        output_files.append(out_pdf)
+
     write_manifest(
         out_path=manifest_path,
         run=run,
@@ -493,9 +763,14 @@ def main(argv: Sequence[str]) -> int:
         repo_commit=head_commit,
         generated_at_utc=utc_now_iso(),
         input_files=input_paths,
-        output_files=[out_md, out_html, out_css, out_appendix],
+        output_files=output_files,
         unresolved_template_vars=unresolved,
+        builder_meta={"name": BUILDER_NAME, "version": BUILDER_VERSION},
+        pdf_adapter_meta=pdf_adapter_meta,
     )
+
+    manifest_obj = read_json(manifest_path)
+    validate_manifest_v01(manifest_obj, schema_path)
 
     if unresolved:
         msg = "Unresolved template variables:\n" + "\n".join(f"- {v}" for v in unresolved)

@@ -87,6 +87,11 @@ Recommended generation paths (choose one):
 
 The templates are written to be deterministic and repeatable.
 
+Repo hygiene:
+
+- `build/` is local-only (or CI-only) build output and must not be committed.
+- Manifests (`*.manifest.json`) are artifacts by default; only commit them if you are intentionally creating test fixtures.
+
 ---
 
 ## Inputs (minimum contract)
