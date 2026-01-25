@@ -1,6 +1,6 @@
 # 01 — Rules (Constitution)
 
-This document is the hard boundary layer for **node-null-control**.
+Hard boundary layer for **node-null-control**.
 
 If a rule conflicts with a workflow, the **rule wins**.
 
@@ -8,13 +8,13 @@ If a rule conflicts with a workflow, the **rule wins**.
 
 ## 1) Purpose
 
-**Goal:** build a repeatable, policy-safe short-form publishing system that produces **clean signal** (comparable performance data) without corrupting the dataset.
+**Goal:** a repeatable, policy-safe short-form publishing system that produces **clean signal** (comparable data) without corrupting the dataset.
 
-**Non-goals:** persona building, identity storytelling, political persuasion, medical/financial claims, deception, or platform policy evasion.
+**Non-goals:** personas, identity stories, political persuasion, medical/financial claims, deception, policy evasion.
 
 ---
 
-## 2) Definitions (so metrics stay comparable)
+## 2) Definitions
 
 - **Post**: one upload event on one platform.
 - **Sample**: a post that meets the validity requirements in §5.
@@ -28,11 +28,11 @@ If a rule conflicts with a workflow, the **rule wins**.
 
 ## 3) System principles
 
-- **Truth of operation:** we optimize *patterns*, not personalities.
-- **Constraint-first:** rules create stability; stability creates learnable signal.
-- **Single source of truth:** one tracker controls analytics state.
-- **Reproducibility:** any claim about performance must be auditable to raw metrics.
-- **Safety-first growth:** no tactic is worth a ban, demonetization, or reputational risk.
+- **Truth of operation:** optimize *patterns*, not personalities.
+- **Constraint-first:** rules → stability → learnable signal.
+- **Single source of truth:** one tracker controls analytics.
+- **Reproducibility:** all claims auditable to raw metrics.
+- **Safety-first:** no tactic is worth a ban or demonetization.
 
 ---
 
@@ -62,7 +62,7 @@ If a platform policy is stricter than these rules, adopt the stricter policy.
 
 ---
 
-## 5) Data integrity rules (what invalidates data)
+## 5) Data integrity (invalid samples)
 
 A **sample is invalid** if any of the following are true:
 
@@ -77,7 +77,7 @@ A **sample is invalid** if any of the following are true:
 
 ---
 
-## 6) Governance logic (how decisions are made)
+## 6) Governance logic
 
 - **Change control:** any change to templates, publishing cadence, or scoring must be versioned and dated.
 - **One-variable discipline:** change *one* variable per variant unless explicitly running a multi-factor experiment.
@@ -86,7 +86,7 @@ A **sample is invalid** if any of the following are true:
 
 ---
 
-## 7) Signal quality protection (contamination prevention)
+## 7) Signal quality protection
 
 ### Keep experiments isolated
 
@@ -105,7 +105,7 @@ A **sample is invalid** if any of the following are true:
 
 ---
 
-## 8) Drift rules (what causes drift)
+## 8) Drift rules
 
 Drift is any shift that makes performance non-comparable across time.
 
@@ -120,7 +120,7 @@ Common causes:
 
 ---
 
-## 9) Monetization safety rules (what breaks monetization)
+## 9) Monetization safety
 
 Hard protections:
 

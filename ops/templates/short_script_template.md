@@ -1,6 +1,6 @@
-# Short Script Template (Machine-Consistent)
+# Short Script Template
 
-This template standardizes short-form scripts so experiments stay comparable.
+Standardized short-form scripts for comparable experiments.
 
 Governance hard-stop rules: [docs/01_rules.md](../../docs/01_rules.md)
 Workflow context: [docs/02_workflow.md](../../docs/02_workflow.md)

@@ -1,6 +1,6 @@
 # Product Engine (Core Monetization Surface)
 
-This is the primary revenue surface of the hybrid monetization system.
+Primary revenue surface of the hybrid system.
 
 Not ads-first. Not funnels-first. Not sponsorship-first. Not identity-first.
 
@@ -27,7 +27,7 @@ Hard boundaries:
 - **Law 4:** products must be modular, composable, and removable.
 - **Law 5:** products must scale independently of platforms.
 
-Products are downstream of trust, not drivers of content.
+Products follow trust, they don't drive content.
 
 ---
 

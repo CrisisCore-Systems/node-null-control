@@ -1,6 +1,6 @@
-# Daily Ops Checklist (Execution Discipline)
+# Daily Ops Checklist
 
-This is the daily operator runbook.
+Daily operator runbook.
 
 Hard boundaries: [docs/01_rules.md](../../docs/01_rules.md)
 Workflow reference: [docs/02_workflow.md](../../docs/02_workflow.md)

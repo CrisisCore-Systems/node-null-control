@@ -1,8 +1,8 @@
-# Hybrid Monetization Engine (Multi-Surface Monetization Layer)
+# Hybrid Monetization Engine
 
-This sits above the Product Engine and beside the Signal Engine.
+Sits above the Product Engine, beside the Signal Engine.
 
-It does not replace productization — it routes value across surfaces **without corrupting analytics, incentives, or governance**.
+Routes value across surfaces **without corrupting analytics, incentives, or governance**.
 
 Hard boundaries:
 
@@ -17,9 +17,7 @@ Hard boundaries:
 
 ## 0) Core principle
 
-Monetization is distributed, not centralized.
-
-No single surface becomes dominant enough to distort signal behavior.
+Monetization is distributed, not centralized. No single surface dominates enough to distort signal.
 
 Doctrine:
 

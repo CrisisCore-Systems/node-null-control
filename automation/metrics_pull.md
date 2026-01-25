@@ -1,6 +1,6 @@
-# Metrics Pull (Telemetry Nervous System)
+# Metrics Pull (Telemetry)
 
-This document defines the instrumentation layer: how to pull, validate, normalize, store, and reconcile performance metrics **compliantly** and **auditably**.
+The instrumentation layer: pull, validate, normalize, store, and reconcile metrics **compliantly** and **auditably**.
 
 Hard boundaries: [docs/01_rules.md](../docs/01_rules.md)
 Workflow reference: [docs/02_workflow.md](../docs/02_workflow.md)
@@ -11,10 +11,10 @@ Automation wiring: [automation/wiring.md](wiring.md)
 
 ## 0) Non-negotiables
 
-- **Compliant data access only:** use official platform APIs, approved partners, platform-native analytics exports, or manual exports that respect Terms.
-- **Privacy + identity isolation:** no collection of personal data beyond aggregate post analytics. Separate accounts/networks.
-- **Immutability:** store raw snapshots as immutable records.
-- **Traceability:** every metric value in the tracker must be traceable to a snapshot (run_id + source).
+- **Compliant access:** official APIs, approved partners, or manual exports per Terms.
+- **Privacy:** no personal data beyond aggregate analytics. Separate accounts.
+- **Immutability:** raw snapshots are immutable.
+- **Traceability:** every metric traces to a snapshot (run_id + source).
 
 ---
 

@@ -1,6 +1,6 @@
-# Weekly Ops Checklist (Direction)
+# Weekly Ops Checklist
 
-This is the weekly direction-setting ritual: audit dataset health, rank patterns, make kill/scale decisions, plan next experiments, and detect drift.
+Weekly ritual: audit dataset health, rank patterns, kill/scale decisions, plan experiments, detect drift.
 
 Hard boundaries: [docs/01_rules.md](../../docs/01_rules.md)
 Workflow reference: [docs/02_workflow.md](../../docs/02_workflow.md)
