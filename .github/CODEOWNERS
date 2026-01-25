@@ -1,0 +1,33 @@
+# CODEOWNERS - Governance and code ownership definitions
+#
+# These owners will be requested for review when someone opens a pull request
+# that modifies code in their areas.
+#
+# See: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owners for everything in the repo
+* @CrisisCore-Systems/maintainers
+
+# Governance and rules (require careful review)
+/docs/01_rules.md @CrisisCore-Systems/maintainers
+/LICENSE @CrisisCore-Systems/maintainers
+/SECURITY.md @CrisisCore-Systems/maintainers
+
+# Analytics schema changes affect decision logic
+/analytics/ @CrisisCore-Systems/maintainers
+
+# Python tooling and scripts
+/scripts/ @CrisisCore-Systems/maintainers
+/pyproject.toml @CrisisCore-Systems/maintainers
+
+# Product-specific owners
+/products/weekly_signal_brief/ @CrisisCore-Systems/maintainers
+
+# Forge (public-facing component)
+/forge/ @CrisisCore-Systems/maintainers
+
+# GitHub Actions workflows
+/.github/workflows/ @CrisisCore-Systems/maintainers
+
+# API and serverless functions
+/api/ @CrisisCore-Systems/maintainers

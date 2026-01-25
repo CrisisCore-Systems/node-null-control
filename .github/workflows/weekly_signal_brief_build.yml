@@ -18,12 +18,14 @@ jobs:
         with:
           python-version: "3.13"
           cache: pip
-          cache-dependency-path: scripts/requirements.txt
+          cache-dependency-path: |
+            pyproject.toml
+            scripts/requirements.txt
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r scripts/requirements.txt
+          pip install -e .
 
       - name: Guardrail: no artifacts tracked
         run: |
@@ -32,6 +34,12 @@ jobs:
           if git ls-files | grep -qE '^build/'; then
             echo "build/ is tracked";
             git ls-files | grep -E '^build/' || true
+            exit 1;
+          fi
+
+          if git ls-files | grep -qE '^site/'; then
+            echo "site/ is tracked";
+            git ls-files | grep -E '^site/' || true
             exit 1;
           fi
 
