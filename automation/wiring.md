@@ -1,6 +1,6 @@
 # Automation Wiring (Ops-Grade)
 
-This document defines how automation connects the system end-to-end **without** breaking governance, identity isolation, or platform policies.
+How automation connects the system end-to-end **without** breaking governance, identity isolation, or platform policies.
 
 Hard boundaries: [docs/01_rules.md](../docs/01_rules.md)
 Workflow reference: [docs/02_workflow.md](../docs/02_workflow.md)
@@ -10,11 +10,11 @@ Analytics rules: [analytics/schema.md](../analytics/schema.md)
 
 ## 0) Non-negotiables
 
-- **Policy compliance only:** automate only via official platform APIs, approved partners, or platform-native scheduling tools.
-- **No enforcement evasion:** no account cycling, no ban evasion, no shadow techniques.
-- **No artificial engagement:** no bots for likes/follows/comments, no purchased traffic, no fake signals.
-- **Identity isolation:** separate credentials, storage, and logs per account/network.
-- **Auditability:** every automated action must be attributable to a run ID and logged.
+- **Policy compliance:** official APIs, approved partners, or native scheduling only.
+- **No enforcement evasion:** no account cycling, ban evasion, or shadow techniques.
+- **No artificial engagement:** no bots, purchased traffic, or fake signals.
+- **Identity isolation:** separate credentials, storage, and logs per account.
+- **Auditability:** every automated action logged with a run ID.
 
 ---
 

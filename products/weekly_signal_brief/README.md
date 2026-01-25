@@ -1,8 +1,8 @@
-# Weekly Signal Brief v01 (Deliverable System)
+# Weekly Signal Brief v01
 
-Asset: `NNASSET-0001-weekly-signal-brief` (see [monetization/assets/registry.md](../../monetization/assets/registry.md))
+Asset: `NNASSET-0001-weekly-signal-brief`
 
-This folder defines a repeatable weekly deliverable system:
+Repeatable weekly deliverable system:
 
 - PDF brief (what buyers get)
 - CSV appendix (optional add-on / pro tier / internal import)

@@ -1,6 +1,6 @@
 # Monetization Asset Schema
 
-This schema defines **asset identity**, **lifecycle**, and **routing compatibility** for the Hybrid Monetization Engine.
+**Asset identity**, **lifecycle**, and **routing compatibility** for the Hybrid Monetization Engine.
 
 Scope:
 

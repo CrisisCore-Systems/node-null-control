@@ -1,6 +1,6 @@
 # 02 — Workflow (Operations)
 
-This document turns the rules into motion.
+Turns the rules into motion.
 
 - If a workflow step conflicts with the constitution, the constitution wins: [docs/01_rules.md](01_rules.md)
 
@@ -8,9 +8,9 @@ This document turns the rules into motion.
 
 ## 0) Workflow intent
 
-**Primary outcome:** consistent publishing + consistent measurement → clean signal → correct kill/scale decisions.
+**Outcome:** consistent publishing + measurement → clean signal → correct decisions.
 
-**Failure modes this workflow prevents:** noisy datasets, uncontrolled changes, platform risk, monetization breaks, and drift.
+**Prevents:** noisy datasets, uncontrolled changes, platform risk, monetization breaks, drift.
 
 ---
 

@@ -1,8 +1,8 @@
 # Analytics Schema (Decision Engine)
 
-This document defines the tracker as a **decision engine**: exact metric meanings, formulas, thresholds, normalization rules, aggregation logic, and decision triggers.
+The tracker is the **decision engine**: metric definitions, formulas, thresholds, normalization, aggregation, and decision triggers.
 
-If any analytic rule conflicts with governance, governance wins: [docs/01_rules.md](../docs/01_rules.md)
+Governance trumps analytics: [docs/01_rules.md](../docs/01_rules.md)
 
 ---
 

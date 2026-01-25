@@ -1,16 +1,16 @@
 # Operations Manual
 
-This document stitches together the complete operational workflow:
+Complete operational workflow:
 **Tracker → Weekly Run → Aggregation → Build Brief → Publish → Decision Logs**
 
-For rules that govern all operations, see [01_rules.md](01_rules.md).
-For workflow details, see [02_workflow.md](02_workflow.md).
+Rules: [01_rules.md](01_rules.md)
+Workflow: [02_workflow.md](02_workflow.md)
 
 ---
 
 ## 1) Operational Overview
 
-The node-null-control system operates on a weekly cycle with daily checkpoints:
+Weekly cycle with daily checkpoints:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐

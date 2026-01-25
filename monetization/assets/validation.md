@@ -1,6 +1,6 @@
-# Asset Validation Checklist (Activation Gate)
+# Asset Validation Checklist
 
-Purpose: prevent unapproved assets entering `active` status, routing violations, telemetry mismatches, incentive bleed into content, and governance drift.
+Prevents: unapproved assets going `active`, routing violations, telemetry mismatches, incentive bleed, governance drift.
 
 Hard rule:
 
