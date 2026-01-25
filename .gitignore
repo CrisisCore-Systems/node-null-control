@@ -9,10 +9,12 @@ Thumbs.db
 # Python
 __pycache__/
 *.pyc
+*.egg-info/
 
 # Local build outputs
 build/
 dist/
+site/
 .venv/
 
 # Product runs: outputs are generated artifacts (store externally)
