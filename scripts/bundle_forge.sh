@@ -62,6 +62,21 @@ if [[ ! -f "${REPO_ROOT}/forge/index.html" ]]; then
     exit 1
 fi
 
+# Safety check: ensure OUTPUT_DIR is within expected boundaries
+# Prevent accidental deletion of critical directories
+case "${OUTPUT_DIR}" in
+    /|/home|/tmp|/var|/etc|/usr|/bin|/lib|/sbin)
+        echo "ERROR: OUTPUT_DIR '${OUTPUT_DIR}' is a critical system directory. Refusing to proceed." >&2
+        exit 1
+        ;;
+esac
+
+# Ensure OUTPUT_DIR is either relative to REPO_ROOT or explicitly in a safe location
+if [[ "${OUTPUT_DIR}" != "${REPO_ROOT}"/* && "${OUTPUT_DIR}" != /tmp/* ]]; then
+    echo "ERROR: OUTPUT_DIR must be within the repository or /tmp/. Got: ${OUTPUT_DIR}" >&2
+    exit 1
+fi
+
 # Clean output directory
 if [[ -d "${OUTPUT_DIR}" ]]; then
     echo "Cleaning existing output directory..."

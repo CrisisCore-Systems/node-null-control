@@ -104,8 +104,18 @@ Core fields:
 At the start of each weekly run:
 
 1. Export the Posts tab as `posts_export.csv`
+   - In Google Sheets: File → Download → Comma Separated Values (.csv)
+   - Ensure UTF-8 encoding (default for Google Sheets)
+   - Keep header row intact
+   - Filter to the relevant date range before exporting
 2. Export decisions as `decisions.csv`
+   - Same process as Posts export
 3. Place both in `products/weekly_signal_brief/runs/<WEEK_ID>/inputs/`
+
+**Export requirements:**
+- Column order must match schema (see [analytics/schema.md](../analytics/schema.md))
+- Use ISO date format: `YYYY-MM-DD`
+- Empty cells for missing metrics (not "N/A" or "-")
 
 ---
 
