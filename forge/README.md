@@ -1,6 +1,6 @@
-# Forge node (conversion interface)
+# Forge (Conversion Interface)
 
-This is a single-page, neutral routing interface for the Ghost Network.
+Single-page, neutral routing interface for the Ghost Network.
 
 Goals:
 
@@ -14,9 +14,9 @@ If the architecture feels abstract, read the plain-language model first:
 
 - [../docs/00_mental_model.md](../docs/00_mental_model.md)
 
-## Deploy (fast)
+## Deploy
 
-Any static host works:
+Any static host:
 
 - GitHub Pages
 - Cloudflare Pages

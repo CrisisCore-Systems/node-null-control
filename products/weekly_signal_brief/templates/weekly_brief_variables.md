@@ -1,11 +1,6 @@
-# Weekly Signal Brief v01 — Template Variables (Allowlist)
+# Weekly Signal Brief v01 — Template Variables
 
-This file is the contract.
-
-Rule:
-
-- The v01 templates must not introduce any template variables not listed here.
-- If you need a new variable, bump the asset/template version and update this allowlist.
+Contract: v01 templates use only these variables. New variables require a version bump.
 
 ---
 

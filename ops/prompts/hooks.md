@@ -1,6 +1,6 @@
-# Hooks (Controlled Stimulus Library)
+# Hooks (Controlled Library)
 
-This file defines the **hook taxonomy** and a controlled library of hook structures so experiments stay clean.
+**Hook taxonomy** and controlled structures for clean experiments.
 
 - Governance hard-stop rules: [docs/01_rules.md](../../docs/01_rules.md)
 - Workflow context: [docs/02_workflow.md](../../docs/02_workflow.md)
@@ -11,9 +11,9 @@ This file defines the **hook taxonomy** and a controlled library of hook structu
 
 ## 0) Purpose
 
-Hooks are the highest-leverage variable in short-form. If hooks are written ad hoc, you lose comparability and corrupt the dataset.
+Hooks are the highest-leverage variable. Ad hoc hooks corrupt the dataset.
 
-This document turns hooks into:
+This doc turns hooks into:
 
 - **Taxonomy** (stable labels)
 - **Structures** (repeatable patterns)

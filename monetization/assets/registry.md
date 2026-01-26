@@ -1,8 +1,8 @@
-# Monetization Asset Registry (Single Source of Truth)
+# Monetization Asset Registry (SSOT)
 
-This registry is the canonical inventory of **all monetizable assets** produced by the system.
+Canonical inventory of **all monetizable assets**.
 
-If an asset is not in this registry, it is not routable, not sellable, and must not appear in monetization telemetry.
+If not in this registry: not routable, not sellable, not in telemetry.
 
 Hard boundaries:
 

@@ -111,16 +111,16 @@ Scale if:
 
 ## Tooling Notes
 
-Suggested stack:
+Stack:
 - Scripts: ChatGPT
 - Voice: ElevenLabs (neutral synthetic)
-- Visuals: Runway / Pika / stock loops / AI visuals
+- Visuals: Runway / Pika / stock loops
 - Edit: CapCut templates (auto subtitles + loop cut)
 - Cross-post: Repurpose.io
 - Schedule: Buffer
 - Automations: Make.com / Zapier
 
-(Keep credentials outside the repo.)
+Keep credentials outside the repo.
 
 ---
 
@@ -146,8 +146,8 @@ Example:
 
 ## License / Compliance
 
-This repo contains operational templates and analytics schema.
-Do not store copyrighted assets, personal data, or platform credentials here.
+Templates and analytics schema only.
+No copyrighted assets, personal data, or credentials in this repo.
 
 ---
 

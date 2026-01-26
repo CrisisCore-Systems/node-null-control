@@ -1,6 +1,6 @@
-# Caption Template (Experiment-Safe Packaging)
+# Caption Template
 
-This template controls captions so packaging does not drift and corrupt comparisons.
+Controlled captions to prevent packaging drift.
 
 Hard boundaries: [docs/01_rules.md](../../docs/01_rules.md)
 Workflow reference: [docs/02_workflow.md](../../docs/02_workflow.md)
