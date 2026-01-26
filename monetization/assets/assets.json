@@ -1,6 +1,6 @@
 {
   "version": "v1",
-  "generated_at": "2026-01-23T05:16:54Z",
+  "generated_at": "2026-01-26T00:55:52Z",
   "source_of_truth": "monetization/assets/registry.md",
   "notes": "Registry is SSOT; this JSON mirrors it for automation reads.",
   "assets": [
@@ -47,6 +47,106 @@
       "value_type": "data",
       "risk_level": "low",
       "monetization_fit": "data",
+      "lifecycle_status": "draft",
+      "validation": {
+        "last_check_utc": "",
+        "status": "pending",
+        "run_id": "",
+        "checked_by": "operator"
+      },
+      "integrity": {
+        "entry_hash_sha256": ""
+      }
+    },
+    {
+      "asset_id": "NNASSET-0002-pattern-engine-report",
+      "asset_slug": "0002-pattern-engine-report",
+      "asset_version": "v01",
+      "asset_name": "Pattern Engine Report",
+      "surface_type": "data",
+      "value_type": "pattern",
+      "risk_level": "low",
+      "monetization_fit": "data",
+      "lifecycle_status": "draft",
+      "validation": {
+        "last_check_utc": "",
+        "status": "pending",
+        "run_id": "",
+        "checked_by": "operator"
+      },
+      "integrity": {
+        "entry_hash_sha256": ""
+      }
+    },
+    {
+      "asset_id": "NNASSET-0003-vertical-performance-index",
+      "asset_slug": "0003-vertical-performance-index",
+      "asset_version": "v01",
+      "asset_name": "Vertical Performance Index",
+      "surface_type": "data",
+      "value_type": "data",
+      "risk_level": "low",
+      "monetization_fit": "data",
+      "lifecycle_status": "draft",
+      "validation": {
+        "last_check_utc": "",
+        "status": "pending",
+        "run_id": "",
+        "checked_by": "operator"
+      },
+      "integrity": {
+        "entry_hash_sha256": ""
+      }
+    },
+    {
+      "asset_id": "NNASSET-0004-signal-dashboard",
+      "asset_slug": "0004-signal-dashboard",
+      "asset_version": "v01",
+      "asset_name": "Signal Dashboard",
+      "surface_type": "product",
+      "value_type": "system",
+      "risk_level": "low",
+      "monetization_fit": "product",
+      "lifecycle_status": "draft",
+      "validation": {
+        "last_check_utc": "",
+        "status": "pending",
+        "run_id": "",
+        "checked_by": "operator"
+      },
+      "integrity": {
+        "entry_hash_sha256": ""
+      }
+    },
+    {
+      "asset_id": "NNASSET-0005-attention-mechanics-report",
+      "asset_slug": "0005-attention-mechanics-report",
+      "asset_version": "v01",
+      "asset_name": "Attention Mechanics Report",
+      "surface_type": "data",
+      "value_type": "pattern",
+      "risk_level": "low",
+      "monetization_fit": "data",
+      "lifecycle_status": "draft",
+      "validation": {
+        "last_check_utc": "",
+        "status": "pending",
+        "run_id": "",
+        "checked_by": "operator"
+      },
+      "integrity": {
+        "entry_hash_sha256": ""
+      }
+    },
+    {
+      "asset_id": "NNASSET-0006-content-template-pack",
+      "asset_slug": "0006-content-template-pack",
+      "asset_version": "v01",
+      "asset_name": "Content Template Pack",
+      "surface_type": "product",
+      "value_type": "system",
+      "risk_level": "low",
+      "monetization_fit": "product",
       "lifecycle_status": "draft",
       "validation": {
         "last_check_utc": "",

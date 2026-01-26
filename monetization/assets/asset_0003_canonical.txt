@@ -1,0 +1,44 @@
+asset_id: NNASSET-0003-vertical-performance-index
+asset_slug: 0003-vertical-performance-index
+asset_version: v01
+
+asset_name: Vertical Performance Index
+one_sentence_promise: Ranked performance data across content verticals showing retention, engagement, and signal stability metrics.
+
+deliverable_format: dataset
+
+audience_icp: analysts | marketers | content strategists
+
+surface_type: data
+value_type: data
+risk_level: low
+monetization_fit: data
+
+lifecycle_status: draft
+lifecycle_effective_date: 2026-01-26
+
+source_signal_ids: []
+source_pattern_ids: []
+
+pricing_model: subscription
+price_band: $9-$29/month
+currency: USD
+
+delivery_channel: Gumroad | LemonSqueezy | API
+
+telemetry_enabled: false
+telemetry_namespace: hybrid
+
+owner: TBD
+runbook_link: monetization/assets/validation.md
+
+validation:
+  status: pending
+  checked_by: operator
+
+governance_review_status: pending
+governance_review_date: TBD
+policy_risk_notes: Dataset must not contain personal data. Export rules must comply with governance.
+
+kill_switch_ready: false
+kill_switch_notes: Quarantine if vertical rankings create perverse content incentives or corrupt experiment design.
