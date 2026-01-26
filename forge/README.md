@@ -8,6 +8,12 @@ Goals:
 - Route attention into assets (starting with Weekly Signal Brief)
 - Optional identity binding (off-by-default; local-only)
 
+## Mental model
+
+If the architecture feels abstract, read the plain-language model first:
+
+- [../docs/00_mental_model.md](../docs/00_mental_model.md)
+
 ## Deploy (fast)
 
 Any static host works:

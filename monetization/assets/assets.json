@@ -47,7 +47,7 @@
       "value_type": "data",
       "risk_level": "low",
       "monetization_fit": "data",
-      "lifecycle_status": "draft",
+      "lifecycle_status": "review",
       "validation": {
         "last_check_utc": "",
         "status": "pending",

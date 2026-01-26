@@ -1,6 +1,8 @@
 # node-null-control
 Anonymous attention-harvesting network control plane: templates, automation, analytics, and decision systems for Ghost → Brand emergence.
 
+Start here (plain-language mental model): [docs/00_mental_model.md](docs/00_mental_model.md)
+
 **Rule:** raw clips, renders, CapCut projects, audio, thumbnails = Drive only.
 
 ---

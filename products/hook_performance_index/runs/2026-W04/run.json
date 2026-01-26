@@ -1,0 +1,21 @@
+{
+  "asset_id": "NNASSET-hook-performance-index",
+  "asset_version": "v01",
+  "week_id": "2026-W04",
+  "generated_at_utc": "2026-01-23T07:20:00Z",
+  "repo_commit": "cc80e666402234f6b79e7ec100feaaad7a1d0fda",
+  "inputs": {
+    "files": {
+      "hooks_rollup": "inputs/hooks_rollup.csv",
+      "dataset_health": "inputs/dataset_health.json"
+    }
+  },
+  "outputs": {
+    "html": "outputs/NNASSET-hook-performance-index_2026-W04_v01.html",
+    "md": "outputs/NNASSET-hook-performance-index_2026-W04_v01.md"
+  },
+  "governance": {
+    "rules_version": "docs/01_rules.md@cc80e666402234f6b79e7ec100feaaad7a1d0fda",
+    "schema_version": "analytics/schema.md@cc80e666402234f6b79e7ec100feaaad7a1d0fda"
+  }
+}

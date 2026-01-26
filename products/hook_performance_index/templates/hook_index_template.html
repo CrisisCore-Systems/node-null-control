@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hook Performance Index — {{ week_id }} (v01)</title>
+    <link rel="stylesheet" href="hook_index_styles.css" />
+  </head>
+  <body>
+    <header class="cover">
+      <div class="kicker">Hook Performance Index</div>
+      <h1>{{ week_id }} <span class="version">v01</span></h1>
+      <div class="meta">
+        <div><span class="label">Generated</span> {{ generated_at_utc }}</div>
+        <div><span class="label">Hooks</span> {{ hooks_count }}</div>
+      </div>
+      <div class="disclaimer">System output. No guarantees. Signal integrity first.</div>
+    </header>
+
+    <main>
+      <section>
+        <h2>Top hooks (by composite score)</h2>
+        <p class="note">{{ dataset_note }}</p>
+        {{ top_hooks_table_html }}
+      </section>
+    </main>
+
+    <footer class="foot">NNASSET-hook-performance-index • v01</footer>
+  </body>
+</html>

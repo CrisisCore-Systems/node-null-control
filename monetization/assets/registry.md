@@ -265,7 +265,7 @@ one_sentence_promise: A licensable index of hook performance and stability signa
 
 deliverable_format: dataset
 
-audience_icp: analysts | marketers | operators
+audience_icp: creators | agencies | analysts | operators
 
 surface_type: data
 value_type: data
@@ -282,18 +282,18 @@ pricing_model: license
 price_band: TBD
 currency: USD
 
-delivery_channel: TBD
+delivery_channel: Gumroad | LemonSqueezy | private link
 
-telemetry_enabled: false
+telemetry_enabled: true
 telemetry_namespace: hybrid
 
-owner: TBD
-runbook_link: TBD
+owner: operator
+runbook_link: monetization/assets/validation.md
 
 validation:
   last_check_utc: ""
   status: pending
-  checked_by: governor
+  checked_by: operator
   run_id: ""
   notes: ""
 
@@ -301,9 +301,9 @@ integrity:
   entry_hash_sha256: ""
 
 governance_review_status: pending
-governance_review_date: TBD
-policy_risk_notes: Ensure no personal data; ensure dataset export rules comply with governance.
+governance_review_date: ""
+policy_risk_notes: Ensure no personal data; ensure dataset export rules comply with governance; do not change upstream incentives.
 
 kill_switch_ready: false
-kill_switch_notes: TBD
+kill_switch_notes: ""
 ```
