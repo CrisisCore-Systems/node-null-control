@@ -1,0 +1,99 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Vertical Performance Index v01",
+  "description": "Schema for the Vertical Performance Index dataset export",
+  "type": "object",
+  "required": ["index_version", "period_id", "generated_at_utc", "verticals"],
+  "properties": {
+    "index_version": {
+      "type": "string",
+      "description": "Version of the index schema",
+      "const": "v01"
+    },
+    "period_id": {
+      "type": "string",
+      "description": "Time period in YYYY-Www format",
+      "pattern": "^\\d{4}-W\\d{2}$"
+    },
+    "generated_at_utc": {
+      "type": "string",
+      "description": "ISO8601 timestamp of generation",
+      "format": "date-time"
+    },
+    "total_verticals": {
+      "type": "integer",
+      "description": "Total number of verticals in the index",
+      "minimum": 0
+    },
+    "dataset_health": {
+      "type": "object",
+      "properties": {
+        "total_samples": { "type": "integer" },
+        "valid_samples": { "type": "integer" },
+        "invalid_rate": { "type": "number" },
+        "drift_flags": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "verticals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["vertical_id", "vertical_name", "rank", "performance_score"],
+        "properties": {
+          "vertical_id": {
+            "type": "string",
+            "description": "Unique vertical identifier"
+          },
+          "vertical_name": {
+            "type": "string",
+            "description": "Human-readable vertical name"
+          },
+          "rank": {
+            "type": "integer",
+            "description": "Overall rank for the period",
+            "minimum": 1
+          },
+          "performance_score": {
+            "type": "number",
+            "description": "Composite performance score (0-100)",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "retention_score": {
+            "type": "number",
+            "description": "Retention metric score (0-100)",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "engagement_score": {
+            "type": "number",
+            "description": "Engagement metric score (0-100)",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "stability_score": {
+            "type": "number",
+            "description": "Signal stability score (0-100)",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "sample_size": {
+            "type": "integer",
+            "description": "Number of samples",
+            "minimum": 0
+          },
+          "trend": {
+            "type": "string",
+            "description": "Performance trend direction",
+            "enum": ["up", "down", "stable"]
+          },
+          "confidence": {
+            "type": "string",
+            "description": "Confidence level based on sample size",
+            "enum": ["low", "medium", "high"]
+          }
+        }
+      }
+    }
+  }
+}

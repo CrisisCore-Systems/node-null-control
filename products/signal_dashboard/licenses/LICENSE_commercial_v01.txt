@@ -1,0 +1,24 @@
+Node-Null Signal Dashboard — Commercial License (v01)
+
+This license applies to the Signal Dashboard application and configuration kit.
+
+Grant
+- You may deploy and use the dashboard within a single organization (one legal entity).
+- You may configure the dashboard for internal use and client-facing deployments.
+- You may use the dashboard as part of paid services or deliverables.
+
+Restrictions
+- You may not share, redistribute, resell, sublicense, or publish the dashboard kit (in whole or in part).
+- You may not offer the dashboard as a standalone product for resale.
+- You may not remove or alter branding or notices within the kit.
+
+Deployments
+- You may deploy multiple instances within your organization.
+- Each client deployment requires a separate license.
+
+No warranty
+- The dashboard is provided "as is", without warranties of any kind.
+
+Definitions
+- "Kit" means the dashboard application, templates, and configuration schemas.
+- "Dashboard" means the deployed Signal Dashboard application.

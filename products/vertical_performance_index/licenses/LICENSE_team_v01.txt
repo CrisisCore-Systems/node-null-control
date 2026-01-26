@@ -1,0 +1,25 @@
+Node-Null Vertical Performance Index — Team License (v01)
+
+This license applies to the Vertical Performance Index dataset distributed as a zip.
+
+Grant
+- You may use the dataset within a single team (up to 10 named users within one organization).
+- You may use the dataset for internal analysis and reporting.
+- You may share insights internally within your organization.
+
+Restrictions
+- You may not share, redistribute, resell, sublicense, or publish the raw dataset outside your organization.
+- External client work requires a Commercial License.
+- You may not remove or alter notices within the kit.
+
+Outputs you generate
+- You may publish analyses internally within your organization.
+- External distribution requires a Commercial License.
+
+No warranty
+- The dataset is provided "as is", without warranties of any kind.
+
+Definitions
+- "Kit" means the contents of the distributed zip.
+- "Dataset" means the Vertical Performance Index data exports.
+- "Team" means up to 10 named users within one legal entity.

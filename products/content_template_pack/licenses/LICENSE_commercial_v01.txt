@@ -1,0 +1,25 @@
+Node-Null Content Template Pack — Commercial License (Client Work) (v01)
+
+This license applies to the Content Template Pack distributed as a zip.
+
+Grant
+- You may install and use the templates within a single organization (one legal entity).
+- You may use the templates to produce content for internal use and for client work.
+- You may deliver content created using these templates to clients.
+
+Restrictions
+- You may not share, redistribute, resell, sublicense, or publish the template pack (in whole or in part) to clients or third parties.
+- You may not offer the templates as a standalone product or template pack for resale.
+- You may not remove or alter notices within the pack.
+
+Content you create
+- You own all content you create using these templates.
+- You are responsible for ensuring content complies with platform Terms and ethical guidelines.
+- Templates must not be used to create manipulative or harmful content.
+
+No warranty
+- The template pack is provided "as is", without warranties of any kind.
+
+Definitions
+- "Pack" means the contents of the distributed zip (templates/docs/examples).
+- "Content" means creative work you produce using the templates.

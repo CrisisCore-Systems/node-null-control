@@ -1,0 +1,69 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Signal Dashboard Configuration v01",
+  "description": "Schema for Signal Dashboard configuration",
+  "type": "object",
+  "required": ["dashboard_version", "dashboard_name", "widgets"],
+  "properties": {
+    "dashboard_version": {
+      "type": "string",
+      "const": "v01"
+    },
+    "dashboard_name": {
+      "type": "string",
+      "description": "Human-readable dashboard name"
+    },
+    "refresh_interval_seconds": {
+      "type": "integer",
+      "description": "How often to refresh data (minimum 60)",
+      "minimum": 60,
+      "default": 300
+    },
+    "layout": {
+      "type": "string",
+      "description": "Dashboard layout type",
+      "enum": ["single_column", "two_column", "three_column", "custom_grid"],
+      "default": "two_column"
+    },
+    "theme": {
+      "type": "string",
+      "description": "Visual theme",
+      "enum": ["light", "dark", "system"],
+      "default": "light"
+    },
+    "widgets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["widget_id", "widget_type", "data_source"],
+        "properties": {
+          "widget_id": {
+            "type": "string",
+            "description": "Unique widget identifier"
+          },
+          "widget_type": {
+            "type": "string",
+            "enum": ["metric_card", "trend_chart", "ranking_table", "health_indicator"]
+          },
+          "position": {
+            "type": "object",
+            "properties": {
+              "row": { "type": "integer", "minimum": 0 },
+              "col": { "type": "integer", "minimum": 0 },
+              "width": { "type": "integer", "minimum": 1, "default": 1 },
+              "height": { "type": "integer", "minimum": 1, "default": 1 }
+            }
+          },
+          "data_source": {
+            "type": "string",
+            "description": "Data source endpoint or identifier"
+          },
+          "config": {
+            "type": "object",
+            "description": "Widget-specific configuration"
+          }
+        }
+      }
+    }
+  }
+}
