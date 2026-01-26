@@ -1,0 +1,23 @@
+Node-Null Hook Performance Index — Personal License (v01)
+
+This license applies to the Hook Performance Index kit (templates + scripts + schemas) distributed as a zip.
+
+Grant
+- You may install and use the kit on devices you personally own or control.
+- You may use the kit to produce outputs for your own personal, non-commercial use.
+
+Restrictions
+- You may not share, redistribute, resell, sublicense, or publish the kit (in whole or in part).
+- You may not use the kit for commercial purposes, including client work or paid services.
+- You may not remove or alter notices within the kit.
+
+Outputs you generate
+- You may publish outputs generated from your own inputs for personal projects.
+- You may not sell or license outputs to third parties.
+
+No warranty
+- The kit is provided "as is", without warranties of any kind.
+
+Definitions
+- "Kit" means the contents of the distributed zip (scripts/templates/schemas/docs).
+- "Outputs" means files you generate by running the kit.
