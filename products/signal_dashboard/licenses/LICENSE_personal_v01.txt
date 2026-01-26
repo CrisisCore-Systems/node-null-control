@@ -1,0 +1,22 @@
+Node-Null Signal Dashboard — Personal License (v01)
+
+This license applies to the Signal Dashboard application for personal use.
+
+Grant
+- You may deploy and use the dashboard for personal, non-commercial purposes.
+- You may configure the dashboard for your own projects.
+
+Restrictions
+- You may not share, redistribute, resell, sublicense, or publish the dashboard kit.
+- You may not use the dashboard for commercial purposes or client work.
+- You may not remove or alter branding or notices within the kit.
+
+Deployments
+- You may deploy one instance for personal use.
+
+No warranty
+- The dashboard is provided "as is", without warranties of any kind.
+
+Definitions
+- "Kit" means the dashboard application, templates, and configuration schemas.
+- "Dashboard" means the deployed Signal Dashboard application.

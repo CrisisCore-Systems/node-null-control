@@ -1,0 +1,44 @@
+asset_id: NNASSET-0002-pattern-engine-report
+asset_slug: 0002-pattern-engine-report
+asset_version: v01
+
+asset_name: Pattern Engine Report
+one_sentence_promise: Deep-dive analysis of system-level attention patterns, structural mechanics, and distribution rules without identity dependence.
+
+deliverable_format: report
+
+audience_icp: analysts | strategists | operators
+
+surface_type: data
+value_type: pattern
+risk_level: low
+monetization_fit: data
+
+lifecycle_status: draft
+lifecycle_effective_date: 2026-01-26
+
+source_signal_ids: []
+source_pattern_ids: []
+
+pricing_model: one_time
+price_band: $29-$79
+currency: USD
+
+delivery_channel: Gumroad | LemonSqueezy | Shopify (digital product)
+
+telemetry_enabled: false
+telemetry_namespace: hybrid
+
+owner: TBD
+runbook_link: monetization/assets/validation.md
+
+validation:
+  status: pending
+  checked_by: operator
+
+governance_review_status: pending
+governance_review_date: TBD
+policy_risk_notes: Data-first output. No personal data. No guaranteed outcomes. No manipulative framing.
+
+kill_switch_ready: false
+kill_switch_notes: Quarantine if report methodology biases content experiments or introduces analytics contamination.

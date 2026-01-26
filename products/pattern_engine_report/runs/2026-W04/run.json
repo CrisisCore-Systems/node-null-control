@@ -1,0 +1,27 @@
+{
+  "asset_id": "NNASSET-0002-pattern-engine-report",
+  "asset_version": "v01",
+  "period_id": "2026-W04",
+  "generated_at_utc": "",
+  "repo_commit": "",
+  "inputs": {
+    "data_source": "NODE_NULL_TRACKER",
+    "date_range": "TBD",
+    "platforms_included": ["TBD"],
+    "files": {
+      "patterns_export": "inputs/patterns_export.json",
+      "attention_metrics": "inputs/attention_metrics.json",
+      "structural_analysis": "inputs/structural_analysis.json",
+      "distribution_rules": "inputs/distribution_rules.json",
+      "dataset_health": "inputs/dataset_health.json"
+    }
+  },
+  "outputs": {
+    "pdf": "outputs/NNASSET-0002_pattern-engine-report_2026-W04_v01.pdf",
+    "data_appendix": "outputs/NNASSET-0002_pattern-engine-report_2026-W04_v01_data.json"
+  },
+  "governance": {
+    "rules_version": "docs/01_rules.md",
+    "schema_version": "analytics/schema.md"
+  }
+}

@@ -1,0 +1,24 @@
+Node-Null Attention Mechanics Report — Commercial License (Client Work) (v01)
+
+This license applies to the Attention Mechanics Report generator kit (templates + scripts + schemas) distributed as a zip.
+
+Grant
+- You may install and use the kit within a single organization (one legal entity).
+- You may use the kit to produce outputs for internal use and for client work.
+- You may deliver outputs to clients as part of paid services or deliverables.
+
+Restrictions
+- You may not share, redistribute, resell, sublicense, or publish the kit (in whole or in part) to clients or third parties.
+- You may not offer the kit as a standalone product, template pack, or "done-for-you generator" for resale.
+- You may not remove or alter notices within the kit.
+
+Outputs you generate
+- You may publish or deliver outputs generated from your own inputs.
+- You are responsible for ensuring outputs comply with ethical guidelines and do not include manipulation tactics.
+
+No warranty
+- The kit is provided "as is", without warranties of any kind.
+
+Definitions
+- "Kit" means the contents of the distributed zip (scripts/templates/schemas/docs).
+- "Outputs" means files you generate by running the kit.

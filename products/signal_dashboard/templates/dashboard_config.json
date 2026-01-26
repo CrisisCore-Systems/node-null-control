@@ -1,0 +1,63 @@
+{
+  "dashboard_version": "v01",
+  "dashboard_name": "Signal Overview",
+  "refresh_interval_seconds": 300,
+  "layout": "two_column",
+  "theme": "light",
+  "widgets": [
+    {
+      "widget_id": "overall-health",
+      "widget_type": "health_indicator",
+      "position": { "row": 0, "col": 0, "width": 2, "height": 1 },
+      "data_source": "api/health",
+      "config": {
+        "title": "System Health",
+        "show_details": true
+      }
+    },
+    {
+      "widget_id": "top-verticals",
+      "widget_type": "ranking_table",
+      "position": { "row": 1, "col": 0, "width": 1, "height": 2 },
+      "data_source": "api/verticals/top",
+      "config": {
+        "title": "Top Verticals",
+        "limit": 5,
+        "columns": ["rank", "name", "score", "trend"]
+      }
+    },
+    {
+      "widget_id": "top-hooks",
+      "widget_type": "ranking_table",
+      "position": { "row": 1, "col": 1, "width": 1, "height": 2 },
+      "data_source": "api/hooks/top",
+      "config": {
+        "title": "Top Hooks",
+        "limit": 5,
+        "columns": ["rank", "type", "score", "trend"]
+      }
+    },
+    {
+      "widget_id": "retention-trend",
+      "widget_type": "trend_chart",
+      "position": { "row": 3, "col": 0, "width": 1, "height": 1 },
+      "data_source": "api/metrics/retention",
+      "config": {
+        "title": "Retention Trend",
+        "chart_type": "line",
+        "time_range": "4w"
+      }
+    },
+    {
+      "widget_id": "completion-trend",
+      "widget_type": "trend_chart",
+      "position": { "row": 3, "col": 1, "width": 1, "height": 1 },
+      "data_source": "api/metrics/completion",
+      "config": {
+        "title": "Completion Trend",
+        "chart_type": "line",
+        "time_range": "4w"
+      }
+    }
+  ]
+}

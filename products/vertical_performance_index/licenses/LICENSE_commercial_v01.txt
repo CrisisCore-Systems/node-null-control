@@ -1,0 +1,24 @@
+Node-Null Vertical Performance Index — Commercial License (Client Work) (v01)
+
+This license applies to the Vertical Performance Index dataset and generator kit distributed as a zip.
+
+Grant
+- You may install and use the kit within a single organization (one legal entity).
+- You may use the dataset for internal analysis and client work.
+- You may deliver insights derived from the dataset to clients as part of paid services.
+
+Restrictions
+- You may not share, redistribute, resell, sublicense, or publish the raw dataset to clients or third parties.
+- You may not offer the dataset as a standalone data product for resale.
+- You may not remove or alter notices within the kit.
+
+Outputs you generate
+- You may publish or deliver analyses generated from the dataset.
+- You may not redistribute the raw dataset itself.
+
+No warranty
+- The dataset is provided "as is", without warranties of any kind.
+
+Definitions
+- "Kit" means the contents of the distributed zip (scripts/schemas/docs).
+- "Dataset" means the Vertical Performance Index data exports.
