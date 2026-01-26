@@ -1,0 +1,38 @@
+{
+  "asset_id": "NNASSET-0006-content-template-pack",
+  "asset_version": "v01",
+  "period_id": "2026-W04",
+  "generated_at_utc": "",
+  "repo_commit": "",
+  "contents": {
+    "hook_templates": [
+      "hook_h1_question.md",
+      "hook_h2_statement.md",
+      "hook_h3_contrast.md",
+      "hook_h4_curiosity.md"
+    ],
+    "structure_templates": [
+      "structure_short_form.md",
+      "structure_educational.md",
+      "structure_narrative.md"
+    ],
+    "script_templates": [
+      "script_20s.md",
+      "script_30s.md",
+      "script_60s.md"
+    ],
+    "caption_templates": [
+      "caption_minimal.md",
+      "caption_story.md",
+      "caption_cta_free.md"
+    ]
+  },
+  "outputs": {
+    "pdf": "outputs/NNASSET-0006_content-template-pack_v01.pdf",
+    "zip": "outputs/NNASSET-0006_content-template-pack_v01.zip"
+  },
+  "governance": {
+    "rules_version": "docs/01_rules.md",
+    "schema_version": "analytics/schema.md"
+  }
+}

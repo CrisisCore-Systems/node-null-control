@@ -307,3 +307,278 @@ policy_risk_notes: Ensure no personal data; ensure dataset export rules comply w
 kill_switch_ready: false
 kill_switch_notes: ""
 ```
+
+#### Pattern Engine Report (draft)
+
+```yaml
+asset_id: NNASSET-0002-pattern-engine-report
+asset_slug: 0002-pattern-engine-report
+asset_version: v01
+
+asset_name: Pattern Engine Report
+one_sentence_promise: Deep-dive analysis of system-level attention patterns, structural mechanics, and distribution rules without identity dependence.
+
+deliverable_format: report
+
+audience_icp: analysts | strategists | operators
+
+surface_type: data
+value_type: pattern
+risk_level: low
+monetization_fit: data
+
+lifecycle_status: draft
+lifecycle_effective_date: 2026-01-26
+
+source_signal_ids: []
+source_pattern_ids: []
+
+pricing_model: one_time
+price_band: $29-$79
+currency: USD
+
+delivery_channel: Gumroad | LemonSqueezy | Shopify (digital product)
+
+telemetry_enabled: false
+telemetry_namespace: hybrid
+
+owner: TBD
+runbook_link: monetization/assets/validation.md
+
+validation:
+  last_check_utc: ""
+  status: pending
+  checked_by: operator
+  run_id: ""
+  notes: ""
+
+integrity:
+  entry_hash_sha256: ""
+
+governance_review_status: pending
+governance_review_date: TBD
+policy_risk_notes: Data-first output. No personal data. No guaranteed outcomes. No manipulative framing.
+
+kill_switch_ready: false
+kill_switch_notes: Quarantine if report methodology biases content experiments or introduces analytics contamination.
+```
+
+#### Vertical Performance Index (draft)
+
+```yaml
+asset_id: NNASSET-0003-vertical-performance-index
+asset_slug: 0003-vertical-performance-index
+asset_version: v01
+
+asset_name: Vertical Performance Index
+one_sentence_promise: Ranked performance data across content verticals showing retention, engagement, and signal stability metrics.
+
+deliverable_format: dataset
+
+audience_icp: analysts | marketers | content strategists
+
+surface_type: data
+value_type: data
+risk_level: low
+monetization_fit: data
+
+lifecycle_status: draft
+lifecycle_effective_date: 2026-01-26
+
+source_signal_ids: []
+source_pattern_ids: []
+
+pricing_model: subscription
+price_band: $9-$29/month
+currency: USD
+
+delivery_channel: Gumroad | LemonSqueezy | API
+
+telemetry_enabled: false
+telemetry_namespace: hybrid
+
+owner: TBD
+runbook_link: monetization/assets/validation.md
+
+validation:
+  last_check_utc: ""
+  status: pending
+  checked_by: operator
+  run_id: ""
+  notes: ""
+
+integrity:
+  entry_hash_sha256: ""
+
+governance_review_status: pending
+governance_review_date: TBD
+policy_risk_notes: Dataset must not contain personal data. Export rules must comply with governance.
+
+kill_switch_ready: false
+kill_switch_notes: Quarantine if vertical rankings create perverse content incentives or corrupt experiment design.
+```
+
+#### Signal Dashboard (draft)
+
+```yaml
+asset_id: NNASSET-0004-signal-dashboard
+asset_slug: 0004-signal-dashboard
+asset_version: v01
+
+asset_name: Signal Dashboard
+one_sentence_promise: Real-time visualization interface for pattern signals, hook performance, and system health metrics.
+
+deliverable_format: dashboard
+
+audience_icp: operators | analysts | creators
+
+surface_type: product
+value_type: system
+risk_level: low
+monetization_fit: product
+
+lifecycle_status: draft
+lifecycle_effective_date: 2026-01-26
+
+source_signal_ids: []
+source_pattern_ids: []
+
+pricing_model: subscription
+price_band: $19-$49/month
+currency: USD
+
+delivery_channel: Web App | Self-hosted
+
+telemetry_enabled: false
+telemetry_namespace: hybrid
+
+owner: TBD
+runbook_link: monetization/assets/validation.md
+
+validation:
+  last_check_utc: ""
+  status: pending
+  checked_by: operator
+  run_id: ""
+  notes: ""
+
+integrity:
+  entry_hash_sha256: ""
+
+governance_review_status: pending
+governance_review_date: TBD
+policy_risk_notes: Dashboard must not introduce urgency mechanics or gamification that distorts content decisions.
+
+kill_switch_ready: false
+kill_switch_notes: Quarantine if dashboard metrics create addiction loops or pressure volume inflation.
+```
+
+#### Attention Mechanics Report (draft)
+
+```yaml
+asset_id: NNASSET-0005-attention-mechanics-report
+asset_slug: 0005-attention-mechanics-report
+asset_version: v01
+
+asset_name: Attention Mechanics Report
+one_sentence_promise: Structural analysis of attention distribution, platform mechanics, and behavioral patterns without manipulative framing.
+
+deliverable_format: pdf
+
+audience_icp: strategists | researchers | operators
+
+surface_type: data
+value_type: pattern
+risk_level: low
+monetization_fit: data
+
+lifecycle_status: draft
+lifecycle_effective_date: 2026-01-26
+
+source_signal_ids: []
+source_pattern_ids: []
+
+pricing_model: one_time
+price_band: $19-$49
+currency: USD
+
+delivery_channel: Gumroad | LemonSqueezy | Shopify (digital product)
+
+telemetry_enabled: false
+telemetry_namespace: hybrid
+
+owner: TBD
+runbook_link: monetization/assets/validation.md
+
+validation:
+  last_check_utc: ""
+  status: pending
+  checked_by: operator
+  run_id: ""
+  notes: ""
+
+integrity:
+  entry_hash_sha256: ""
+
+governance_review_status: pending
+governance_review_date: TBD
+policy_risk_notes: Report must not include manipulation tactics or exploitation strategies. Analysis only.
+
+kill_switch_ready: false
+kill_switch_notes: Quarantine if report content drifts toward manipulation playbooks or unethical practices.
+```
+
+#### Content Template Pack (draft)
+
+```yaml
+asset_id: NNASSET-0006-content-template-pack
+asset_slug: 0006-content-template-pack
+asset_version: v01
+
+asset_name: Content Template Pack
+one_sentence_promise: Production-ready templates for content creation following proven structural patterns without identity dependence.
+
+deliverable_format: pdf
+
+audience_icp: creators | operators | marketers
+
+surface_type: product
+value_type: system
+risk_level: low
+monetization_fit: product
+
+lifecycle_status: draft
+lifecycle_effective_date: 2026-01-26
+
+source_signal_ids: []
+source_pattern_ids: []
+
+pricing_model: one_time
+price_band: $9-$29
+currency: USD
+
+delivery_channel: Gumroad | LemonSqueezy | Shopify (digital product)
+
+telemetry_enabled: false
+telemetry_namespace: hybrid
+
+owner: TBD
+runbook_link: monetization/assets/validation.md
+
+validation:
+  last_check_utc: ""
+  status: pending
+  checked_by: operator
+  run_id: ""
+  notes: ""
+
+integrity:
+  entry_hash_sha256: ""
+
+governance_review_status: pending
+governance_review_date: TBD
+policy_risk_notes: Templates must not encourage manipulative content. Structure-focused, not exploitation-focused.
+
+kill_switch_ready: false
+kill_switch_notes: Quarantine if templates are used to produce harmful or policy-violating content.
+```

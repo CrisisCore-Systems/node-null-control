@@ -1,0 +1,44 @@
+asset_id: NNASSET-0006-content-template-pack
+asset_slug: 0006-content-template-pack
+asset_version: v01
+
+asset_name: Content Template Pack
+one_sentence_promise: Production-ready templates for content creation following proven structural patterns without identity dependence.
+
+deliverable_format: pdf
+
+audience_icp: creators | operators | marketers
+
+surface_type: product
+value_type: system
+risk_level: low
+monetization_fit: product
+
+lifecycle_status: draft
+lifecycle_effective_date: 2026-01-26
+
+source_signal_ids: []
+source_pattern_ids: []
+
+pricing_model: one_time
+price_band: $9-$29
+currency: USD
+
+delivery_channel: Gumroad | LemonSqueezy | Shopify (digital product)
+
+telemetry_enabled: false
+telemetry_namespace: hybrid
+
+owner: TBD
+runbook_link: monetization/assets/validation.md
+
+validation:
+  status: pending
+  checked_by: operator
+
+governance_review_status: pending
+governance_review_date: TBD
+policy_risk_notes: Templates must not encourage manipulative content. Structure-focused, not exploitation-focused.
+
+kill_switch_ready: false
+kill_switch_notes: Quarantine if templates are used to produce harmful or policy-violating content.

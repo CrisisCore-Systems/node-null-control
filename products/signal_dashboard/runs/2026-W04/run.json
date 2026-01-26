@@ -1,0 +1,25 @@
+{
+  "asset_id": "NNASSET-0004-signal-dashboard",
+  "asset_version": "v01",
+  "period_id": "2026-W04",
+  "generated_at_utc": "",
+  "repo_commit": "",
+  "deployment": {
+    "type": "TBD",
+    "environment": "TBD"
+  },
+  "configuration": {
+    "dashboard_config": "templates/dashboard_config.json",
+    "theme": "light"
+  },
+  "data_sources": {
+    "verticals_api": "TBD",
+    "hooks_api": "TBD",
+    "metrics_api": "TBD",
+    "health_api": "TBD"
+  },
+  "governance": {
+    "rules_version": "docs/01_rules.md",
+    "schema_version": "analytics/schema.md"
+  }
+}
