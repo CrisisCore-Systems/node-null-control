@@ -3,6 +3,10 @@ Anonymous attention-harvesting network control plane: templates, automation, ana
 
 Start here (plain-language mental model): [docs/00_mental_model.md](docs/00_mental_model.md)
 
+Quick start (dev + governance gates): [docs/QUICKSTART.md](docs/QUICKSTART.md)
+
+Contributing (pre-commit, CI, conventions): [CONTRIBUTING.md](CONTRIBUTING.md)
+
 **Rule:** raw clips, renders, CapCut projects, audio, thumbnails = Drive only.
 
 ---
