@@ -13,7 +13,10 @@
       <div class="meta">
         <div><span class="label">Platforms</span> {{platforms_included}}</div>
         <div><span class="label">Blocks</span> {{included_block_ids}}</div>
-        <div><span class="label">Samples</span> total={{dataset_total_posts}} • valid={{dataset_valid_posts}} • invalid={{dataset_invalid_posts}} ({{invalid_rate}})</div>
+        <div>
+          <span class="label">Samples</span> total={{dataset_total_posts}} • valid={{dataset_valid_posts}} •
+          invalid={{dataset_invalid_posts}} ({{invalid_rate}})
+        </div>
       </div>
       <div class="disclaimer">System output. No guarantees. No urgency. Signal integrity first.</div>
     </header>
@@ -32,10 +35,22 @@
       <section>
         <h2>2) Dataset health</h2>
         <div class="grid">
-          <div class="card"><div class="label">Missing-metrics rate</div><div class="value">{{missing_metrics_rate}}</div></div>
-          <div class="card"><div class="label">Top invalid reasons</div><div class="value">{{top_invalid_reasons}}</div></div>
-          <div class="card"><div class="label">Drift flags</div><div class="value">{{drift_flags}}</div></div>
-          <div class="card"><div class="label">Incident flags</div><div class="value">{{incident_flags}}</div></div>
+          <div class="card">
+            <div class="label">Missing-metrics rate</div>
+            <div class="value">{{missing_metrics_rate}}</div>
+          </div>
+          <div class="card">
+            <div class="label">Top invalid reasons</div>
+            <div class="value">{{top_invalid_reasons}}</div>
+          </div>
+          <div class="card">
+            <div class="label">Drift flags</div>
+            <div class="value">{{drift_flags}}</div>
+          </div>
+          <div class="card">
+            <div class="label">Incident flags</div>
+            <div class="value">{{incident_flags}}</div>
+          </div>
         </div>
         <p class="note">{{dataset_health_notes}}</p>
 
@@ -46,7 +61,8 @@
             <div><span class="label">Drift flags</span> {{drift_flags}}</div>
           </div>
           <p class="note">
-            If drift flags include <strong>low_sample_size</strong>, treat this week's rollups as directional signals rather than high-confidence inference.
+            If drift flags include <strong>low_sample_size</strong>, treat this week's rollups as directional signals
+            rather than high-confidence inference.
           </p>
         </div>
       </section>
@@ -70,13 +86,37 @@
           </thead>
           <tbody>
             <tr>
-              <td class="num">1</td><td>{{hook_1}}</td><td class="num">{{hook_1_samples}}</td><td class="num">{{hook_1_win_rate}}</td><td class="num">{{hook_1_median_completion}}</td><td class="num">{{hook_1_median_loop}}</td><td class="num">{{hook_1_median_retention_ratio}}</td><td class="num">{{hook_1_median_save_share_rate}}</td><td>{{hook_1_why}}</td>
+              <td class="num">1</td>
+              <td>{{hook_1}}</td>
+              <td class="num">{{hook_1_samples}}</td>
+              <td class="num">{{hook_1_win_rate}}</td>
+              <td class="num">{{hook_1_median_completion}}</td>
+              <td class="num">{{hook_1_median_loop}}</td>
+              <td class="num">{{hook_1_median_retention_ratio}}</td>
+              <td class="num">{{hook_1_median_save_share_rate}}</td>
+              <td>{{hook_1_why}}</td>
             </tr>
             <tr>
-              <td class="num">2</td><td>{{hook_2}}</td><td class="num">{{hook_2_samples}}</td><td class="num">{{hook_2_win_rate}}</td><td class="num">{{hook_2_median_completion}}</td><td class="num">{{hook_2_median_loop}}</td><td class="num">{{hook_2_median_retention_ratio}}</td><td class="num">{{hook_2_median_save_share_rate}}</td><td>{{hook_2_why}}</td>
+              <td class="num">2</td>
+              <td>{{hook_2}}</td>
+              <td class="num">{{hook_2_samples}}</td>
+              <td class="num">{{hook_2_win_rate}}</td>
+              <td class="num">{{hook_2_median_completion}}</td>
+              <td class="num">{{hook_2_median_loop}}</td>
+              <td class="num">{{hook_2_median_retention_ratio}}</td>
+              <td class="num">{{hook_2_median_save_share_rate}}</td>
+              <td>{{hook_2_why}}</td>
             </tr>
             <tr>
-              <td class="num">3</td><td>{{hook_3}}</td><td class="num">{{hook_3_samples}}</td><td class="num">{{hook_3_win_rate}}</td><td class="num">{{hook_3_median_completion}}</td><td class="num">{{hook_3_median_loop}}</td><td class="num">{{hook_3_median_retention_ratio}}</td><td class="num">{{hook_3_median_save_share_rate}}</td><td>{{hook_3_why}}</td>
+              <td class="num">3</td>
+              <td>{{hook_3}}</td>
+              <td class="num">{{hook_3_samples}}</td>
+              <td class="num">{{hook_3_win_rate}}</td>
+              <td class="num">{{hook_3_median_completion}}</td>
+              <td class="num">{{hook_3_median_loop}}</td>
+              <td class="num">{{hook_3_median_retention_ratio}}</td>
+              <td class="num">{{hook_3_median_save_share_rate}}</td>
+              <td>{{hook_3_why}}</td>
             </tr>
           </tbody>
         </table>
@@ -98,13 +138,37 @@
           </thead>
           <tbody>
             <tr>
-              <td class="num">1</td><td>{{vertical_1}}</td><td class="num">{{vertical_1_samples}}</td><td class="num">{{vertical_1_win_rate}}</td><td class="num">{{vertical_1_median_completion}}</td><td class="num">{{vertical_1_median_loop}}</td><td class="num">{{vertical_1_median_retention_ratio}}</td><td class="num">{{vertical_1_median_save_share_rate}}</td><td>{{vertical_1_why}}</td>
+              <td class="num">1</td>
+              <td>{{vertical_1}}</td>
+              <td class="num">{{vertical_1_samples}}</td>
+              <td class="num">{{vertical_1_win_rate}}</td>
+              <td class="num">{{vertical_1_median_completion}}</td>
+              <td class="num">{{vertical_1_median_loop}}</td>
+              <td class="num">{{vertical_1_median_retention_ratio}}</td>
+              <td class="num">{{vertical_1_median_save_share_rate}}</td>
+              <td>{{vertical_1_why}}</td>
             </tr>
             <tr>
-              <td class="num">2</td><td>{{vertical_2}}</td><td class="num">{{vertical_2_samples}}</td><td class="num">{{vertical_2_win_rate}}</td><td class="num">{{vertical_2_median_completion}}</td><td class="num">{{vertical_2_median_loop}}</td><td class="num">{{vertical_2_median_retention_ratio}}</td><td class="num">{{vertical_2_median_save_share_rate}}</td><td>{{vertical_2_why}}</td>
+              <td class="num">2</td>
+              <td>{{vertical_2}}</td>
+              <td class="num">{{vertical_2_samples}}</td>
+              <td class="num">{{vertical_2_win_rate}}</td>
+              <td class="num">{{vertical_2_median_completion}}</td>
+              <td class="num">{{vertical_2_median_loop}}</td>
+              <td class="num">{{vertical_2_median_retention_ratio}}</td>
+              <td class="num">{{vertical_2_median_save_share_rate}}</td>
+              <td>{{vertical_2_why}}</td>
             </tr>
             <tr>
-              <td class="num">3</td><td>{{vertical_3}}</td><td class="num">{{vertical_3_samples}}</td><td class="num">{{vertical_3_win_rate}}</td><td class="num">{{vertical_3_median_completion}}</td><td class="num">{{vertical_3_median_loop}}</td><td class="num">{{vertical_3_median_retention_ratio}}</td><td class="num">{{vertical_3_median_save_share_rate}}</td><td>{{vertical_3_why}}</td>
+              <td class="num">3</td>
+              <td>{{vertical_3}}</td>
+              <td class="num">{{vertical_3_samples}}</td>
+              <td class="num">{{vertical_3_win_rate}}</td>
+              <td class="num">{{vertical_3_median_completion}}</td>
+              <td class="num">{{vertical_3_median_loop}}</td>
+              <td class="num">{{vertical_3_median_retention_ratio}}</td>
+              <td class="num">{{vertical_3_median_save_share_rate}}</td>
+              <td>{{vertical_3_why}}</td>
             </tr>
           </tbody>
         </table>
@@ -125,9 +189,30 @@
             </tr>
           </thead>
           <tbody>
-            <tr><td class="num">1</td><td>{{hook_loser_1}}</td><td class="num">{{hook_loser_1_samples}}</td><td class="num">{{hook_loser_1_win_rate}}</td><td>{{hook_loser_1_evidence}}</td><td>{{hook_loser_1_reco}}</td></tr>
-            <tr><td class="num">2</td><td>{{hook_loser_2}}</td><td class="num">{{hook_loser_2_samples}}</td><td class="num">{{hook_loser_2_win_rate}}</td><td>{{hook_loser_2_evidence}}</td><td>{{hook_loser_2_reco}}</td></tr>
-            <tr><td class="num">3</td><td>{{hook_loser_3}}</td><td class="num">{{hook_loser_3_samples}}</td><td class="num">{{hook_loser_3_win_rate}}</td><td>{{hook_loser_3_evidence}}</td><td>{{hook_loser_3_reco}}</td></tr>
+            <tr>
+              <td class="num">1</td>
+              <td>{{hook_loser_1}}</td>
+              <td class="num">{{hook_loser_1_samples}}</td>
+              <td class="num">{{hook_loser_1_win_rate}}</td>
+              <td>{{hook_loser_1_evidence}}</td>
+              <td>{{hook_loser_1_reco}}</td>
+            </tr>
+            <tr>
+              <td class="num">2</td>
+              <td>{{hook_loser_2}}</td>
+              <td class="num">{{hook_loser_2_samples}}</td>
+              <td class="num">{{hook_loser_2_win_rate}}</td>
+              <td>{{hook_loser_2_evidence}}</td>
+              <td>{{hook_loser_2_reco}}</td>
+            </tr>
+            <tr>
+              <td class="num">3</td>
+              <td>{{hook_loser_3}}</td>
+              <td class="num">{{hook_loser_3_samples}}</td>
+              <td class="num">{{hook_loser_3_win_rate}}</td>
+              <td>{{hook_loser_3_evidence}}</td>
+              <td>{{hook_loser_3_reco}}</td>
+            </tr>
           </tbody>
         </table>
 
@@ -144,9 +229,30 @@
             </tr>
           </thead>
           <tbody>
-            <tr><td class="num">1</td><td>{{vertical_loser_1}}</td><td class="num">{{vertical_loser_1_samples}}</td><td class="num">{{vertical_loser_1_win_rate}}</td><td>{{vertical_loser_1_evidence}}</td><td>{{vertical_loser_1_reco}}</td></tr>
-            <tr><td class="num">2</td><td>{{vertical_loser_2}}</td><td class="num">{{vertical_loser_2_samples}}</td><td class="num">{{vertical_loser_2_win_rate}}</td><td>{{vertical_loser_2_evidence}}</td><td>{{vertical_loser_2_reco}}</td></tr>
-            <tr><td class="num">3</td><td>{{vertical_loser_3}}</td><td class="num">{{vertical_loser_3_samples}}</td><td class="num">{{vertical_loser_3_win_rate}}</td><td>{{vertical_loser_3_evidence}}</td><td>{{vertical_loser_3_reco}}</td></tr>
+            <tr>
+              <td class="num">1</td>
+              <td>{{vertical_loser_1}}</td>
+              <td class="num">{{vertical_loser_1_samples}}</td>
+              <td class="num">{{vertical_loser_1_win_rate}}</td>
+              <td>{{vertical_loser_1_evidence}}</td>
+              <td>{{vertical_loser_1_reco}}</td>
+            </tr>
+            <tr>
+              <td class="num">2</td>
+              <td>{{vertical_loser_2}}</td>
+              <td class="num">{{vertical_loser_2_samples}}</td>
+              <td class="num">{{vertical_loser_2_win_rate}}</td>
+              <td>{{vertical_loser_2_evidence}}</td>
+              <td>{{vertical_loser_2_reco}}</td>
+            </tr>
+            <tr>
+              <td class="num">3</td>
+              <td>{{vertical_loser_3}}</td>
+              <td class="num">{{vertical_loser_3_samples}}</td>
+              <td class="num">{{vertical_loser_3_win_rate}}</td>
+              <td>{{vertical_loser_3_evidence}}</td>
+              <td>{{vertical_loser_3_reco}}</td>
+            </tr>
           </tbody>
         </table>
       </section>
@@ -156,11 +262,18 @@
         <div class="two">
           <div>
             <h3>Kill</h3>
-            <ul><li>{{kill_1}}</li><li>{{kill_2}}</li><li>{{kill_3}}</li></ul>
+            <ul>
+              <li>{{kill_1}}</li>
+              <li>{{kill_2}}</li>
+              <li>{{kill_3}}</li>
+            </ul>
           </div>
           <div>
             <h3>Scale (constraints)</h3>
-            <ul><li>{{scale_1}} — stays fixed: {{scale_1_constraints}}</li><li>{{scale_2}} — stays fixed: {{scale_2_constraints}}</li></ul>
+            <ul>
+              <li>{{scale_1}} — stays fixed: {{scale_1_constraints}}</li>
+              <li>{{scale_2}} — stays fixed: {{scale_2_constraints}}</li>
+            </ul>
           </div>
         </div>
         <h3>Iterate (one-variable plans)</h3>

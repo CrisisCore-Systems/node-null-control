@@ -12,7 +12,7 @@ window.NODE_NULL_FORGE_CONFIG = {
   // Where to load the assets mirror from.
   // Relative paths work on static hosts that serve the repo as a site.
   // You can override via URL param ?assets_url=https://...
-  ASSETS_URL: "../monetization/assets/assets.json",
+  ASSETS_URL: '../monetization/assets/assets.json',
 
   // Optional identity capture endpoint (disabled by default).
   // Recommended on Vercel: "/api/identity" (serverless function)

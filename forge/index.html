@@ -1,109 +1,110 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="color-scheme" content="dark" />
-  <title>NODE NULL — Forge</title>
-  <meta name="description" content="A neutral routing interface: signal → pattern → intelligence → artifacts." />
-  <link rel="stylesheet" href="./styles.css" />
-</head>
-<body>
-  <main class="wrap">
-    <header class="header">
-      <div class="sigil" aria-hidden="true">
-        <div class="sigil__ring"></div>
-        <div class="sigil__core"></div>
-      </div>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>NODE NULL — Forge</title>
+    <meta name="description" content="A neutral routing interface: signal → pattern → intelligence → artifacts." />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <header class="header">
+        <div class="sigil" aria-hidden="true">
+          <div class="sigil__ring"></div>
+          <div class="sigil__core"></div>
+        </div>
 
-      <div>
-        <h1 class="title">NODE NULL</h1>
-        <p class="subtitle">Signal → Pattern → Intelligence → Artifacts</p>
-      </div>
-    </header>
+        <div>
+          <h1 class="title">NODE NULL</h1>
+          <p class="subtitle">Signal → Pattern → Intelligence → Artifacts</p>
+        </div>
+      </header>
 
-    <section class="card">
-      <p class="lead">
-        This network converts attention into intelligence products.
-        No personal brand. No hype. No tracking.
-      </p>
-
-      <div class="actions">
-        <button id="enter" class="btn btn--primary" type="button">Enter the Forge</button>
-        <a class="btn btn--ghost" href="#assets">View outputs</a>
-      </div>
-
-      <div class="fineprint">
-        <p><strong>Governance:</strong> no urgency/scarcity tactics; no guaranteed outcomes; no identity dependence.</p>
-      </div>
-    </section>
-
-    <section id="assets" class="card">
-      <div class="row">
-        <h2 class="h2">Active outputs</h2>
-        <span id="assets_status" class="pill">loading</span>
-      </div>
-
-      <div id="assets_list" class="assets" aria-live="polite"></div>
-
-      <details class="details">
-        <summary>Network links</summary>
-        <ul class="links">
-          <li><a href="../monetization/assets/registry.md">Asset registry (SSOT)</a></li>
-          <li><a href="../monetization/assets/assets.json">Assets (automation mirror)</a></li>
-          <li><a href="../products/weekly_signal_brief/README.md">Weekly Signal Brief system</a></li>
-          <li><a href="../artifacts/manifest.schema.json">Artifact manifest schema</a></li>
-        </ul>
-      </details>
-    </section>
-
-    <section id="access" class="card" hidden>
-      <h2 class="h2">Access</h2>
-      <p class="muted">
-        Optional identity binding for access/routing. By default this page stores values locally only.
-        Enable server capture only if you operate a compliant endpoint.
-      </p>
-
-      <form id="identity_form" class="form">
-        <label>
-          <span>Email (optional)</span>
-          <input name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@domain.com" />
-        </label>
-
-        <label>
-          <span>Wallet / handle (optional)</span>
-          <input name="handle" type="text" autocomplete="off" placeholder="0x… / @handle" />
-        </label>
-
-        <label>
-          <span>Access token (optional)</span>
-          <input name="token" type="password" autocomplete="off" placeholder="token" />
-        </label>
-
-        <label class="consent">
-          <input name="consent" type="checkbox" />
-          <span>I consent to send identity to the configured endpoint (only if enabled).</span>
-        </label>
+      <section class="card">
+        <p class="lead">
+          This network converts attention into intelligence products. No personal brand. No hype. No tracking.
+        </p>
 
         <div class="actions">
-          <button class="btn btn--primary" type="submit">Bind locally</button>
-          <button id="clear_identity" class="btn btn--ghost" type="button">Clear</button>
+          <button id="enter" class="btn btn--primary" type="button">Enter the Forge</button>
+          <a class="btn btn--ghost" href="#assets">View outputs</a>
         </div>
-
-        <p id="identity_status" class="status" role="status"></p>
 
         <div class="fineprint">
-          <p><strong>Privacy:</strong> no trackers, no analytics beacons, no cookies by default.</p>
+          <p>
+            <strong>Governance:</strong> no urgency/scarcity tactics; no guaranteed outcomes; no identity dependence.
+          </p>
         </div>
-      </form>
-    </section>
+      </section>
 
-    <footer class="footer">
-      <span class="muted">Forge node • deterministic outputs • audit-first</span>
-    </footer>
-  </main>
+      <section id="assets" class="card">
+        <div class="row">
+          <h2 class="h2">Active outputs</h2>
+          <span id="assets_status" class="pill">loading</span>
+        </div>
 
-  <script src="./config.js"></script>
-  <script src="./app.js"></script>
-</body>
+        <div id="assets_list" class="assets" aria-live="polite"></div>
+
+        <details class="details">
+          <summary>Network links</summary>
+          <ul class="links">
+            <li><a href="../monetization/assets/registry.md">Asset registry (SSOT)</a></li>
+            <li><a href="../monetization/assets/assets.json">Assets (automation mirror)</a></li>
+            <li><a href="../products/weekly_signal_brief/README.md">Weekly Signal Brief system</a></li>
+            <li><a href="../artifacts/manifest.schema.json">Artifact manifest schema</a></li>
+          </ul>
+        </details>
+      </section>
+
+      <section id="access" class="card" hidden>
+        <h2 class="h2">Access</h2>
+        <p class="muted">
+          Optional identity binding for access/routing. By default this page stores values locally only. Enable server
+          capture only if you operate a compliant endpoint.
+        </p>
+
+        <form id="identity_form" class="form">
+          <label>
+            <span>Email (optional)</span>
+            <input name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@domain.com" />
+          </label>
+
+          <label>
+            <span>Wallet / handle (optional)</span>
+            <input name="handle" type="text" autocomplete="off" placeholder="0x… / @handle" />
+          </label>
+
+          <label>
+            <span>Access token (optional)</span>
+            <input name="token" type="password" autocomplete="off" placeholder="token" />
+          </label>
+
+          <label class="consent">
+            <input name="consent" type="checkbox" />
+            <span>I consent to send identity to the configured endpoint (only if enabled).</span>
+          </label>
+
+          <div class="actions">
+            <button class="btn btn--primary" type="submit">Bind locally</button>
+            <button id="clear_identity" class="btn btn--ghost" type="button">Clear</button>
+          </div>
+
+          <p id="identity_status" class="status" role="status"></p>
+
+          <div class="fineprint">
+            <p><strong>Privacy:</strong> no trackers, no analytics beacons, no cookies by default.</p>
+          </div>
+        </form>
+      </section>
+
+      <footer class="footer">
+        <span class="muted">Forge node • deterministic outputs • audit-first</span>
+      </footer>
+    </main>
+
+    <script src="./config.js"></script>
+    <script src="./app.js"></script>
+  </body>
 </html>

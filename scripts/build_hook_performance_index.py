@@ -25,7 +25,6 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 
-
 VAR_PATTERN = re.compile(r"{{\s*([a-zA-Z0-9_\-\.]+)\s*}}")
 
 BUILDER_NAME = "build_hook_performance_index"
@@ -228,9 +227,7 @@ def build_tables(rows: List[HookRow], *, top_n: int) -> Tuple[str, str]:
         "<th>rank</th><th>hook_type</th><th>samples</th><th>score_median</th><th>win_rate</th>"
         "<th>completion_med</th><th>loop_med</th><th>retention_med</th><th>save_share_med</th>"
         "</tr></thead>"
-        "<tbody>"
-        + "".join(html_rows)
-        + "</tbody></table>"
+        "<tbody>" + "".join(html_rows) + "</tbody></table>"
     )
 
     return "\n".join(md_lines), html
@@ -238,11 +235,7 @@ def build_tables(rows: List[HookRow], *, top_n: int) -> Tuple[str, str]:
 
 def html_escape(s: str) -> str:
     return (
-        s.replace("&", "&amp;")
-        .replace("<", "&lt;")
-        .replace(">", "&gt;")
-        .replace('"', "&quot;")
-        .replace("'", "&#39;")
+        s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;").replace("'", "&#39;")
     )
 
 
@@ -403,7 +396,9 @@ def main(argv: Sequence[str]) -> int:
     rendered_html, unresolved_html = render_template(html_template, ctx)
     unresolved = sorted(set(unresolved_md) | set(unresolved_html))
 
-    out_dir = Path(args.out_dir).resolve() if args.out_dir else (repo_root / "build" / "hook_performance_index" / week_id)
+    out_dir = (
+        Path(args.out_dir).resolve() if args.out_dir else (repo_root / "build" / "hook_performance_index" / week_id)
+    )
     ensure_dir(out_dir)
 
     out_md = out_dir / f"hook_performance_index_{week_id}_{BUILDER_VERSION}.md"

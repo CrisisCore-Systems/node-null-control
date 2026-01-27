@@ -27,7 +27,6 @@ import zipfile
 from pathlib import Path
 from typing import Iterable, List, Optional
 
-
 BASE_ALLOWLIST: List[str] = [
     # Core docs and governance references used by the kit README.
     "products/weekly_signal_brief/README.md",

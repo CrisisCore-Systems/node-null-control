@@ -1,0 +1,17 @@
+{
+  "name": "node-null-control",
+  "private": true,
+  "version": "0.1.0",
+  "description": "JS tooling for lint/format in node-null-control",
+  "type": "commonjs",
+  "scripts": {
+    "lint:js": "eslint . --ext .js --max-warnings=0",
+    "format:js": "prettier \"**/*.{js,json,css,html}\" --check",
+    "format:js:write": "prettier \"**/*.{js,json,css,html}\" --write"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.4.2"
+  }
+}

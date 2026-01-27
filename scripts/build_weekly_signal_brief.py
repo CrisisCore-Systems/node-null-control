@@ -18,15 +18,12 @@ import csv
 import datetime as dt
 import hashlib
 import json
-import os
 import re
-import shlex
 import subprocess
 import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
-
 
 VAR_PATTERN = re.compile(r"{{\s*([a-zA-Z0-9_\-\.]+)\s*}}")
 
@@ -99,19 +96,13 @@ def validate_csv_header(path: Path, expected: Sequence[str], *, strict: bool) ->
     expected_list = list(expected)
     if strict:
         if actual != expected_list:
-            raise BuildError(
-                "CSV header mismatch for "
-                f"{path}\nExpected: {expected_list}\nActual:   {actual}"
-            )
+            raise BuildError("CSV header mismatch for " f"{path}\nExpected: {expected_list}\nActual:   {actual}")
         return
 
     # Non-strict mode: require all expected fields to be present (order-insensitive).
     missing = [h for h in expected_list if h not in set(actual)]
     if missing:
-        raise BuildError(
-            "CSV header missing required fields for "
-            f"{path}\nMissing: {missing}\nActual:  {actual}"
-        )
+        raise BuildError("CSV header missing required fields for " f"{path}\nMissing: {missing}\nActual:  {actual}")
 
 
 def extract_allowlist_vars(allowlist_path: Path) -> Set[str]:
@@ -221,10 +212,7 @@ def validate_run_schema(run: Dict[str, Any], path: Path, *, repo_root: Path) -> 
     except Exception:
         raise BuildError(f"run.json must live inside the repo (got '{path}')")
     if not rel.startswith("products/weekly_signal_brief/runs/") or not rel.endswith("/run.json"):
-        raise BuildError(
-            "run.json must live under products/weekly_signal_brief/runs/**/run.json "
-            f"(got '{rel}')"
-        )
+        raise BuildError("run.json must live under products/weekly_signal_brief/runs/**/run.json " f"(got '{rel}')")
 
     if not re.match(r"^[0-9]{4}-W[0-9]{2}.*$", week_id):
         raise BuildError(f"run.json week_id must match YYYY-Www (got '{week_id}') ({path})")
@@ -423,7 +411,15 @@ def run_pdf_adapter(
 
 
 def validate_dataset_health(dataset_health: Dict[str, Any], path: Path) -> None:
-    required_top = ["week_id", "counts", "rates", "top_invalid_reasons", "drift_flags", "incident_flags", "computed_at_utc"]
+    required_top = [
+        "week_id",
+        "counts",
+        "rates",
+        "top_invalid_reasons",
+        "drift_flags",
+        "incident_flags",
+        "computed_at_utc",
+    ]
     for key in required_top:
         if key not in dataset_health:
             raise BuildError(f"dataset_health.json missing key '{key}' ({path})")
@@ -577,7 +573,9 @@ def build_appendix_csv(out_path: Path, schema_path: Path, inputs: Dict[str, Path
 def main(argv: Sequence[str]) -> int:
     parser = argparse.ArgumentParser(description="Build Weekly Signal Brief v01 artifacts from a run.json")
     parser.add_argument("--run-file", "--run", dest="run_file", required=True, help="Path to run.json")
-    parser.add_argument("--out-dir", "--outdir", dest="out_dir", required=True, help="Output directory for generated artifacts")
+    parser.add_argument(
+        "--out-dir", "--outdir", dest="out_dir", required=True, help="Output directory for generated artifacts"
+    )
     parser.add_argument(
         "--strict-csv-headers",
         action="store_true",
@@ -634,7 +632,11 @@ def main(argv: Sequence[str]) -> int:
 
     repo_root = find_repo_root(run_file)
 
-    schema_path = Path(args.manifest_schema).resolve() if args.manifest_schema else (repo_root / "artifacts/manifest.schema.json").resolve()
+    schema_path = (
+        Path(args.manifest_schema).resolve()
+        if args.manifest_schema
+        else (repo_root / "artifacts/manifest.schema.json").resolve()
+    )
 
     run = read_json(run_file)
 
@@ -789,9 +791,7 @@ def main(argv: Sequence[str]) -> int:
     ctx, missing_vars = complete_context(ctx, allowed_vars, render_missing_as=args.render_missing_as)
 
     if missing_vars and args.fail_on_unresolved:
-        raise BuildError(
-            "Missing template context values (strict):\n" + "\n".join(f"- {v}" for v in missing_vars)
-        )
+        raise BuildError("Missing template context values (strict):\n" + "\n".join(f"- {v}" for v in missing_vars))
 
     # Render artifacts
     rendered_md, unresolved_md = render_template(md_template_text, ctx)
@@ -813,7 +813,11 @@ def main(argv: Sequence[str]) -> int:
     pdf_adapter_meta: Optional[Dict[str, Any]] = None
     out_pdf: Optional[Path] = None
     if args.pdf_adapter != "none":
-        out_pdf = Path(args.pdf_path).resolve() if args.pdf_path else (out_dir / f"weekly_signal_brief_{run['week_id']}_{BUILDER_VERSION}.pdf")
+        out_pdf = (
+            Path(args.pdf_path).resolve()
+            if args.pdf_path
+            else (out_dir / f"weekly_signal_brief_{run['week_id']}_{BUILDER_VERSION}.pdf")
+        )
         pdf_adapter_meta = run_pdf_adapter(
             adapter=args.pdf_adapter,
             html_path=out_html,

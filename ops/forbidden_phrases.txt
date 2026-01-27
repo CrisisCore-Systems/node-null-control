@@ -1,0 +1,12 @@
+# Forbidden phrase list for generated *outputs* (not templates).
+#
+# One phrase per line. Matching is case-insensitive substring.
+# Lines starting with # are ignored.
+#
+# Keep this list tight to avoid false positives.
+
+guaranteed results
+before it's deleted
+real leaked footage
+comment yes
+smash follow

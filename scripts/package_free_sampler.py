@@ -20,7 +20,6 @@ import zipfile
 from pathlib import Path
 from typing import Iterable, List, Set
 
-
 EXCLUDE_PREFIXES = ("build/", "dist/", ".git/")
 
 

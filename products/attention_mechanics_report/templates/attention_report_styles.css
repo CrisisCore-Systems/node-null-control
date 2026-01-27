@@ -7,12 +7,24 @@
   --accent: #6366f1;
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
-html, body {
+html,
+body {
   background: var(--bg);
   color: var(--ink);
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    Arial,
+    'Noto Sans',
+    'Helvetica Neue',
+    sans-serif;
   line-height: 1.45;
 }
 
@@ -121,7 +133,10 @@ tbody td {
   vertical-align: top;
 }
 
-.num { text-align: right; font-variant-numeric: tabular-nums; }
+.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
 
 .note {
   margin: 12px 0;
@@ -150,7 +165,16 @@ tbody td {
 }
 
 @media print {
-  body { margin: 0; }
-  .cover { border-radius: 0; }
-  table, .card, .note, .insight-box { break-inside: avoid; }
+  body {
+    margin: 0;
+  }
+  .cover {
+    border-radius: 0;
+  }
+  table,
+  .card,
+  .note,
+  .insight-box {
+    break-inside: avoid;
+  }
 }

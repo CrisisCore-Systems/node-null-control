@@ -31,8 +31,7 @@ import sys
 import zipfile
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, Iterable, List, Optional, Sequence, Set
-
+from typing import Iterable, List, Sequence, Set
 
 TIERS: Sequence[str] = ("personal", "team", "commercial")
 

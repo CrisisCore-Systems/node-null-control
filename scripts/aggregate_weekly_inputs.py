@@ -24,7 +24,7 @@ import math
 from dataclasses import dataclass
 from pathlib import Path
 from statistics import median
-from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
+from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 
 @dataclass(frozen=True)
@@ -110,7 +110,7 @@ def _format_float(v: Optional[float]) -> str:
 
 def _extract_invalid_reason(decision: str, notes: str, missing: List[str]) -> Optional[str]:
     # Prefer explicit note tag if present.
-    n = (notes or "")
+    n = notes or ""
     upper = n.upper()
     if "INVALID_REASON:" in upper:
         try:
@@ -319,7 +319,9 @@ def _group_rollups(
                     "hook_median_loop": median(loops) if loops else None,
                     "hook_median_retention_ratio": median(ret) if ret else None,
                     "hook_median_save_share_rate": median(ssr) if ssr else None,
-                    "hook_score_median": median([float(x) for x in score_vals if x is not None]) if score_vals else None,
+                    "hook_score_median": (
+                        median([float(x) for x in score_vals if x is not None]) if score_vals else None
+                    ),
                 }
             )
         elif group_field == "vertical":
@@ -331,7 +333,9 @@ def _group_rollups(
                     "vertical_median_loop": median(loops) if loops else None,
                     "vertical_median_retention_ratio": median(ret) if ret else None,
                     "vertical_median_save_share_rate": median(ssr) if ssr else None,
-                    "vertical_score_median": median([float(x) for x in score_vals if x is not None]) if score_vals else None,
+                    "vertical_score_median": (
+                        median([float(x) for x in score_vals if x is not None]) if score_vals else None
+                    ),
                 }
             )
         else:
@@ -457,9 +461,9 @@ def _resolve_run_paths(run_json_path: Path) -> Tuple[str, Path, Path, Path, Path
         raise SystemExit("run.json missing week_id")
 
     posts_source = str(((run.get("inputs") or {}).get("posts_source")) or "UNKNOWN").strip()
-    posts_range = str(((run.get("inputs") or {}).get("posts_range")) or "").strip() or None
 
-    files = (((run.get("inputs") or {}).get("files")) or {})
+    files = ((run.get("inputs") or {}).get("files")) or {}
+
     def rp(key: str) -> Path:
         rel = files.get(key)
         if not rel:
@@ -473,14 +477,18 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     ap = argparse.ArgumentParser(description="Aggregate weekly inputs from posts_export.csv")
     ap.add_argument("--run-json", required=True, help="Path to runs/<week>/run.json")
     ap.add_argument("--computed-at-utc", default=None, help="Override computed_at_utc (ISO 8601).")
-    ap.add_argument("--low-sample-threshold", type=int, default=10, help="Add a drift flag and note when valid_posts < N")
+    ap.add_argument(
+        "--low-sample-threshold", type=int, default=10, help="Add a drift flag and note when valid_posts < N"
+    )
     args = ap.parse_args(argv)
 
     run_json_path = Path(args.run_json).resolve()
     if not run_json_path.exists():
         raise SystemExit(f"run.json not found: {run_json_path}")
 
-    week_id, posts_export, hooks_rollup, verticals_rollup, dataset_health, posts_source = _resolve_run_paths(run_json_path)
+    week_id, posts_export, hooks_rollup, verticals_rollup, dataset_health, posts_source = _resolve_run_paths(
+        run_json_path
+    )
     if not posts_export.exists():
         raise SystemExit(f"posts_export.csv not found: {posts_export}")
 

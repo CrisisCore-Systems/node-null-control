@@ -27,7 +27,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e .
 
-      - name: Guardrail: no artifacts tracked
+      - name: "Guardrail: no artifacts tracked"
         run: |
           set -euo pipefail
 

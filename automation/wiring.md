@@ -74,6 +74,25 @@ This repo is documentation-first; implementation can be done with any stack. The
 
 ## 3) Data flow (end-to-end)
 
+```mermaid
+flowchart LR
+   Operator[Operator] -->|selects block/experiment| Generator[Artifact Generator]
+   Generator -->|renders| Artifacts[Artifacts (script/caption)]
+   Artifacts --> Linter[Governance Linter]
+   Linter -->|pass| Ready[READY]
+   Linter -->|block| Blocked[BLOCKED]
+
+   Ready --> Scheduler[Scheduler Connector (Compliant)]
+   Scheduler --> Published[Published Post ID/URL]
+   Published --> Tracker[Tracker Writer]
+
+   Published --> Metrics[Metrics Collector (Compliant)]
+   Metrics --> Tracker
+
+   Tracker --> Decision[Decision Engine]
+   Decision --> Ops[Weekly Checklist / Human Approval]
+```
+
 ### Flow A — Build artifacts
 
 1. Operator selects:
@@ -184,6 +203,25 @@ Every automated action must produce an audit record containing:
 ---
 
 ## 7) Governance wiring (where the rules are enforced)
+
+```mermaid
+flowchart TD
+   A[Inputs + Templates] --> G1[Gate 1: Pre-generation constraints]
+   G1 -->|ok| B[Generated artifacts]
+   G1 -->|fail| X1[BLOCKED]
+
+   B --> G2[Gate 2: Pre-publish lint]
+   G2 -->|ok| C[READY]
+   G2 -->|fail| X2[BLOCKED]
+
+   C --> G3[Gate 3: Post-publish logging]
+   G3 -->|ok| D[Tracker row created/updated]
+   G3 -->|fail| X3[ALERT + retry]
+
+   D --> G4[Gate 4: Measurement validity]
+   G4 -->|ok| E[Decision Engine inputs]
+   G4 -->|invalid| F[Mark invalid + exclude]
+```
 
 ### Mandatory gates
 

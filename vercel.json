@@ -1,7 +1,5 @@
 {
-  "rewrites": [
-    { "source": "/", "destination": "/forge/" }
-  ],
+  "rewrites": [{ "source": "/", "destination": "/forge/" }],
   "headers": [
     {
       "source": "/forge/(.*)",
