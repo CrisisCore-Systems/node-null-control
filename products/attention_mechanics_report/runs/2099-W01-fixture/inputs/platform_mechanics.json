@@ -1,0 +1,16 @@
+{
+  "platform_1": "tiktok",
+  "platform_1_primary": "completion",
+  "platform_1_secondary": "rewatch",
+  "platform_1_behavior": "Fast early filtering; strong loop benefit.",
+
+  "platform_2": "yt_shorts",
+  "platform_2_primary": "watch_time",
+  "platform_2_secondary": "satisfaction",
+  "platform_2_behavior": "Longer tails if pacing is clean.",
+
+  "platform_3": "ig_reels",
+  "platform_3_primary": "retention",
+  "platform_3_secondary": "shares/saves",
+  "platform_3_behavior": "Share rate correlates with clean mechanisms."
+}

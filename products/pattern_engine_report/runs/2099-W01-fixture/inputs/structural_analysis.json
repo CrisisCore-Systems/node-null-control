@@ -1,0 +1,19 @@
+{
+  "timing_analysis": "Best performance when the insight lands by ~10s.",
+  "format_analysis": "20-35s band is currently most stable.",
+
+  "platform_1": "tiktok",
+  "platform_1_primary": "completion",
+  "platform_1_secondary": "rewatch",
+  "platform_1_notes": "Loop strength matters.",
+
+  "platform_2": "yt_shorts",
+  "platform_2_primary": "watch_time",
+  "platform_2_secondary": "satisfaction",
+  "platform_2_notes": "Cleaner structure helps long tails.",
+
+  "platform_3": "ig_reels",
+  "platform_3_primary": "retention",
+  "platform_3_secondary": "shares/saves",
+  "platform_3_notes": "Shares correlate with concrete mechanisms."
+}

@@ -1,0 +1,31 @@
+{
+  "behavior_1": "rewatch",
+  "behavior_1_freq": "high",
+  "behavior_1_corr": "0.62",
+  "behavior_1_notes": "Correlates with open loops.",
+
+  "behavior_2": "skip",
+  "behavior_2_freq": "medium",
+  "behavior_2_corr": "-0.48",
+  "behavior_2_notes": "Triggered by unclear hooks.",
+
+  "behavior_3": "share",
+  "behavior_3_freq": "low",
+  "behavior_3_corr": "0.31",
+  "behavior_3_notes": "More likely on concrete mechanisms.",
+
+  "format_1": "20-35s",
+  "format_1_attention": "78",
+  "format_1_completion": "0.44",
+  "format_1_notes": "Default band.",
+
+  "format_2": "35-60s",
+  "format_2_attention": "64",
+  "format_2_completion": "0.31",
+  "format_2_notes": "Needs stronger pacing.",
+
+  "format_3": "<20s",
+  "format_3_attention": "59",
+  "format_3_completion": "0.39",
+  "format_3_notes": "Can be too compressed."
+}

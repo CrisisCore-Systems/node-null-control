@@ -1,0 +1,4 @@
+vertical_id,vertical_name,sample_size,trend,confidence
+V-001,systems,42,up,high
+V-002,mechanisms,28,stable,medium
+V-003,tradeoffs,12,down,low

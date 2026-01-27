@@ -1,0 +1,25 @@
+{
+  "asset_id": "NNASSET-0003-vertical-performance-index",
+  "asset_version": "v01",
+  "period_id": "2099-W01",
+  "generated_at_utc": "2099-01-08T00:00:00Z",
+  "repo_commit": "0000000000000000000000000000000000000000",
+  "inputs": {
+    "data_source": "FIXTURE",
+    "date_range": "2099-01-01..2099-01-07",
+    "files": {
+      "verticals_raw": "inputs/verticals_raw.csv",
+      "retention_metrics": "inputs/retention_metrics.json",
+      "signal_stability": "inputs/signal_stability.json",
+      "dataset_health": "inputs/dataset_health.json"
+    }
+  },
+  "outputs": {
+    "json": "outputs/NNASSET-0003_vertical-performance-index_2099-W01-fixture_v01.json",
+    "csv": "outputs/NNASSET-0003_vertical-performance-index_2099-W01-fixture_v01.csv"
+  },
+  "governance": {
+    "rules_version": "docs/01_rules.md@0000000000000000000000000000000000000000",
+    "schema_version": "analytics/schema.md@0000000000000000000000000000000000000000"
+  }
+}

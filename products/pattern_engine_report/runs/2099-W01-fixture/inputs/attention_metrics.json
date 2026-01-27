@@ -1,0 +1,12 @@
+{
+  "peak_attention_window": "0-2s",
+  "peak_trend": "stable",
+  "peak_notes": "Hooks determine early filter.",
+  "decay_rate": "0.13",
+  "decay_trend": "down",
+  "decay_notes": "Decay reduced with simpler sentences.",
+  "retention_threshold": "0.40",
+  "retention_trend": "up",
+  "retention_notes": "Threshold rising with cleaner pacing.",
+  "attention_flow_analysis": "Attention flow shows early selection then stabilization."
+}

@@ -1,0 +1,4 @@
+week_id,platform,duration_band,block_id,hook_type,hook_samples,hook_win_rate,hook_median_completion,hook_median_loop,hook_median_retention_ratio,hook_median_save_share_rate,hook_score_median
+2099-W01-fixture,tiktok,20-35,BLK-TEST,H1_contradiction,12,0.58,0.42,0.31,0.88,0.17,72.0
+2099-W01-fixture,yt_shorts,20-35,BLK-TEST,H2_mechanism,10,0.50,0.39,0.28,0.84,0.14,66.0
+2099-W01-fixture,ig_reels,20-35,BLK-TEST,H4_pattern,8,0.62,0.44,0.33,0.91,0.18,75.0

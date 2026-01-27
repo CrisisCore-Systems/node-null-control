@@ -1,0 +1,27 @@
+{
+  "asset_id": "NNASSET-0005-attention-mechanics-report",
+  "asset_version": "v01",
+  "period_id": "2099-W01-fixture",
+  "generated_at_utc": "2099-01-08T00:00:00Z",
+  "repo_commit": "0000000000000000000000000000000000000000",
+  "inputs": {
+    "data_source": "FIXTURE",
+    "date_range": "2099-01-01..2099-01-07",
+    "platforms_included": ["tiktok", "yt_shorts", "ig_reels"],
+    "files": {
+      "attention_flow": "inputs/attention_flow.json",
+      "platform_mechanics": "inputs/platform_mechanics.json",
+      "behavioral_patterns": "inputs/behavioral_patterns.json",
+      "dataset_health": "inputs/dataset_health.json"
+    }
+  },
+  "outputs": {
+    "pdf": "outputs/NNASSET-0005_attention-mechanics-report_2099-W01-fixture_v01.pdf",
+    "data_appendix": "outputs/NNASSET-0005_attention-mechanics-report_2099-W01-fixture_v01_data.json",
+    "md": "outputs/NNASSET-0005_attention-mechanics-report_2099-W01-fixture_v01.md"
+  },
+  "governance": {
+    "rules_version": "docs/01_rules.md@0000000000000000000000000000000000000000",
+    "schema_version": "analytics/schema.md@0000000000000000000000000000000000000000"
+  }
+}

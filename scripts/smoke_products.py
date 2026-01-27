@@ -39,6 +39,60 @@ BUILDERS: dict[str, list[str]] = {
         "{out_dir}",
         "--fail-on-unresolved",
     ],
+    "attention_mechanics_report": [
+        "{python}",
+        "scripts/build_attention_mechanics_report.py",
+        "--run-json",
+        "{run_json}",
+        "--out-dir",
+        "{out_dir}",
+        "--fail-on-unresolved",
+    ],
+    "pattern_engine_report": [
+        "{python}",
+        "scripts/build_pattern_engine_report.py",
+        "--run-json",
+        "{run_json}",
+        "--out-dir",
+        "{out_dir}",
+        "--fail-on-unresolved",
+    ],
+    "vertical_performance_index": [
+        "{python}",
+        "scripts/build_vertical_performance_index.py",
+        "--run-json",
+        "{run_json}",
+        "--out-dir",
+        "{out_dir}",
+        "--validate-schema",
+    ],
+    "signal_dashboard": [
+        "{python}",
+        "scripts/build_signal_dashboard.py",
+        "--run-json",
+        "{run_json}",
+        "--out-dir",
+        "{out_dir}",
+    ],
+    "content_template_pack": [
+        "{python}",
+        "scripts/build_content_template_pack.py",
+        "--run-json",
+        "{run_json}",
+        "--out-dir",
+        "{out_dir}",
+    ],
+}
+
+
+FIXTURE_ONLY_PRODUCTS: set[str] = {
+    # These products have placeholder (non-fixture) runs that intentionally lack real inputs.
+    # We only enforce the builders on fixture runs for CI stability.
+    "attention_mechanics_report",
+    "pattern_engine_report",
+    "vertical_performance_index",
+    "signal_dashboard",
+    "content_template_pack",
 }
 
 
@@ -216,7 +270,9 @@ def main(argv: list[str] | None = None) -> int:
 
         resolved_inputs = _resolve_inputs(run, info.run_json)
 
-        if info.product in BUILDERS:
+        should_build = info.product in BUILDERS and (info.product not in FIXTURE_ONLY_PRODUCTS or is_fixture_run(info))
+
+        if should_build:
             missing = [f"{k} -> {p}" for k, p in resolved_inputs.items() if not p.exists()]
             if missing:
                 errors.append(f"{info.run_json}: missing required builder inputs: {', '.join(missing)}")
@@ -257,6 +313,9 @@ def main(argv: list[str] | None = None) -> int:
                 shutil.rmtree(out_dir, ignore_errors=True)
         else:
             # For template-only products, allow placeholder inputs by default.
+            if info.product in FIXTURE_ONLY_PRODUCTS and not is_fixture_run(info):
+                continue
+
             missing_inputs = [f"{k} -> {p}" for k, p in resolved_inputs.items() if not p.exists()]
             if missing_inputs:
                 msg = f"{info.run_json}: referenced inputs not present yet: {', '.join(missing_inputs)}"

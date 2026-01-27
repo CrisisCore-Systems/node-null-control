@@ -1,0 +1,46 @@
+{
+  "rule_1_id": "R-001",
+  "rule_1_desc": "If the hook is concrete, completion increases.",
+  "rule_1_confidence": "0.8",
+  "rule_1_evidence": "Higher completion across 6 samples.",
+
+  "rule_2_id": "R-002",
+  "rule_2_desc": "Open loops increase rewatch rate.",
+  "rule_2_confidence": "0.7",
+  "rule_2_evidence": "Rewatch spikes near unresolved endings.",
+
+  "rule_3_id": "R-003",
+  "rule_3_desc": "Avoid engagement bait to reduce risk.",
+  "rule_3_confidence": "0.9",
+  "rule_3_evidence": "Lower incident flags in governed runs.",
+
+  "emerging_rules_analysis": "Constraint framing appears to be rising.",
+  "deprecated_rules": "Avoid vague intros; they trend down.",
+
+  "momentum_analysis": "Patterns are converging toward mechanism-first framing.",
+  "trajectory_1_pattern": "Mechanism-first hooks",
+  "trajectory_1_current": "up",
+  "trajectory_1_projected": "up",
+  "trajectory_1_confidence": "0.7",
+
+  "trajectory_2_pattern": "Over-abstract intros",
+  "trajectory_2_current": "down",
+  "trajectory_2_projected": "down",
+  "trajectory_2_confidence": "0.8",
+
+  "emerging_patterns_analysis": "More experiments needed on duration bands.",
+
+  "recommendation_1": "Test a cleaner contradiction hook set.",
+  "recommendation_2": "Hold captions constant for 2 weeks.",
+  "recommendation_3": "Increase sample size for top patterns.",
+
+  "test_pattern_1": "Threat framing + constraint cliff",
+  "test_pattern_2": "Pattern reveal + boundary tease",
+  "avoid_pattern_1": "Vague abstract intro",
+  "avoid_pattern_2": "Long setup",
+
+  "methodology_notes": "Fixture only. Replace with real exports for production runs.",
+  "data_quality_notes": "Small sample; values are illustrative.",
+  "analytics_schema_version": "analytics/schema.md@0000000000000000000000000000000000000000",
+  "pattern_scoring_version": "v01"
+}

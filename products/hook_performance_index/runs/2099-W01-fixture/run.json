@@ -1,0 +1,21 @@
+{
+  "asset_id": "NNASSET-hook-performance-index",
+  "asset_version": "v01",
+  "week_id": "2099-W01-fixture",
+  "generated_at_utc": "2099-01-08T00:00:00Z",
+  "repo_commit": "0000000000000000000000000000000000000000",
+  "inputs": {
+    "files": {
+      "hooks_rollup": "inputs/hooks_rollup.csv",
+      "dataset_health": "inputs/dataset_health.json"
+    }
+  },
+  "outputs": {
+    "html": "outputs/NNASSET-hook-performance-index_2099-W01-fixture_v01.html",
+    "md": "outputs/NNASSET-hook-performance-index_2099-W01-fixture_v01.md"
+  },
+  "governance": {
+    "rules_version": "docs/01_rules.md@0000000000000000000000000000000000000000",
+    "schema_version": "analytics/schema.md@0000000000000000000000000000000000000000"
+  }
+}

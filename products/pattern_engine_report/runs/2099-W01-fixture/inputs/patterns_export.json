@@ -1,0 +1,51 @@
+{
+  "executive_summary": "Fixture report used to validate pattern templates and build pipeline.",
+  "shift_1": "Mechanism-first hooks outperform vague framing.",
+  "shift_2": "Shorter sentences correlate with completion.",
+  "shift_3": "Open loops increase rewatch without CTAs.",
+  "confidence_level": "medium",
+  "confidence_notes": "Fixture dataset is intentionally small.",
+
+  "total_patterns": "18",
+  "valid_patterns": "16",
+
+  "structure_1": "Hook→Insight→Loop",
+  "structure_1_freq": "9",
+  "structure_1_perf": "74",
+  "structure_1_trend": "up",
+
+  "structure_2": "Problem→Mechanism→Constraint",
+  "structure_2_freq": "5",
+  "structure_2_perf": "68",
+  "structure_2_trend": "stable",
+
+  "structure_3": "Narrative→Twist→Open",
+  "structure_3_freq": "4",
+  "structure_3_perf": "61",
+  "structure_3_trend": "down",
+
+  "top_pattern_1": "Contradiction hook + mechanism reveal",
+  "top_pattern_1_score": "83",
+  "top_pattern_1_samples": "6",
+  "top_pattern_1_stability": "high",
+
+  "top_pattern_2": "Threat framing + constraint cliff",
+  "top_pattern_2_score": "77",
+  "top_pattern_2_samples": "5",
+  "top_pattern_2_stability": "medium",
+
+  "top_pattern_3": "Pattern reveal + boundary tease",
+  "top_pattern_3_score": "71",
+  "top_pattern_3_samples": "5",
+  "top_pattern_3_stability": "medium",
+
+  "decline_pattern_1": "Over-abstract intro",
+  "decline_pattern_1_score": "49",
+  "decline_pattern_1_rate": "-0.12",
+  "decline_pattern_1_notes": "Too vague; early skips.",
+
+  "decline_pattern_2": "Long setup",
+  "decline_pattern_2_score": "53",
+  "decline_pattern_2_rate": "-0.07",
+  "decline_pattern_2_notes": "Pacing drift."
+}

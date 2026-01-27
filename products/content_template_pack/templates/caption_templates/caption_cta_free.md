@@ -26,7 +26,7 @@ Clean caption format with zero engagement bait or calls to action.
 ```
 {{content_summary}}
 
-{{context_if_needed}}
+{{context_paragraph}}
 ```
 
 ## Examples (structure only)

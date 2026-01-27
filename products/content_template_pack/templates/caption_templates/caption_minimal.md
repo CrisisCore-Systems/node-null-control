@@ -22,7 +22,7 @@ Brief, algorithmic-friendly caption format.
 ## Template
 
 ```
-{{key_insight_or_summary}}
+{{content_summary}}
 
 #{{topic_tag}} #{{category_tag}}
 ```

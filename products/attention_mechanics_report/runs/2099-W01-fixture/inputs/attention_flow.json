@@ -1,0 +1,43 @@
+{
+  "executive_summary": "Fixture report used to validate templates and build pipeline.",
+  "insight_1": "Systems converge on a small set of repeatable mechanics.",
+  "insight_2": "Retention is sensitive to the first 2 seconds.",
+  "insight_3": "Open loops can increase rewatches without engagement bait.",
+  "confidence_level": "medium",
+  "confidence_notes": "Fixture dataset is intentionally small.",
+
+  "distribution_analysis": "Attention concentrates early; decay varies by platform.",
+  "initial_capture_rate": "0.62",
+  "initial_trend": "stable",
+  "initial_notes": "Measured as 1s retention proxy.",
+  "sustained_rate": "0.41",
+  "sustained_trend": "up",
+  "sustained_notes": "Improved with cleaner hooks.",
+  "median_dropoff": "7.8s",
+  "dropoff_trend": "down",
+  "dropoff_notes": "Drop-off moved later in the clip.",
+  "attention_curve_analysis": "Curve shows a sharp early filter then plateau.",
+  "reengagement_analysis": "Rewatch spikes around unresolved endings.",
+
+  "distribution_mechanics_analysis": "Recommendation systems amplify high-completion samples.",
+  "cross_platform_analysis": "Signals differ, but hook clarity is universal.",
+
+  "engagement_patterns": "Comments are not required for distribution; rewatches matter.",
+  "response_patterns": "Neutral tone reduces policy risk and volatility.",
+
+  "structure_impact_analysis": "Short sentences improve comprehension.",
+  "timing_patterns": "Best performance when the insight lands by ~10s.",
+
+  "mechanic_shifts": "Slight shift toward mechanism-first hooks.",
+  "emerging_patterns": "Constraint framing shows early promise.",
+  "declining_patterns": "Over-abstract intros trend down.",
+
+  "implications_analysis": "Focus on controlled experiments and stable templates.",
+  "system_observations": "Governance gates prevent drift into manipulation.",
+  "future_considerations": "Expand fixtures once builders exist for all products.",
+
+  "methodology_notes": "Fixture only. Replace with real tracker exports for production runs.",
+  "data_quality_notes": "Small sample; values are illustrative.",
+  "analytics_schema_version": "analytics/schema.md@0000000000000000000000000000000000000000",
+  "attention_scoring_version": "v01"
+}

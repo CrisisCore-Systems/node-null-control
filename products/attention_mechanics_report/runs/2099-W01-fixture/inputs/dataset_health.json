@@ -1,0 +1,9 @@
+{
+  "week_id": "2099-W01-fixture",
+  "counts": { "total_posts": 12, "valid_posts": 10 },
+  "rates": { "invalid_rate": 0.1667 },
+  "top_invalid_reasons": ["missing_metrics"],
+  "drift_flags": ["FIXTURE"],
+  "incident_flags": [],
+  "computed_at_utc": "2099-01-08T00:00:00Z"
+}

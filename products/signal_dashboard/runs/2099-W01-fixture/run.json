@@ -1,0 +1,28 @@
+{
+  "asset_id": "NNASSET-0004-signal-dashboard",
+  "asset_version": "v01",
+  "period_id": "2099-W01-fixture",
+  "generated_at_utc": "2099-01-08T00:00:00Z",
+  "repo_commit": "0000000000000000000000000000000000000000",
+  "deployment": {
+    "type": "fixture",
+    "environment": "local"
+  },
+  "configuration": {
+    "dashboard_config": "templates/dashboard_config.json",
+    "theme": "light"
+  },
+  "data_sources": {
+    "verticals_api": "FIXTURE",
+    "hooks_api": "FIXTURE",
+    "metrics_api": "FIXTURE",
+    "health_api": "FIXTURE"
+  },
+  "outputs": {
+    "dashboard_config": "outputs/dashboard_config_2099-W01-fixture.json"
+  },
+  "governance": {
+    "rules_version": "docs/01_rules.md@0000000000000000000000000000000000000000",
+    "schema_version": "analytics/schema.md@0000000000000000000000000000000000000000"
+  }
+}
