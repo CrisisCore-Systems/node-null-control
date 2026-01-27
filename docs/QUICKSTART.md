@@ -35,6 +35,12 @@ python scripts/scan_forbidden_phrases.py --paths products
 
 Configure phrases in `ops/forbidden_phrases.txt`.
 
+- Product smoke checks (builds what is buildable, validates the rest):
+
+```bash
+python scripts/smoke_products.py
+```
+
 ## 4) Pre-commit hooks
 
 ```bash

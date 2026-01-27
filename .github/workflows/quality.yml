@@ -40,6 +40,9 @@ jobs:
       - name: Forbidden phrase scan (outputs)
         run: python scripts/scan_forbidden_phrases.py --paths products
 
+      - name: Product smoke checks
+        run: python scripts/smoke_products.py
+
   js-quality:
     runs-on: ubuntu-latest
     steps:
