@@ -60,6 +60,9 @@ jobs:
             --strict-context \
             --strict-csv-headers
 
+      - name: Forbidden phrase scan (rendered outputs)
+        run: python scripts/scan_forbidden_phrases.py --paths build/weekly_signal_brief/${{ env.RUN_ID }}
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -67,3 +70,34 @@ jobs:
           path: build/weekly_signal_brief/${{ env.RUN_ID }}
           if-no-files-found: error
           retention-days: 21
+
+      - name: Cleanup build outputs
+        if: always()
+        run: rm -rf build/weekly_signal_brief/${{ env.RUN_ID }}
+
+  scan-uploaded-artifact:
+    runs-on: ubuntu-latest
+    needs: build-weekly-signal-brief
+    env:
+      RUN_ID: 2099-W01-fixture
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: weekly-signal-brief-${{ env.RUN_ID }}
+          path: downloaded_artifact
+
+      - name: Forbidden phrase scan (uploaded artifact)
+        run: python scripts/scan_forbidden_phrases.py --paths downloaded_artifact
+
+      - name: Cleanup downloaded artifact
+        if: always()
+        run: rm -rf downloaded_artifact
