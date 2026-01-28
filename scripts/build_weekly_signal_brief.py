@@ -18,7 +18,9 @@ import csv
 import datetime as dt
 import hashlib
 import json
+import os
 import re
+import shutil
 import subprocess
 import sys
 from dataclasses import dataclass
@@ -358,10 +360,42 @@ def run_pdf_adapter(
         return meta
 
     if adapter == "wkhtmltopdf":
-        cmd = ["wkhtmltopdf", str(html_path), str(pdf_path)]
+        exe = shutil.which("wkhtmltopdf")
+        if not exe:
+            env_path = os.environ.get("WKHTMLTOPDF_PATH") or os.environ.get("WKHTMLTOPDF")
+            if env_path and Path(env_path).exists():
+                exe = str(Path(env_path))
+
+        if not exe:
+            candidates = [
+                Path(r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"),
+                Path(r"C:\Program Files (x86)\wkhtmltopdf\bin\wkhtmltopdf.exe"),
+                Path(r"C:\Program Files\wkhtmltopdf\wkhtmltopdf.exe"),
+                Path(r"C:\Program Files (x86)\wkhtmltopdf\wkhtmltopdf.exe"),
+            ]
+            for c in candidates:
+                if c.exists():
+                    exe = str(c)
+                    break
+
+        if not exe:
+            raise BuildError(
+                "wkhtmltopdf not found on PATH. Install it or set WKHTMLTOPDF_PATH to the wkhtmltopdf executable."
+            )
+
+        cmd = [
+            exe,
+            "--enable-local-file-access",
+            "--load-error-handling",
+            "ignore",
+            "--load-media-error-handling",
+            "ignore",
+            str(html_path),
+            str(pdf_path),
+        ]
         meta["command_executed"] = " ".join(cmd)
         try:
-            v = subprocess.check_output(["wkhtmltopdf", "--version"], stderr=subprocess.STDOUT)
+            v = subprocess.check_output([exe, "--version"], stderr=subprocess.STDOUT)
             meta["version"] = v.decode("utf-8", errors="replace").strip()
         except Exception:
             meta["version"] = None
