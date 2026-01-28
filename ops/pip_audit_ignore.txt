@@ -1,0 +1,7 @@
+# pip-audit ignore list
+#
+# One vulnerability ID per line (e.g., PYSEC-2024-xxx, GHSA-xxxx-xxxx-xxxx, OSV-xxxx).
+# Lines starting with # are comments.
+#
+# Keep this file small and temporary: every entry should have a written justification
+# in docs/ or ops/ (issue link + planned removal date).

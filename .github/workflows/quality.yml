@@ -28,7 +28,19 @@ jobs:
       - name: Vulnerability audit (pip-audit)
         run: |
           python -m pip install --upgrade pip-audit
-          pip-audit
+          IGNORE_ARGS=()
+          if [ -f ops/pip_audit_ignore.txt ]; then
+            while IFS= read -r line; do
+              line="${line%%#*}"
+              line="${line//[[:space:]]/}"
+              if [ -n "$line" ]; then
+                IGNORE_ARGS+=("--ignore-vuln" "$line")
+              fi
+            done < ops/pip_audit_ignore.txt
+          fi
+
+          # Strict by default; allow temporary exceptions via ops/pip_audit_ignore.txt
+          pip-audit --strict -s osv "${IGNORE_ARGS[@]}"
 
       - name: Lint (ruff)
         run: ruff check .
