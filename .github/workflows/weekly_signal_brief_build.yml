@@ -44,7 +44,7 @@ jobs:
           fi
 
           if git ls-files | grep -qE '^products/.*/runs/.*/outputs/'; then
-            if git ls-files | grep -E '^products/.*/runs/.*/outputs/' | grep -vE '\\.gitkeep$' | grep -q .; then
+            if git ls-files | grep -E '^products/.*/runs/.*/outputs/' | grep -vE '\.gitkeep$' | grep -q .; then
               echo "run outputs tracked";
               git ls-files | grep -E '^products/.*/runs/.*/outputs/' || true
               exit 1;
