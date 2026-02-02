@@ -73,8 +73,8 @@ Add to CRS Clients database:
 | Step | Action | Value |
 | --- | --- | --- |
 | 1 | Set `Sprint Start (T0)` | `{{now()}}` |
-| 2 | Set `Access Deadline` | `{{addHours(now; 72)}}` |
-| 3 | Set `Sprint End` | `{{addDays(now; 14)}}` |
+| 2 | Set `Access Deadline` | `{{addHours(now, 72)}}` |
+| 3 | Set `Sprint End` | `{{addDays(now, 14)}}` |
 | 4 | Set `Delay Status` | `None` |
 
 **Make Module Configuration:**
@@ -87,8 +87,8 @@ Add to CRS Clients database:
 ```
 Fields to update:
 - Sprint Start (T0): {{now()}}
-- Access Deadline: {{addHours(now; 72)}}
-- Sprint End: {{addDays(now; 14)}}
+- Access Deadline: {{addHours(now, 72)}}
+- Sprint End: {{addDays(now, 14)}}
 - Delay Status: None
 ```
 

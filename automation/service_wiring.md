@@ -634,8 +634,8 @@ Prevent clients from stalling, drip-feeding materials, or forcing extensions thr
 
 ```
 Set Sprint Start (T0) = {{now()}}
-Set Access Deadline = {{addHours(now; 72)}}
-Set Sprint End = {{addDays(now; 14)}}
+Set Access Deadline = {{addHours(now, 72)}}
+Set Sprint End = {{addDays(now, 14)}}
 Set Delay Status = None
 ```
 
