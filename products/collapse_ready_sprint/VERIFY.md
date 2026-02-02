@@ -1,5 +1,7 @@
 # Artifact Verification Instructions
 
+These instructions are intentionally non-technical and require no proprietary tools.
+
 This delivery includes cryptographic hashes to make the artifacts **tamper-evident**.
 
 These hashes allow any third party to independently verify that the files have not been altered since delivery.
