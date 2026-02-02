@@ -1,0 +1,107 @@
+COLLAPSE-READY SPRINT ENGAGEMENT LICENSE
+
+Version: v01
+Effective Date: Upon engagement start
+
+---
+
+1. ENGAGEMENT SCOPE
+
+This license governs the Collapse-Ready Sprint engagement between the service 
+provider ("Provider") and the client ("Client").
+
+The engagement includes:
+- 14-day fixed-scope security audit
+- Written deliverables as specified in the scope lock document
+- Async communication during the engagement period
+
+---
+
+2. DELIVERABLES
+
+Client receives:
+- Threat Model document
+- Data Flow Map document
+- Findings Register document
+- Pass/Fail Gates document
+- Executive Summary document
+- Digital delivery package (PDFs)
+
+All deliverables are provided "as-is" based on information provided during intake.
+
+---
+
+3. USAGE RIGHTS
+
+Client may:
+- Use deliverables for internal security improvement
+- Share deliverables with internal stakeholders
+- Reference findings in compliance documentation
+
+Client may NOT:
+- Redistribute deliverables publicly
+- Resell or sublicense deliverables
+- Remove Provider attribution from documents
+- Claim deliverables as Client's own work product
+
+---
+
+4. LIMITATIONS
+
+This engagement does NOT include:
+- Penetration testing
+- Ongoing monitoring
+- Compliance certification
+- Incident response
+- Legal advice
+
+Deliverables represent a point-in-time assessment based on information provided.
+
+---
+
+5. CONFIDENTIALITY
+
+Provider will:
+- Treat Client information as confidential
+- Not disclose findings without Client consent
+- Archive engagement data securely
+- Delete data upon Client request (within legal requirements)
+
+Client will:
+- Not disclose Provider methodologies
+- Not share engagement pricing publicly
+
+---
+
+6. REFUND POLICY
+
+Refunds are available ONLY if:
+- Intake is rejected due to missing/incompatible inputs
+- Client cannot provide required access
+- Scope mismatch discovered before sprint start
+
+NO refunds are available after sprint start (workspace creation).
+
+---
+
+7. LIABILITY
+
+Provider liability is limited to the engagement fee paid.
+
+Provider is NOT liable for:
+- Security incidents occurring after delivery
+- Client's failure to implement recommendations
+- Third-party actions or omissions
+- Consequential or indirect damages
+
+---
+
+8. ACCEPTANCE
+
+By completing payment and intake, Client accepts these terms.
+
+Engagement is governed by these terms and the scope lock document.
+
+---
+
+END OF LICENSE
