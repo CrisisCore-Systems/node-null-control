@@ -47,12 +47,61 @@ These rules are enforced by the automation system:
 
 | Rule | Enforcement Point |
 | --- | --- |
+| Pre-purchase qualification | Eligibility gate before checkout |
 | Async-only | No call scheduling unless add-on purchased |
 | Fixed scope | Scope locked at workspace creation |
 | Written deliverables only | All outputs are documents |
 | Conditional refunds only | Refund API blocked after sprint start |
 | No scope creep | No mechanism to add scope mid-sprint |
 | No "quick calls" | Call requires separate purchase |
+| Time-box enforcement | Client delays do not extend timeline |
+
+---
+
+## 2.1) Time-Box Enforcement
+
+**Rule:** Client delays do not extend sprint timelines unless explicitly agreed in writing.
+
+### Enforcement Logic
+
+| Trigger | Action | Outcome |
+| --- | --- | --- |
+| Intake accepted, access not granted within 5 days | Warning email | 72h to provide access |
+| Access still not granted after warning | Second warning | 48h final notice |
+| Day 14 reached without access | Auto-close sprint | Partial findings + scope note |
+
+### Partial Delivery Protocol
+
+If sprint closes due to client delay:
+
+1. Deliver whatever findings are possible with available information
+2. Document scope limitations in executive summary
+3. Add "INCOMPLETE - CLIENT DELAY" watermark to deliverables
+4. No refund (sprint started, work performed)
+
+### Email: Access Not Granted Warning
+
+**Subject:** Collapse-Ready Sprint — Access Required (Urgent)
+
+**Body:**
+
+```
+Your sprint started {{days_ago}} days ago, but we have not received the 
+access or documentation needed to proceed.
+
+ACTION REQUIRED
+
+Please provide the following within 72 hours:
+{{missing_access_items}}
+
+If access is not provided, the sprint will proceed with limited scope 
+and deliver partial findings on the scheduled delivery date.
+
+Client delays do not extend sprint timelines.
+
+---
+Collapse-Ready Sprint
+```
 
 ---
 
@@ -77,6 +126,56 @@ Sprint starts when workspace + documents are created. This is the refund lock po
 ---
 
 ## 4) End-to-End Automation Scenarios
+
+### Scenario 0 — Pre-Purchase Eligibility Gate (Critical)
+
+**Purpose:** Filter unqualified prospects before payment moves.
+
+**Trigger:** `Tally → Eligibility Form Submitted`
+
+**Steps:**
+
+1. **Make: Validate eligibility responses**
+   - Check disqualification criteria (see eligibility_gate_spec.md)
+   - System ready? Access available? Communication fit? Timeline fit?
+
+2. **Router**
+   - If ❌ disqualified → Rejection flow
+   - If ✅ qualified → Checkout flow
+
+3. **If Qualified:**
+   - Generate unique Stripe checkout session
+   - Send "You're Eligible — Complete Purchase" email
+   - Create Notion lead record (Status: Qualified)
+
+4. **If Disqualified:**
+   - Send "Not a Fit Right Now" email with resources
+   - Create Notion lead record (Status: Disqualified, Reason: [specific])
+
+```mermaid
+flowchart TD
+    Sales[Sales Page] --> Eligibility[Eligibility Form]
+    Eligibility --> Validate[Validate Responses]
+    Validate -->|Qualified| Stripe[Generate Stripe Link]
+    Validate -->|Disqualified| Reject[Rejection Email]
+    Stripe --> Email[Send Checkout Email]
+    Email --> Notion1[Notion: Lead Qualified]
+    Reject --> Notion2[Notion: Lead Disqualified]
+```
+
+**Disqualification Criteria (Hard No):**
+
+- System not ready ("still building")
+- Cannot provide access
+- Needs regular calls or ongoing support
+- Needs it faster than 14 days
+- Needs compliance certification
+- Slow responsiveness (3+ days)
+- Any acknowledgment checkbox unchecked
+
+See [../products/collapse_ready_sprint/templates/eligibility_gate_spec.md](../products/collapse_ready_sprint/templates/eligibility_gate_spec.md) for full specification.
+
+---
 
 ### Scenario 1 — Payment → Intake Gate
 
@@ -318,7 +417,11 @@ Generate SHA256 hashes of delivery PDFs and include in README.
 
 ```mermaid
 flowchart TD
-    Payment[Stripe Payment] --> S1[Scenario 1: Intake Gate]
+    Sales[Sales Page] --> S0[Scenario 0: Eligibility Gate]
+    S0 -->|Qualified| Checkout[Stripe Checkout]
+    S0 -->|Disqualified| Reject[Rejection + Resources]
+    Checkout --> Payment[Payment Complete]
+    Payment --> S1[Scenario 1: Intake Gate]
     S1 --> Intake[Tally Intake Form]
     Intake --> S2[Scenario 2: Validation]
     S2 -->|Invalid| S2A[Scenario 2A: Failed]
@@ -329,6 +432,9 @@ flowchart TD
     
     S2A -->|Retry| Intake
     S2A -->|Timeout| Refund[Refund & Close]
+    
+    S4 -->|Client Delay| Partial[Partial Delivery]
+    Partial --> S6
 ```
 
 ---

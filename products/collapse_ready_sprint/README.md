@@ -8,10 +8,12 @@ Delivers: threat model, data flow maps, findings register, pass/fail gates, hard
 
 Principles:
 
+- Pre-purchase eligibility gate (filter bad fits before payment)
 - Async-only engagement (no calls unless purchased separately)
 - Fixed scope (no scope creep)
 - Written deliverables only
 - Conditional refunds (pre-sprint only)
+- Time-box enforcement (client delays do not extend timeline)
 - Fully automated client lifecycle
 
 Hard boundaries:
@@ -20,6 +22,56 @@ Hard boundaries:
 - Workflow: [docs/02_workflow.md](../../docs/02_workflow.md)
 - Monetization: [monetization/architecture.md](../../monetization/architecture.md)
 - Automation: [automation/service_wiring.md](../../automation/service_wiring.md)
+
+---
+
+## ⚠️ This Is Not Compliance Certification
+
+**Important:** This engagement does not certify compliance, security, or legal sufficiency.
+
+It produces artifacts suitable for evaluation by those authorities.
+
+Specifically, this engagement:
+
+- Does NOT certify SOC 2, ISO 27001, HIPAA, or any regulatory compliance
+- Does NOT guarantee security or absence of vulnerabilities
+- Does NOT provide legal advice or legal sufficiency determination
+- Does NOT replace penetration testing or red team exercises
+
+It DOES provide:
+
+- Structured security assessment artifacts
+- Documented findings and recommendations
+- Pass/fail gate evaluations
+- Data flow and threat analysis
+
+Use these artifacts to support your compliance and security programs, not to replace them.
+
+---
+
+## Pre-Purchase Eligibility Gate
+
+**Before payment, prospects must pass an eligibility check.**
+
+This filters out:
+
+- Systems not ready for assessment
+- Prospects who cannot provide access
+- Prospects who need calls or ongoing support
+- Prospects who need faster than 14 days
+- Prospects who need compliance certification
+- Slow-response organizations (3+ days turnaround)
+
+**Flow:**
+
+```
+Sales page → Eligibility form → [Qualified] → Stripe checkout
+                              → [Disqualified] → Polite rejection + resources
+```
+
+See [templates/eligibility_gate_spec.md](templates/eligibility_gate_spec.md) for full specification.
+
+**This is the single highest-ROI control surface.** It reduces refunds, reduces emotional labor, and filters misaligned prospects before money moves.
 
 ---
 
@@ -58,14 +110,57 @@ These rules are enforced by the automation, not manually:
 
 | Rule | Description |
 | --- | --- |
+| Pre-purchase eligibility | Bad fits filtered before payment |
 | Async-only | No synchronous communication unless purchased |
 | Fixed scope | Scope locked at intake acceptance |
 | Written deliverables only | No verbal commitments |
 | Conditional refunds only | Refunds only pre-sprint start |
 | No scope creep | Changes require new engagement |
 | No "quick calls" | Call add-on required for meetings |
+| Time-box enforcement | Client delays do not extend timeline |
 
 The automation is the bouncer.
+
+---
+
+## Time-Box Enforcement
+
+**Rule:** Client delays do not extend sprint timelines unless explicitly agreed in writing.
+
+| Day | Trigger | Action |
+| --- | --- | --- |
+| Day 5 | Access not granted | Warning email (72h) |
+| Day 8 | Still no access | Final warning (48h) |
+| Day 14 | Sprint deadline | Auto-close, partial delivery |
+
+If client delays cause incomplete assessment:
+
+- Partial findings delivered with scope limitations documented
+- "INCOMPLETE - CLIENT DELAY" noted in deliverables
+- No refund (sprint started, work performed)
+
+This prevents "we slowed you down" reversals.
+
+---
+
+## Disagreement Containment
+
+**Disagreement does not invalidate delivery.**
+
+All findings represent bounded analysis under stated assumptions. If client disagrees with conclusions:
+
+- Alternate conclusions require alternate assumptions
+- Alternate assumptions must be documented separately
+- Provider is not obligated to revise conclusions based on disagreement alone
+- Delivery is complete upon receipt confirmation, regardless of agreement
+
+This protects against:
+
+- Endless rebuttal cycles
+- Defensive back-and-forth
+- "Can you revise this conclusion?" pressure
+
+See [licenses/LICENSE_engagement_v01.txt](licenses/LICENSE_engagement_v01.txt) for full terms.
 
 ---
 
@@ -92,6 +187,7 @@ products/
   collapse_ready_sprint/
     README.md
     templates/
+      eligibility_gate_spec.md    # Pre-purchase qualification
       threat_model.md
       data_flow_map.md
       findings_register.md
@@ -118,6 +214,18 @@ products/
 End-to-end workflow broken into Make scenarios.
 
 See [../../automation/service_wiring.md](../../automation/service_wiring.md) for full scenario blueprints.
+
+### Scenario 0 — Pre-Purchase Eligibility Gate (Critical)
+
+Trigger: `Tally → Eligibility Form Submitted`
+
+Actions:
+1. Validate eligibility responses against disqualification criteria
+2. If qualified: Generate Stripe checkout link, send "You're Eligible" email
+3. If disqualified: Send "Not a Fit" email with resources
+4. Log lead in Notion (Qualified/Disqualified)
+
+See [templates/eligibility_gate_spec.md](templates/eligibility_gate_spec.md) for full specification.
 
 ### Scenario 1 — Payment → Intake Gate
 

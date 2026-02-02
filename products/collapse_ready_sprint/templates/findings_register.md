@@ -56,6 +56,21 @@ Version: v01
 
 ---
 
+## 2.1 Action Type Definitions
+
+| Action Type | Definition | Implication |
+| --- | --- | --- |
+| **Blocking** | Must be remediated before production/release | Gate: system should not proceed without fix |
+| **Non-Blocking** | Risk accepted or deferred | Gate: system may proceed with documented acceptance |
+
+**Usage:**
+
+- Blocking findings fail pass/fail gates until resolved
+- Non-blocking findings are documented but do not prevent progress
+- Action type is independent of severity (a Medium finding can be Blocking)
+
+---
+
 ## 3. Findings Detail
 
 ### Finding: F-001
@@ -64,6 +79,7 @@ Version: v01
 | --- | --- |
 | **Title** | |
 | **Severity** | |
+| **Action Type** | Blocking / Non-Blocking |
 | **Category** | |
 | **Status** | Open |
 | **CVSS Score** | (if applicable) |
@@ -100,6 +116,7 @@ _Specific remediation steps._
 | --- | --- |
 | **Title** | |
 | **Severity** | |
+| **Action Type** | Blocking / Non-Blocking |
 | **Category** | |
 | **Status** | Open |
 | **CVSS Score** | (if applicable) |
@@ -128,6 +145,7 @@ _Specific remediation steps._
 | --- | --- |
 | **Title** | |
 | **Severity** | |
+| **Action Type** | Blocking / Non-Blocking |
 | **Category** | |
 | **Status** | Open |
 | **CVSS Score** | (if applicable) |
@@ -152,13 +170,15 @@ _Specific remediation steps._
 
 ## 4. Remediation Priority Matrix
 
-| Finding | Severity | Effort | Impact | Priority |
-| --- | --- | --- | --- | --- |
-| F-001 | | | | |
-| F-002 | | | | |
-| F-003 | | | | |
+| Finding | Severity | Action Type | Effort | Impact | Priority |
+| --- | --- | --- | --- | --- | --- |
+| F-001 | | | | | |
+| F-002 | | | | | |
+| F-003 | | | | | |
 
 Priority = (Severity × Impact) / Effort
+
+**Note:** Blocking findings should be prioritized regardless of calculated priority score.
 
 ---
 

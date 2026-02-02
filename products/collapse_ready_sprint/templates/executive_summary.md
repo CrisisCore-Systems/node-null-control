@@ -133,6 +133,28 @@ _Risks that remain after implementing recommendations._
 | --- | --- | --- | --- |
 | | | | |
 
+### 5.1 Residual Risks Acknowledgment
+
+**By receiving this document, Client acknowledges:**
+
+- [ ] Client acknowledges the documented residual risks listed above
+- [ ] Client accepts responsibility for decisions taken regarding these risks
+- [ ] Client understands that unaddressed risks remain Client's responsibility
+
+**Acknowledgment:**
+
+```
+Signature: _________________________________
+
+Name: _________________________________
+
+Title: _________________________________
+
+Date: _________________________________
+```
+
+_This acknowledgment may be captured electronically via the delivery confirmation form._
+
 ---
 
 ## 6. Deliverables

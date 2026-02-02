@@ -96,7 +96,26 @@ Provider is NOT liable for:
 
 ---
 
-8. ACCEPTANCE
+8. DISAGREEMENT CONTAINMENT
+
+Disagreement does not invalidate delivery.
+
+All findings represent bounded analysis under stated assumptions. If Client 
+disagrees with conclusions, Client must document alternate assumptions in 
+writing. Alternate conclusions require alternate assumptions, which must be 
+documented separately.
+
+Provider is not obligated to:
+- Revise conclusions based on disagreement alone
+- Engage in rebuttal cycles
+- Modify findings without new evidence
+
+Delivery is complete upon receipt confirmation, regardless of agreement with 
+findings.
+
+---
+
+9. ACCEPTANCE
 
 By completing payment and intake, Client accepts these terms.
 
