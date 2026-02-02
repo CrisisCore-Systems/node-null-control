@@ -53,6 +53,35 @@ Make.com validates responses (Scenario 0)
 
 **Subheading:** This engagement is artifact-based, async-only, and fixed-scope. Please confirm fit before proceeding.
 
+### Form Setup (Tally.so)
+
+| Setting | Value |
+| --- | --- |
+| Platform | Tally.so |
+| Form URL | `https://tally.so/r/[your-form-id]` |
+| Webhook | Enable webhook integration → Make |
+| Webhook URL | `https://hook.make.com/[your-webhook-id]` |
+
+**Field ID Convention:**
+
+In Tally, field IDs are auto-generated but can be customized. Use these exact IDs in the webhook payload:
+
+1. Go to Form Settings → Integrations → Webhooks
+2. Enable "Include field IDs in webhook"
+3. Test webhook to verify field names match specification
+
+**Validation Rules (set in Tally):**
+
+| Field | Tally Validation |
+| --- | --- |
+| email | Required, Email format |
+| access_control | Required, Single select |
+| communication_model | Required, Single select |
+| scope_acknowledgement | Required, Checkbox (must be checked) |
+| credential_requirement | Required, Single select |
+| failure_definition | Required, Min 10 characters |
+| final_acknowledgement | Required, Checkbox (must be checked) |
+
 ---
 
 ## Form Sections
@@ -197,18 +226,26 @@ Flag but allow if:
 | Event | New form response |
 | Form | Collapse-Ready Sprint — Eligibility Check |
 
-**Fields to expose (IDs matter):**
+**Fields to expose:**
 
-| Field ID | Type | Description |
-| --- | --- | --- |
-| `system_type` | Multi-select | What is being reviewed |
-| `access_control` | Single-select | Yes / Partial / No |
-| `communication_model` | Single-select | Async-only by default / Other |
-| `scope_acknowledgement` | Checkbox | Fixed scope acceptance |
-| `credential_requirement` | Single-select | Yes / No |
-| `failure_definition` | Text | What would make this a failure |
-| `final_acknowledgement` | Checkbox | Final agreement |
-| `email` | Email | Contact email |
+| Field ID | Type | Description | How to Find in Tally |
+| --- | --- | --- | --- |
+| `system_type` | Multi-select | What is being reviewed | Question 1 response |
+| `access_control` | Single-select | Yes / Partial / No | Question 2 response |
+| `communication_model` | Single-select | Async-only by default / Other | Question 4 response |
+| `scope_acknowledgement` | Checkbox | Fixed scope acceptance | Question 5 response |
+| `credential_requirement` | Single-select | Yes / No | Question 8 response |
+| `failure_definition` | Text | What would make this a failure | Question 7 response |
+| `final_acknowledgement` | Checkbox | Final agreement | Question 9 response |
+| `email` | Email | Contact email | Respondent email field |
+
+**⚠️ Field ID Verification:**
+
+1. Create a test submission in Tally
+2. Check Make webhook history for received payload
+3. Map actual field names from payload to variables above
+4. If field names differ, update Make scenario to use actual names
+5. Field names in Tally follow pattern: `question_[uuid]` or custom labels
 
 ---
 
@@ -284,9 +321,19 @@ Fallback route (no conditions — catches all failures)
 | --- | --- |
 | Mode | `payment` |
 | Line Item 1 | Product: Collapse-Ready Systems Hardening™, Price: $25,000 |
-| Line Item 2 (optional) | Product: Single Call (60 min), Price: $5,000 |
 | Success URL | `https://yourdomain.com/success?token={{checkout_token}}` |
 | Cancel URL | `https://yourdomain.com/cancel` |
+
+**Optional Call Add-On:**
+
+The Single Call (60 min, $5,000) is displayed as an optional upsell on the Stripe Checkout page itself, not selected in the eligibility form. Configure in Stripe:
+
+1. Create product "Single Call (60 min)" in Stripe Dashboard
+2. In Checkout Session creation, use `line_items` array with:
+   - Main product: `adjustable_quantity: false`
+   - Call add-on: `adjustable_quantity: { enabled: true, minimum: 0, maximum: 1 }`
+
+This lets the buyer add the call during checkout without adding form complexity.
 
 **Metadata (critical for downstream scenarios):**
 
@@ -369,8 +416,32 @@ No calls. No scope negotiation. Written deliverables only.
 | --- | --- |
 | Email | `{{email}}` |
 | Status | `Declined (Eligibility)` |
-| Rejection Reason | `Failed eligibility constraints` |
+| Rejection Reason | See diagnostic codes below |
+| Access Level | `{{access_control}}` |
 | Created At | `{{now()}}` |
+
+**Diagnostic Rejection Reasons (set in Module 2):**
+
+Build the rejection reason dynamically based on which condition(s) failed:
+
+```
+rejection_reason = 
+  IF(has_access = false, "NO_ACCESS; ", "") +
+  IF(async_only = false, "NEEDS_SYNC; ", "") +
+  IF(scope_ok = false, "SCOPE_NOT_ACKNOWLEDGED; ", "") +
+  IF(no_credentials_required = false, "NEEDS_CREDENTIALS; ", "") +
+  IF(acknowledged = false, "NO_FINAL_ACK; ", "")
+```
+
+| Code | Meaning |
+| --- | --- |
+| `NO_ACCESS` | Selected "No" for access control |
+| `NEEDS_SYNC` | Did not select async-only communication |
+| `SCOPE_NOT_ACKNOWLEDGED` | Did not check scope acknowledgement |
+| `NEEDS_CREDENTIALS` | Selected "Yes" for credential requirement |
+| `NO_FINAL_ACK` | Did not check final acknowledgement |
+
+This enables post-hoc analysis of why prospects are being disqualified.
 
 ---
 

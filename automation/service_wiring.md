@@ -200,38 +200,89 @@ See [../products/collapse_ready_sprint/templates/eligibility_gate_spec.md](../pr
    - Capture: client email, product, call add-on (yes/no), payment ID
    - **Extract metadata:** `eligibility_token`, `source`
 
-2. **Notion: Validate eligibility token (NEW - CRITICAL)**
-   - Search CRS Leads database
-   - Query: `Eligibility Token = {{eligibility_token}} AND Status = "Eligible / Awaiting Payment"`
-   - **If no match found → ABORT scenario**
-   - Log error, send alert to operator
+2. **Notion: Search for eligibility record (NEW - CRITICAL)**
+   - App: Notion
+   - Action: Search objects (database query)
+   - Database: CRS Leads
+   - Filter: `Eligibility Token = {{eligibility_token}} AND Status = "Eligible / Awaiting Payment"`
 
-3. **Make: Generate intake token**
+3. **Router: Validate search result**
+   - Route A (Valid): Search returned exactly 1 result → Continue to step 4
+   - Route B (Invalid): Search returned 0 results → Go to abort path
+
+**ABORT PATH (Route B):**
+
+3B-1. **Notion: Log error record**
+   - Database: CRS Errors (create if needed)
+   - Fields:
+     - Type: `ELIGIBILITY_BYPASS_ATTEMPT`
+     - Email: `{{Stripe session email}}`
+     - Payment ID: `{{payment_id}}`
+     - Eligibility Token: `{{eligibility_token}}` (may be empty)
+     - Timestamp: `{{now()}}`
+     - Details: `Payment received without valid eligibility record`
+
+3B-2. **Gmail: Alert operator**
+   - To: `operator@yourdomain.com`
+   - Subject: `⚠️ CRS Alert: Eligibility Bypass Attempt`
+   - Body:
+     ```
+     A payment was received but no matching eligibility record exists.
+     
+     Email: {{email}}
+     Payment ID: {{payment_id}}
+     Eligibility Token: {{eligibility_token}}
+     
+     Action required: Review payment and either:
+     1. Refund via Stripe Dashboard
+     2. Manually create eligibility record if legitimate
+     ```
+
+3B-3. **Make: Throw error (stop execution)**
+   - Use Make's built-in error handling
+   - Error type: `RuntimeError`
+   - Message: `No valid eligibility record for token: {{eligibility_token}}`
+
+**CONTINUE PATH (Route A):**
+
+4. **Make: Generate intake token**
    - UUID for engagement tracking
-   - Link to eligibility token for auditability
+   - Store in variable: `intake_token`
 
-4. **Notion: Update lead record**
-   - Status: `Converted`
-   - Converted At: `{{now()}}`
-   - Stripe Payment ID: `{{payment_id}}`
+5. **Notion: Update lead record**
+   - Find record from step 2
+   - Update fields:
+     - Status: `Converted`
+     - Converted At: `{{now()}}`
+     - Stripe Payment ID: `{{payment_id}}`
+     - Intake Token: `{{intake_token}}`
 
-5. **Tally: Generate unique intake link**
-   - Prefill: email, intake token, purchase ID
+6. **Tally: Generate unique intake link**
+   - Prefill: email, intake token, purchase ID, eligibility token
 
-6. **Gmail: Send "Sprint Intake Required" email**
+7. **Gmail: Send "Sprint Intake Required" email**
    - Subject: `Collapse-Ready Sprint — Intake Required (48h)`
    - Body: intake link, deadline, refund policy, constraint reminder
 
-7. **Notion: Create client record**
-   - Fields: client name, email, Stripe payment ID, eligibility token
-   - Intake status: `Pending`
-   - Sprint status: `Not Started`
+8. **Notion: Create client record**
+   - Database: CRS Clients
+   - Fields:
+     - Client Name: (from Stripe session)
+     - Email: `{{email}}`
+     - Stripe Payment ID: `{{payment_id}}`
+     - Eligibility Token: `{{eligibility_token}}`
+     - Intake Token: `{{intake_token}}`
+     - Intake Status: `Pending`
+     - Sprint Status: `Not Started`
 
 ```mermaid
-flowchart LR
-    Stripe[Stripe Webhook] --> Validate{Validate Eligibility Token}
-    Validate -->|Valid| Token[Generate Intake Token]
-    Validate -->|Invalid| Abort[ABORT + Alert]
+flowchart TD
+    Stripe[Stripe Webhook] --> Search[Search Notion: Eligibility Token]
+    Search --> Router{Record Found?}
+    Router -->|Yes| Token[Generate Intake Token]
+    Router -->|No| Log[Log Error to Notion]
+    Log --> Alert[Email Operator Alert]
+    Alert --> Error[Throw Error - Stop]
     Token --> Update[Update Lead: Converted]
     Update --> Tally[Generate Intake Link]
     Tally --> Gmail[Send Intake Email]
