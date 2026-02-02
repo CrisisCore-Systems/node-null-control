@@ -236,6 +236,8 @@ If you purchased the call add-on, you can schedule a review call:
 Collapse-Ready Sprint
 Engagement Token: {{intake_token}}
 Delivery Date: {{delivery_date}}
+
+Delivery constitutes completion of the engagement as defined in the scope lock.
 ```
 
 ---
