@@ -115,7 +115,26 @@ findings.
 
 ---
 
-9. ACCEPTANCE
+9. CLIENT DELAY POLICY
+
+The sprint timeline begins upon workspace creation (T0).
+
+Client delays (including delayed access, incomplete materials, or partial 
+responses) do not extend the sprint unless explicitly agreed in writing.
+
+Access Window: Client must provide required system access within 72 hours of 
+sprint start (T0 + 72h).
+
+If required access is not provided within the access window, the sprint will 
+proceed with available materials and may close with partial findings.
+
+Sprint Duration: 14 calendar days from T0, regardless of client behavior.
+
+No refunds are issued once the sprint has started.
+
+---
+
+10. ACCEPTANCE
 
 By completing payment and intake, Client accepts these terms.
 

@@ -602,64 +602,146 @@ Add pre-condition check before PDF export:
 
 ---
 
-## 5.2) Client Delay Kill Switch (Scenario 4A)
+## 5.2) Time-Boxed Client Delay Kill Switch (TDKS)
 
-Automatically close sprints when clients fail to provide required access.
+Prevent clients from stalling, drip-feeding materials, or forcing extensions through inaction.
+
+**Rule:** The sprint clock is real. Client delay does **not** pause it.
 
 **Full specification:** See [../products/collapse_ready_sprint/templates/client_delay_kill_switch.md](../products/collapse_ready_sprint/templates/client_delay_kill_switch.md)
 
-### Scenario 4A — Access Monitoring
+### Access Windows (Constants)
 
-**Trigger:** Daily schedule (09:00 UTC)
+| Constant | Definition | Value |
+| --- | --- | --- |
+| **T0** | Sprint Activated (workspace created) | Timestamp |
+| **Access Window** | Time to provide access | T0 + 72 hours |
+| **Sprint Duration** | Total engagement time | 14 calendar days |
+| **Closure** | Sprint ends | Day 14, regardless of client behavior |
 
-**Flow:**
+### TDKS Scenarios (C1-C4)
+
+| Scenario | Name | Trigger | Purpose |
+| --- | --- | --- | --- |
+| C1 | Set Deadlines | Scenario 3 (Sprint Start) | Initialize T0, Access Deadline, Sprint End |
+| C2 | Access Deadline Monitor | Every 6 hours | Check for overdue access, send notice |
+| C3 | Partial Input Mode | Delay Status = Client Delay | Auto-flag findings and summary |
+| C4 | Hard Stop at Day 14 | Daily at 00:00 UTC | Force delivery, lock inputs |
+
+### Scenario C1 — Set Deadlines at Sprint Start
+
+**Add to Scenario 3 (Workspace Creation):**
+
+```
+Set Sprint Start (T0) = {{now()}}
+Set Access Deadline = {{addHours(now; 72)}}
+Set Sprint End = {{addDays(now; 14)}}
+Set Delay Status = None
+```
+
+### Scenario C2 — Access Deadline Monitor
+
+**Trigger:** Scheduled every 6 hours
+
+**Filter:**
+
+```
+Access Granted = false
+AND now() > Access Deadline
+AND Delay Status = "None"
+```
+
+**Actions:**
+
+1. Update `Delay Status` → `Client Delay`
+2. Send Client Notice (one-time): "Access Window Closed — Sprint Proceeding"
+3. Log event (timestamped)
+
+### Scenario C3 — Partial Input Mode
+
+**Trigger:** `Delay Status = "Client Delay"`
+
+**Auto-Effects:**
+
+- Findings register: `Constraint: Client access delay`
+- Executive Summary: "Certain conclusions are bounded by unavailable inputs."
+- HAR checklist: Delay must be explicitly referenced
+
+### Scenario C4 — Hard Stop at Day 14
+
+**Trigger:** Daily at 00:00 UTC
+
+**Filter:**
+
+```
+now() >= Sprint End
+AND Sprint Status ≠ "Closed"
+```
+
+**Actions:**
+
+1. Force Sprint Status → `Ready for Delivery`
+2. Lock further client inputs
+3. Proceed to HAR → Delivery pipeline
+4. Deliver **as-is**
+
+No extensions by default.
+
+### Flowchart
 
 ```mermaid
 flowchart TD
-    Trigger[Daily Schedule] --> Search[Get Active Sprints Without Access]
-    Search --> Iterator[For Each Sprint]
-    Iterator --> Calc[Calculate Days Since Start]
-    Calc --> Router{Days Elapsed?}
-    Router -->|Day 3-4| Warn1[Send Warning #1]
-    Router -->|Day 5-6| Warn2[Send Warning #2 FINAL]
-    Router -->|Day 7+| AutoClose[Initiate Auto-Close]
-    Warn1 --> Update1[Update Notion]
-    Warn2 --> Update2[Update Notion + Set Auto-Close Date]
-    AutoClose --> MarkIncomplete[Mark Artifacts Incomplete]
-    MarkIncomplete --> Update3[Update Notion: Partial Delivery]
+    T0[T0: Sprint Activated] --> C1[C1: Set Deadlines]
+    C1 --> C2[C2: Monitor Every 6h]
+    
+    C2 --> Check{Access Granted?}
+    Check -->|Yes| Normal[Normal Sprint]
+    Check -->|No| Deadline{Past T0 + 72h?}
+    
+    Deadline -->|No| C2
+    Deadline -->|Yes| ClientDelay[Delay Status: Client Delay]
+    ClientDelay --> Notice[Access Window Closed Notice]
+    Notice --> C3[C3: Partial Input Mode]
+    
+    C3 --> FlagAll[Flag Findings + Summary]
+    
+    Normal --> Day14{Day 14?}
+    FlagAll --> Day14
+    
+    Day14 -->|No| C2
+    Day14 -->|Yes| C4[C4: Hard Stop]
+    C4 --> Force[Force: Ready for Delivery]
+    Force --> Lock[Lock Client Inputs]
+    Lock --> HAR[HAR Checklist]
+    HAR --> Deliver[Deliver As-Is]
 ```
 
-### Warning Email Subjects
+### Notion Schema — TDKS Fields
 
-| Stage | Subject |
-| --- | --- |
-| Warning #1 | `Collapse-Ready Sprint — Access Required (Action Needed)` |
-| Warning #2 | `⚠️ FINAL WARNING — Access Required Within 48 Hours` |
-| Auto-Close | `Sprint Transitioned to Partial Delivery — Client Access Not Provided` |
+| Field | Type | Description |
+| --- | --- | --- |
+| Sprint Start (T0) | DateTime | Workspace creation timestamp |
+| Access Granted | Checkbox | Has client provided access? |
+| Access Deadline | DateTime | T0 + 72 hours |
+| Delay Status | Select | None, Client Delay, Proceeding With Partial Inputs |
+| Sprint End | DateTime | T0 + 14 days |
+| Access Window Closed | DateTime | When notice was sent |
+| Delay Notice Sent | Checkbox | One-time notice flag |
+| Hard Stop Enforced | Checkbox | Day 14 hard stop triggered |
+| Hard Stop Date | DateTime | When hard stop occurred |
 
-### Notion Schema Addition
+### Delivery Package — Access Limitations
 
-| Field | Type |
-| --- | --- |
-| Access Granted | Checkbox |
-| Access Granted Date | Date |
-| Warning_1_Sent | Checkbox |
-| Warning_1_Date | Date |
-| Warning_2_Sent | Checkbox |
-| Warning_2_Date | Date |
-| Auto_Closed | Checkbox |
-| Auto_Close_Date | Date |
-| Partial_Delivery_Reason | Text |
+If delay occurred, auto-append to README.md:
 
-### Partial Delivery Protocol
+```markdown
+## Access Limitations
 
-If auto-close triggers:
+Certain findings are bounded by unavailable inputs due to client access delays.
 
-1. Mark all artifacts with "INCOMPLETE - CLIENT DELAY" notice
-2. Document scope limitations in Executive Summary
-3. Proceed to Scenario 5 with partial artifacts
-4. Full fee remains due (sprint started, work performed)
-5. No refund available
+These limitations are documented to preserve procedural integrity and prevent
+assumptions beyond observed evidence.
+```
 
 ---
 
@@ -675,12 +757,17 @@ flowchart TD
     S1 --> Intake[Tally Intake Form]
     Intake --> S2[Scenario 2: Validation]
     S2 -->|Invalid| S2A[Scenario 2A: Failed]
-    S2 -->|Valid| S3[Scenario 3: Sprint Start]
+    S2 -->|Valid| S3[Scenario 3: Sprint Start + C1]
     S3 --> S4[Scenario 4: Internal Execution]
-    S3 --> S4A[Scenario 4A: Access Monitor - Daily]
-    S4A -->|No Access Day 7+| AutoClose[Auto-Close: Partial Delivery]
-    S4 --> PreCheck[Pre-Delivery Checklist]
-    AutoClose --> PreCheck
+    S3 --> C2[C2: Access Monitor - Every 6h]
+    C2 -->|No Access After 72h| C3[C3: Partial Input Mode]
+    C3 --> FlagAll[Flag Findings + Summary]
+    S4 --> Day14{Day 14?}
+    FlagAll --> Day14
+    Day14 -->|Yes| C4[C4: Hard Stop]
+    Day14 -->|No| C2
+    C4 --> PreCheck[Pre-Delivery Checklist]
+    S4 --> PreCheck
     PreCheck -->|Complete| S5[Scenario 5: Package + Hashing]
     PreCheck -->|Incomplete| Block[Block Delivery]
     S5 --> S6[Scenario 6: Delivery & Closure]
@@ -699,7 +786,10 @@ flowchart TD
 | 2A | Intake Failed | Validation failure | Request corrections, deadline |
 | 3 | Sprint Start | Valid intake | Create workspace, lock refunds |
 | 4 | Internal Execution | Manual | Task management, reminders |
-| 4A | Access Monitor | Daily schedule | Enforce time-box, auto-close on delay |
+| C1 | Set Deadlines | Scenario 3 | Initialize T0, Access Deadline, Sprint End |
+| C2 | Access Deadline Monitor | Every 6 hours | Check for overdue access, send notice |
+| C3 | Partial Input Mode | Delay Status change | Auto-flag findings and summary |
+| C4 | Hard Stop at Day 14 | Daily 00:00 UTC | Force delivery, lock inputs |
 | 5 | Package Generation | Ready to deliver | PDF export, hashing, ZIP |
 | 6 | Delivery & Closure | Package ready | Send delivery, confirm receipt |
 
@@ -738,15 +828,16 @@ flowchart TD
 | Drive Folder URL | URL | |
 | Delivery Link | URL | |
 | Notes | Long Text | |
-| Access Granted | Checkbox | |
-| Access Granted Date | Date | |
-| Warning_1_Sent | Checkbox | |
-| Warning_1_Date | Date | |
-| Warning_2_Sent | Checkbox | |
-| Warning_2_Date | Date | |
-| Auto_Closed | Checkbox | |
-| Auto_Close_Date | Date | |
-| Partial_Delivery_Reason | Text | |
+| **TDKS Fields** | | |
+| Sprint Start (T0) | DateTime | Workspace creation timestamp |
+| Access Granted | Checkbox | Has client provided access? |
+| Access Deadline | DateTime | T0 + 72 hours |
+| Delay Status | Select | None, Client Delay, Proceeding With Partial Inputs |
+| Sprint End | DateTime | T0 + 14 days |
+| Access Window Closed | DateTime | When notice was sent |
+| Delay Notice Sent | Checkbox | One-time notice flag |
+| Hard Stop Enforced | Checkbox | Day 14 hard stop triggered |
+| Hard Stop Date | DateTime | When hard stop occurred |
 | Delivery Package Hash | Text | |
 | Hash Generated At | Date | |
 

@@ -127,19 +127,45 @@ The automation is the bouncer.
 
 **Rule:** Client delays do not extend sprint timelines unless explicitly agreed in writing.
 
-| Day | Trigger | Action |
+### Access Windows (Constants)
+
+| Constant | Definition | Value |
 | --- | --- | --- |
-| Day 5 | Access not granted | Warning email (72h) |
-| Day 8 | Still no access | Final warning (48h) |
-| Day 14 | Sprint deadline | Auto-close, partial delivery |
+| T0 | Sprint Activated (workspace created) | Timestamp |
+| Access Window | Time for client to provide access | T0 + 72 hours |
+| Sprint Duration | Total engagement time | 14 calendar days |
+| Closure | Sprint end (no exceptions) | T0 + 14 days |
+
+### Timeline
+
+| Event | Trigger | Action |
+| --- | --- | --- |
+| T0 | Workspace created | Sprint clock starts |
+| T0 + 72h | Access deadline | If no access → Proceed with available materials |
+| T0 + 14d | Sprint end | Deliver as-is, hard stop |
+
+### Client Delay Policy
+
+> **Client Delay Policy**
+>
+> The sprint timeline begins upon workspace creation.
+>
+> Client delays (including delayed access, incomplete materials, or partial responses) do not extend the sprint unless explicitly agreed in writing.
+>
+> If required access is not provided within the defined access window, the sprint will proceed with available materials and may close with partial findings.
+>
+> No refunds are issued once the sprint has started.
+
+### Partial Delivery Mode
 
 If client delays cause incomplete assessment:
 
-- Partial findings delivered with scope limitations documented
-- "INCOMPLETE - CLIENT DELAY" noted in deliverables
+- Findings register auto-flags: `Constraint: Client access delay`
+- Executive Summary includes: "Certain conclusions are bounded by unavailable inputs."
+- All deliverables include scope limitations documentation
 - No refund (sprint started, work performed)
 
-This prevents "we slowed you down" reversals.
+**Time becomes objective. The system enforces boundaries, not you.**
 
 ---
 

@@ -1,100 +1,142 @@
-# Client Delay Kill Switch
+# Time-Boxed Client Delay Kill Switch (TDKS)
 
-Document: Collapse-Ready Sprint — Access Timeout & Auto-Close
+Document: Collapse-Ready Sprint — Time-Boxed Delay Kill Switch
 
-Version: v01
+Version: v02
 
 ---
 
 ## Purpose
 
-Automatically close sprints when clients fail to provide required access.
+Prevent clients from:
 
-**Rule:** Client delays do not extend sprint timelines unless explicitly agreed in writing.
+- Stalling access
+- Drip-feeding materials
+- Rewriting scope by delay
+- Forcing "extensions" through inaction
+
+**Rule:** The sprint clock is real. Client delay does **not** pause it.
 
 ---
 
-## Time-Box Enforcement Logic
+## Policy (Verbatim)
 
-### Timeline
+> **Client Delay Policy**
+>
+> The sprint timeline begins upon workspace creation.
+>
+> Client delays (including delayed access, incomplete materials, or partial responses) do not extend the sprint unless explicitly agreed in writing.
+>
+> If required access is not provided within the defined access window, the sprint will proceed with available materials and may close with partial findings.
+>
+> No refunds are issued once the sprint has started.
 
-| Day | Event | Action |
+This turns time into a **hard boundary**.
+
+---
+
+## Access Windows (Constants)
+
+Define these constants once:
+
+| Constant | Definition | Value |
 | --- | --- | --- |
-| Day 0 | Sprint start (workspace created) | Clock starts |
-| Day 3 | Access check | If no access → Warning #1 |
-| Day 5 | Access check | If no access → Warning #2 (final) |
-| Day 7 | Access check | If no access → AUTO-CLOSE begins |
-| Day 14 | Sprint deadline | Deliver whatever is possible |
+| **T0** | Sprint Activated (workspace created) | Timestamp |
+| **Access Window** | Time to provide access | 72 hours from T0 |
+| **Sprint Duration** | Total engagement time | 14 calendar days from T0 |
+| **Closure** | Sprint ends | Day 14, regardless of client behavior |
 
 ---
 
-## Make Scenario: CRS_04A_Access_Monitor
+## Notion Schema — TDKS Fields
 
-**Purpose:** Monitor client access provision and enforce time-box.
+Add to CRS Clients database:
 
-**Trigger:** Scheduled (daily check) or Notion status change
+| Field | Type | Description |
+| --- | --- | --- |
+| Sprint Start (T0) | DateTime | Workspace creation timestamp |
+| Access Granted | Checkbox | Has client provided access? |
+| Access Deadline | DateTime | T0 + 72 hours |
+| Delay Status | Select | None, Client Delay, Proceeding With Partial Inputs |
+| Sprint End | DateTime | T0 + 14 days |
 
 ---
 
-### MODULE 1 — Trigger: Daily Schedule
+## Make Scenarios (C1-C4)
+
+### SCENARIO C1 — Set Deadlines at Sprint Start
+
+**Trigger:** Scenario 3 — Workspace Creation (Sprint Activated)
+
+**Add to Scenario 3 workflow:**
+
+| Step | Action | Value |
+| --- | --- | --- |
+| 1 | Set `Sprint Start (T0)` | `{{now()}}` |
+| 2 | Set `Access Deadline` | `{{addHours(now; 72)}}` |
+| 3 | Set `Sprint End` | `{{addDays(now; 14)}}` |
+| 4 | Set `Delay Status` | `None` |
+
+**Make Module Configuration:**
+
+| Setting | Value |
+| --- | --- |
+| App | Notion |
+| Action | Update database item |
+
+```
+Fields to update:
+- Sprint Start (T0): {{now()}}
+- Access Deadline: {{addHours(now; 72)}}
+- Sprint End: {{addDays(now; 14)}}
+- Delay Status: None
+```
+
+---
+
+### SCENARIO C2 — Access Deadline Monitor
+
+**Scenario Name:** `CRS_C2_Access_Deadline_Monitor`
+
+**Trigger:** Scheduled (every 6 hours)
+
+#### MODULE 1 — Trigger: Schedule
 
 | Setting | Value |
 | --- | --- |
 | App | Make → Schedule |
-| Interval | Daily at 09:00 UTC |
+| Interval | Every 6 hours |
 
----
-
-### MODULE 2 — Get Active Sprints
+#### MODULE 2 — Search for Overdue Sprints
 
 | Setting | Value |
 | --- | --- |
 | App | Notion |
 | Action | Search objects |
 | Database | CRS Clients |
-| Filter | Sprint Status = "Active" AND Access Granted = false |
 
----
+**Filter:**
 
-### MODULE 3 — Iterator
+```
+Access Granted = false
+AND now() > Access Deadline
+AND Delay Status = "None"
+```
 
-Process each sprint without access.
+#### MODULE 3 — Iterator
 
----
+Process each overdue sprint.
 
-### MODULE 4 — Calculate Days Since Start
-
-| Setting | Value |
-| --- | --- |
-| App | Make → Tools → Set variable |
-| Variable | `days_since_start` |
-| Value | `(now() - sprint_start_date) / (24 * 60 * 60 * 1000)` |
-
----
-
-### MODULE 5 — Router: Action Decision
-
-| Route | Condition | Action |
-| --- | --- | --- |
-| Route A | `days_since_start >= 3 AND days_since_start < 5` | Send Warning #1 |
-| Route B | `days_since_start >= 5 AND days_since_start < 7` | Send Warning #2 (Final) |
-| Route C | `days_since_start >= 7` | Initiate Auto-Close |
-
----
-
-## ROUTE A — Warning #1 (Day 3)
-
-### MODULE 6A — Check if Warning #1 Already Sent
+#### MODULE 4 — Update Delay Status
 
 | Setting | Value |
 | --- | --- |
 | App | Notion |
-| Action | Get database item |
-| Check | Warning_1_Sent = false |
+| Action | Update database item |
+| Field | Delay Status |
+| Value | `Client Delay` |
 
-If already sent → skip to end.
-
-### MODULE 7A — Send Warning #1 Email
+#### MODULE 5 — Send Client Notice (One-Time)
 
 | Setting | Value |
 | --- | --- |
@@ -104,258 +146,219 @@ If already sent → skip to end.
 **Subject:**
 
 ```
-Collapse-Ready Sprint — Access Required (Action Needed)
+Access Window Closed — Sprint Proceeding
 ```
 
-**Body:**
+**Body (paste verbatim):**
 
 ```
-Your sprint started {{days_since_start}} days ago.
+The access window has closed.
 
-We have not yet received the access or documentation needed to proceed.
+The sprint will proceed using available materials.
 
-ACTION REQUIRED
+Findings may be partial and will reflect documented access limitations.
 
-Please provide the following within 48 hours:
-{{missing_access_items}}
-
-WHAT HAPPENS IF ACCESS IS NOT PROVIDED
-
-If we do not receive access by Day 7, the sprint will automatically 
-transition to partial delivery mode.
-
-This means:
-• We will deliver findings based on available information only
-• Scope limitations will be documented in all artifacts
-• The full engagement fee remains due (sprint started, work performed)
-
-Client delays do not extend sprint timelines.
-
-If you need to discuss access challenges, reply to this email within 24 hours.
-
----
-Collapse-Ready Sprint
-Engagement Token: {{engagement_token}}
-Days Remaining: {{14 - days_since_start}}
+The sprint end date remains unchanged.
 ```
 
-### MODULE 8A — Update Notion
+No questions. No options.
+
+#### MODULE 6 — Log Event
 
 | Setting | Value |
 | --- | --- |
 | App | Notion |
 | Action | Update database item |
-| Field | Warning_1_Sent |
-| Value | true |
-| Field | Warning_1_Date |
-| Value | `{{now()}}` |
 
----
-
-## ROUTE B — Warning #2 (Day 5) — FINAL WARNING
-
-### MODULE 6B — Check if Warning #2 Already Sent
-
-### MODULE 7B — Send Warning #2 Email
-
-**Subject:**
-
-```
-⚠️ FINAL WARNING — Access Required Within 48 Hours
-```
-
-**Body:**
-
-```
-This is the final warning regarding access to your system.
-
-CURRENT STATUS
-
-Sprint started: {{sprint_start_date}}
-Days elapsed: {{days_since_start}}
-Access received: NO
-
-DEADLINE
-
-You have 48 hours to provide the required access.
-
-CONSEQUENCE
-
-If access is not provided by {{auto_close_date}}:
-
-1. Sprint transitions to PARTIAL DELIVERY mode
-2. We deliver findings based on information available at intake
-3. Artifacts will be marked "INCOMPLETE - CLIENT DELAY"
-4. Full engagement fee remains due
-5. No refund available (sprint started, work performed)
-
-This is a scope boundary, not a negotiation.
-
-If there are legitimate access challenges, reply NOW.
-
----
-Collapse-Ready Sprint
-Engagement Token: {{engagement_token}}
-Auto-Close Date: {{auto_close_date}}
-```
-
-### MODULE 8B — Update Notion
+**Fields:**
 
 | Field | Value |
 | --- | --- |
-| Warning_2_Sent | true |
-| Warning_2_Date | `{{now()}}` |
-| Auto_Close_Date | `{{addHours(now; 48)}}` |
+| Access Window Closed | `{{now()}}` |
+| Delay Notice Sent | true |
 
 ---
 
-## ROUTE C — Auto-Close (Day 7+)
+### SCENARIO C3 — Partial Input Mode (Automatic)
 
-### MODULE 6C — Initiate Partial Delivery
+**Trigger:** `Delay Status = "Client Delay"`
 
-**Sub-steps:**
+**Effects (System-Level):**
 
-1. **Update Sprint Status**
-   - Status: `Partial Delivery - Client Delay`
+When Delay Status = "Client Delay", the following auto-flags are applied:
 
-2. **Generate Partial Delivery Scope Note**
-   - Create document explaining limitations
-   - List what could/couldn't be assessed
-   - State reason: "Client failed to provide access"
+#### 1. Findings Register Auto-Flag
 
-3. **Mark All Artifacts as Incomplete**
-   - Add watermark or header: "INCOMPLETE - CLIENT DELAY"
-   - Document scope limitations in each artifact
-
-4. **Proceed to Delivery Prep**
-   - Continue to Scenario 5 with partial artifacts
-
-### MODULE 7C — Send Auto-Close Notification
-
-**Subject:**
+Add to each finding:
 
 ```
-Sprint Transitioned to Partial Delivery — Client Access Not Provided
+Constraint: Client access delay
 ```
 
-**Body:**
-
-```
-Your Collapse-Ready Sprint has transitioned to partial delivery mode.
-
-REASON
-
-Required access was not provided within the specified timeline.
-
-WHAT THIS MEANS
-
-• Findings will be based on intake information only
-• All artifacts will be marked "INCOMPLETE - CLIENT DELAY"
-• Scope limitations will be documented throughout
-• Delivery will occur on {{delivery_date}} as scheduled
-• Full engagement fee remains due
-
-This is not a judgment — it is the enforcement of clearly stated terms.
-
-The sprint terms stated: "Client delays do not extend sprint timelines."
-
-If you believe this is an error, reply within 24 hours with documentation 
-of access provided.
-
----
-Collapse-Ready Sprint
-Engagement Token: {{engagement_token}}
-Status: Partial Delivery - Client Delay
-```
-
-### MODULE 8C — Update Notion
-
-| Field | Value |
-| --- | --- |
-| Sprint Status | `Partial Delivery - Client Delay` |
-| Auto_Closed | true |
-| Auto_Close_Date | `{{now()}}` |
-| Partial_Delivery_Reason | "Access not provided" |
-
----
-
-## Partial Delivery Protocol
-
-### Document Modifications
-
-Add to each artifact header:
-
-```
-⚠️ SCOPE LIMITATION NOTICE
-
-This document was prepared with LIMITED information due to client delay 
-in providing required access.
-
-Access Requested: {{access_requested}}
-Access Received: NONE
-Days Elapsed Before Auto-Close: {{days_elapsed}}
-
-Findings are based solely on information provided during intake.
-Additional risks may exist that could not be assessed.
-```
-
-### Executive Summary Addition
+#### 2. Executive Summary Auto-Include
 
 Add section:
 
 ```
-## Engagement Limitation
+## Access Limitation Notice
 
-This assessment was completed under partial delivery protocol.
+Certain conclusions are bounded by unavailable inputs.
 
-REASON: Client did not provide required system access within 7 days of 
-sprint start.
-
-IMPACT: Findings are limited to information available at intake. 
-The following could not be assessed:
-• [List of inaccessible systems/components]
-
-RECOMMENDATION: Consider a follow-up engagement once access can be 
-provided.
+The sprint proceeded with available materials after the access window closed.
 ```
 
+#### 3. HAR Checklist Requirement
+
+Pre-delivery checklist REQUIRES:
+
+- [ ] Client delay explicitly referenced in all artifacts
+- [ ] Scope limitations documented
+- [ ] "Bounded by unavailable inputs" statement present
+
+This prevents blame reversal later.
+
 ---
 
-## Notion Schema Addition
+### SCENARIO C4 — Hard Stop at Day 14
 
-Add to CRS Clients database:
+**Scenario Name:** `CRS_C4_Hard_Stop`
 
-| Field | Type |
+**Trigger:** Scheduled (daily at 00:00 UTC)
+
+#### MODULE 1 — Trigger: Daily Schedule
+
+| Setting | Value |
 | --- | --- |
-| Access Granted | Checkbox |
-| Access Granted Date | Date |
-| Warning_1_Sent | Checkbox |
-| Warning_1_Date | Date |
-| Warning_2_Sent | Checkbox |
-| Warning_2_Date | Date |
-| Auto_Closed | Checkbox |
-| Auto_Close_Date | Date |
-| Partial_Delivery_Reason | Text |
+| App | Make → Schedule |
+| Interval | Daily at 00:00 UTC |
+
+#### MODULE 2 — Search for Expired Sprints
+
+| Setting | Value |
+| --- | --- |
+| App | Notion |
+| Action | Search objects |
+| Database | CRS Clients |
+
+**Filter:**
+
+```
+now() >= Sprint End
+AND Sprint Status ≠ "Closed"
+```
+
+#### MODULE 3 — Iterator
+
+Process each expired sprint.
+
+#### MODULE 4 — Force Ready for Delivery
+
+| Setting | Value |
+| --- | --- |
+| App | Notion |
+| Action | Update database item |
+
+**Fields:**
+
+| Field | Value |
+| --- | --- |
+| Sprint Status | `Ready for Delivery` |
+| Hard Stop Enforced | true |
+| Hard Stop Date | `{{now()}}` |
+
+#### MODULE 5 — Lock Further Client Inputs
+
+**Action:** Revoke client edit access to workspace folder (if applicable)
+
+#### MODULE 6 — Trigger Delivery Pipeline
+
+Proceed to:
+
+1. HAR checklist → verify complete
+2. Delivery package generation
+3. Deliver **as-is**
+
+**No extensions by default.**
+
+Any exception must be **manual and explicit** (operator chooses).
 
 ---
 
-## Flowchart
+## Delivery Package — Access Limitations
+
+If delay occurred, auto-append to delivery README.md:
+
+```markdown
+## Access Limitations
+
+Certain findings are bounded by unavailable inputs due to client access delays.
+
+These limitations are documented to preserve procedural integrity and prevent
+assumptions beyond observed evidence.
+```
+
+This single paragraph is legally **protective**.
+
+---
+
+## Complete Flowchart
 
 ```mermaid
 flowchart TD
-    Start[Sprint Starts] --> Day3{Day 3: Access?}
-    Day3 -->|Yes| Continue[Continue Normal Sprint]
-    Day3 -->|No| Warn1[Send Warning #1]
-    Warn1 --> Day5{Day 5: Access?}
-    Day5 -->|Yes| Continue
-    Day5 -->|No| Warn2[Send Warning #2 - FINAL]
-    Warn2 --> Day7{Day 7: Access?}
-    Day7 -->|Yes| Continue
-    Day7 -->|No| AutoClose[AUTO-CLOSE: Partial Delivery]
-    AutoClose --> Mark[Mark Artifacts Incomplete]
-    Mark --> Deliver[Deliver on Day 14]
-    Continue --> Deliver
+    T0[T0: Sprint Activated] --> SetDeadlines[C1: Set Deadlines]
+    SetDeadlines --> Monitor[C2: Monitor Every 6h]
+    
+    Monitor --> Check{Access Granted?}
+    Check -->|Yes| Continue[Normal Sprint]
+    Check -->|No| CheckDeadline{Past T0 + 72h?}
+    
+    CheckDeadline -->|No| Monitor
+    CheckDeadline -->|Yes| ClientDelay[Set: Client Delay]
+    ClientDelay --> Notice[Send: Access Window Closed]
+    Notice --> PartialMode[C3: Partial Input Mode]
+    
+    PartialMode --> FlagFindings[Flag: Constraint in Findings]
+    FlagFindings --> FlagSummary[Flag: Bounded Conclusions]
+    FlagSummary --> HARRequired[HAR: Delay Must Be Referenced]
+    
+    Continue --> Day14{Day 14 Reached?}
+    HARRequired --> Day14
+    
+    Day14 -->|No| Monitor
+    Day14 -->|Yes| HardStop[C4: Hard Stop]
+    HardStop --> ForceReady[Force: Ready for Delivery]
+    ForceReady --> LockInputs[Lock Client Inputs]
+    LockInputs --> HAR[HAR Checklist]
+    HAR --> Deliver[Deliver As-Is]
 ```
+
+---
+
+## What This Eliminates (Completely)
+
+| Client Behavior | Eliminated By |
+| --- | --- |
+| "We didn't have time to give you X" | 72h access window, documented |
+| "Can you update this now that we've sent Y?" | Hard stop at Day 14 |
+| "We assumed the sprint would pause" | Policy in LICENSE + README |
+| Soft extensions | Automatic enforcement |
+| Emotional renegotiation | System enforces, not human |
+
+**Time becomes objective.**
+
+---
+
+## System State After TDKS
+
+You now have:
+
+- Pre-purchase filtering ✅
+- Refund boundary ✅
+- Scope lock ✅
+- Adversarial review gate ✅
+- **Time enforcement** ✅
+
+Your delivery is now **inevitable** once started.
 
 ---
 
@@ -367,7 +370,7 @@ If client provides valid reason (e.g., IT approval process):
 
 1. Document the delay reason in Notion
 2. **Operator decision required** — system does NOT auto-extend
-3. If extension granted: manually update Auto_Close_Date
+3. If extension granted: manually update Access Deadline and Sprint End
 4. Extension must be documented in writing
 
 ### Partial Access Provided
@@ -378,13 +381,3 @@ If client provides some but not all access:
 2. Document scope limitations for inaccessible items
 3. Do NOT trigger auto-close if partial access is usable
 4. Mark specific findings as "Limited by access"
-
----
-
-## Why This Matters
-
-- **Prevents indefinite delays:** Client cannot slow-walk the engagement
-- **Protects your time:** Work proceeds regardless of client responsiveness
-- **Clear expectations:** Terms stated upfront, enforced consistently
-- **Professional boundary:** System enforces, not you personally
-- **Eliminates "we slowed you down" reversals:** Timeline is fixed, documented
