@@ -326,14 +326,28 @@ Fallback route (no conditions — catches all failures)
 
 **Optional Call Add-On:**
 
-The Single Call (60 min, $5,000) is displayed as an optional upsell on the Stripe Checkout page itself, not selected in the eligibility form. Configure in Stripe:
+The Single Call (60 min, $5,000) is displayed as an optional upsell on the Stripe Checkout page itself, not selected in the eligibility form.
 
-1. Create product "Single Call (60 min)" in Stripe Dashboard
-2. In Checkout Session creation, use `line_items` array with:
-   - Main product: `adjustable_quantity: false`
-   - Call add-on: `adjustable_quantity: { enabled: true, minimum: 0, maximum: 1 }`
+**Configure in Stripe Dashboard:**
 
-This lets the buyer add the call during checkout without adding form complexity.
+1. Create product "Single Call (60 min)" in Stripe Dashboard (Products → Add Product)
+2. In Make's Stripe module "Create Checkout Session", configure line items:
+
+**In Make Stripe Module Configuration:**
+
+```
+Line Items:
+  [0] price: price_MAIN_PRODUCT_ID
+      quantity: 1
+  [1] price: price_CALL_ADDON_ID
+      quantity: 0
+      adjustable_quantity:
+        enabled: true
+        minimum: 0
+        maximum: 1
+```
+
+This lets the buyer add the call during checkout without adding form complexity. The `adjustable_quantity` setting allows the buyer to toggle the add-on from 0 to 1 on the Stripe Checkout page.
 
 **Metadata (critical for downstream scenarios):**
 

@@ -196,15 +196,21 @@ See [../products/collapse_ready_sprint/templates/eligibility_gate_spec.md](../pr
 
 **Steps:**
 
-1. **Stripe: Retrieve session**
-   - Capture: client email, product, call add-on (yes/no), payment ID
-   - **Extract metadata:** `eligibility_token`, `source`
+1. **Stripe: Retrieve session (webhook trigger)**
+   - Module: Stripe → Watch Events (checkout.session.completed)
+   - **Key fields from webhook payload:**
+     - `{{1.id}}` - Stripe Checkout Session ID
+     - `{{1.customer_details.email}}` - Client email
+     - `{{1.payment_intent}}` - Payment Intent ID (use as payment reference)
+     - `{{1.metadata.eligibility_token}}` - Token from Scenario 0
+     - `{{1.metadata.source}}` - Should be "eligibility_gate"
+     - `{{1.line_items}}` - Products purchased (check for call add-on)
 
 2. **Notion: Search for eligibility record (NEW - CRITICAL)**
    - App: Notion
    - Action: Search objects (database query)
    - Database: CRS Leads
-   - Filter: `Eligibility Token = {{eligibility_token}} AND Status = "Eligible / Awaiting Payment"`
+   - Filter: `Eligibility Token = {{1.metadata.eligibility_token}} AND Status = "Eligible / Awaiting Payment"`
 
 3. **Router: Validate search result**
    - Route A (Valid): Search returned exactly 1 result → Continue to step 4
@@ -216,8 +222,9 @@ See [../products/collapse_ready_sprint/templates/eligibility_gate_spec.md](../pr
    - Database: CRS Errors (create if needed)
    - Fields:
      - Type: `ELIGIBILITY_BYPASS_ATTEMPT`
-     - Email: `{{Stripe session email}}`
-     - Payment ID: `{{payment_id}}`
+     - Email: `{{1.customer_details.email}}`
+     - Stripe Session ID: `{{1.id}}`
+     - Payment Intent: `{{1.payment_intent}}`
      - Eligibility Token: `{{eligibility_token}}` (may be empty)
      - Timestamp: `{{now()}}`
      - Details: `Payment received without valid eligibility record`
@@ -229,51 +236,63 @@ See [../products/collapse_ready_sprint/templates/eligibility_gate_spec.md](../pr
      ```
      A payment was received but no matching eligibility record exists.
      
-     Email: {{email}}
-     Payment ID: {{payment_id}}
-     Eligibility Token: {{eligibility_token}}
+     Email: {{1.customer_details.email}}
+     Stripe Session ID: {{1.id}}
+     Payment Intent: {{1.payment_intent}}
+     Eligibility Token: {{1.metadata.eligibility_token}}
      
      Action required: Review payment and either:
      1. Refund via Stripe Dashboard
      2. Manually create eligibility record if legitimate
      ```
 
-3B-3. **Make: Throw error (stop execution)**
-   - Use Make's built-in error handling
-   - Error type: `RuntimeError`
-   - Message: `No valid eligibility record for token: {{eligibility_token}}`
+3B-3. **Make: Stop scenario with error**
+   - Module: **Tools → Set variable** (for logging) then **Error handler**
+   - In Make, add an Error Handler to the Notion search module
+   - Configure: "Resume" = No (scenario stops)
+   - Or use: **Router with fallback** → **Break** module
+   - The Break module stops execution and optionally rolls back previous steps
 
 **CONTINUE PATH (Route A):**
 
 4. **Make: Generate intake token**
-   - UUID for engagement tracking
+   - Module: Tools → Generate UUID
    - Store in variable: `intake_token`
 
 5. **Notion: Update lead record**
-   - Find record from step 2
+   - Find record from step 2 (use `{{2.id}}` from search result)
    - Update fields:
      - Status: `Converted`
      - Converted At: `{{now()}}`
-     - Stripe Payment ID: `{{payment_id}}`
+     - Stripe Session ID: `{{1.id}}`
+     - Payment Intent: `{{1.payment_intent}}`
      - Intake Token: `{{intake_token}}`
 
 6. **Tally: Generate unique intake link**
-   - Prefill: email, intake token, purchase ID, eligibility token
+   - Base URL: `https://tally.so/r/[intake-form-id]`
+   - Prefill parameters:
+     - `email={{1.customer_details.email}}`
+     - `intake_token={{intake_token}}`
+     - `eligibility_token={{1.metadata.eligibility_token}}`
+     - `stripe_session={{1.id}}`
 
 7. **Gmail: Send "Sprint Intake Required" email**
+   - To: `{{1.customer_details.email}}`
    - Subject: `Collapse-Ready Sprint — Intake Required (48h)`
    - Body: intake link, deadline, refund policy, constraint reminder
 
 8. **Notion: Create client record**
    - Database: CRS Clients
    - Fields:
-     - Client Name: (from Stripe session)
-     - Email: `{{email}}`
-     - Stripe Payment ID: `{{payment_id}}`
-     - Eligibility Token: `{{eligibility_token}}`
+     - Client Name: `{{1.customer_details.name}}`
+     - Email: `{{1.customer_details.email}}`
+     - Stripe Session ID: `{{1.id}}`
+     - Payment Intent: `{{1.payment_intent}}`
+     - Eligibility Token: `{{1.metadata.eligibility_token}}`
      - Intake Token: `{{intake_token}}`
      - Intake Status: `Pending`
      - Sprint Status: `Not Started`
+     - Call Add-On: (check if line_items includes call product)
 
 ```mermaid
 flowchart TD
