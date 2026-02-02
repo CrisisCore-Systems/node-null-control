@@ -205,7 +205,7 @@ Auto-Close Date: {{auto_close_date}}
 | --- | --- |
 | Warning_2_Sent | true |
 | Warning_2_Date | `{{now()}}` |
-| Auto_Close_Date | `{{now() + 48h}}` |
+| Auto_Close_Date | `{{addHours(now; 48)}}` |
 
 ---
 
