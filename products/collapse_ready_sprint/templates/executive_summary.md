@@ -202,6 +202,16 @@ For questions about this assessment:
 
 ---
 
+## 10. Evaluation Notice
+
+> This document is designed to be inspected, tested, and challenged.
+>
+> Acceptance is not required for validity.
+>
+> Disagreement should be documented, not negotiated.
+
+---
+
 _This document is part of the Collapse-Ready Sprint delivery package._
 
 _Document Hash: {{document_hash}}_

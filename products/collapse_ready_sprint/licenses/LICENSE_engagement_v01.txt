@@ -96,17 +96,17 @@ Provider is NOT liable for:
 
 ---
 
-8. DISAGREEMENT CONTAINMENT
+8. DISAGREEMENT & EVALUATION
 
-Disagreement does not invalidate delivery.
+Findings represent bounded analysis under explicitly stated assumptions and scope.
 
-All findings represent bounded analysis under stated assumptions. If Client 
-disagrees with conclusions, Client must document alternate assumptions in 
-writing. Alternate conclusions require alternate assumptions, which must be 
-documented separately.
+Disagreement with conclusions does not invalidate delivery.
+
+Alternate conclusions require alternate assumptions, which must be documented 
+separately.
 
 Provider is not obligated to:
-- Revise conclusions based on disagreement alone
+- Revise conclusions to accommodate preference, interpretation, or external pressure
 - Engage in rebuttal cycles
 - Modify findings without new evidence
 

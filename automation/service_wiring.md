@@ -127,53 +127,64 @@ Sprint starts when workspace + documents are created. This is the refund lock po
 
 ## 4) End-to-End Automation Scenarios
 
-### Scenario 0 — Pre-Purchase Eligibility Gate (Critical)
+### Scenario 0 — Pre-Purchase Eligibility Gate (Make: Eligibility_Gate)
 
-**Purpose:** Filter unqualified prospects before payment moves.
+**Purpose:** Filter unqualified prospects before payment moves. Block bad fits, reduce refunds, eliminate credential objections upfront.
 
 **Trigger:** `Tally → Eligibility Form Submitted`
 
-**Steps:**
+**Eligibility Logic (Router):**
 
-1. **Make: Validate eligibility responses**
-   - Check disqualification criteria (see eligibility_gate_spec.md)
-   - System ready? Access available? Communication fit? Timeline fit?
+Eligible IF ALL TRUE:
+- Access ≠ "No"
+- Communication = Async-only + Written deliverables only
+- Scope acknowledged (both checkboxes)
+- Evaluation standard acknowledged (both checkboxes)
+- Credentials requirement = "No"
+- Final acknowledgement checked
 
-2. **Router**
-   - If ❌ disqualified → Rejection flow
-   - If ✅ qualified → Checkout flow
+**Path A — Eligible:**
 
-3. **If Qualified:**
-   - Generate unique Stripe checkout session
-   - Send "You're Eligible — Complete Purchase" email
-   - Create Notion lead record (Status: Qualified)
+1. **Make: Generate unique Checkout Token**
+2. **Stripe: Create Checkout Session**
+   - Product: Collapse-Ready Systems Hardening™
+   - Add optional "Single Call" upsell
+3. **Gmail: Send "Eligible — Proceed to Checkout"**
+   - Includes Stripe link
+   - Reiterates constraints
+4. **Notion: Create Lead Record**
+   - Status = `Eligible / Awaiting Payment`
 
-4. **If Disqualified:**
-   - Send "Not a Fit Right Now" email with resources
-   - Create Notion lead record (Status: Disqualified, Reason: [specific])
+**Path B — Rejected:**
+
+1. **Gmail: Send "Not a Fit — Engagement Declined"**
+   - No apology, no debate hook
+2. **Notion: Create Lead Record**
+   - Status = `Declined (Eligibility)`
+   - Reason = [specific disqualification code]
+3. **END**
 
 ```mermaid
 flowchart TD
-    Sales[Sales Page] --> Eligibility[Eligibility Form]
-    Eligibility --> Validate[Validate Responses]
-    Validate -->|Qualified| Stripe[Generate Stripe Link]
-    Validate -->|Disqualified| Reject[Rejection Email]
-    Stripe --> Email[Send Checkout Email]
-    Email --> Notion1[Notion: Lead Qualified]
-    Reject --> Notion2[Notion: Lead Disqualified]
+    Sales[Sales Page] --> Eligibility[Eligibility Form - Tally]
+    Eligibility --> Router{Eligibility Logic}
+    Router -->|Eligible| Token[Generate Checkout Token]
+    Router -->|Disqualified| Reject[Send Rejection Email]
+    Token --> Stripe[Create Stripe Checkout Session]
+    Stripe --> Email[Send Eligible Email]
+    Email --> Notion1[Notion: Lead Eligible]
+    Reject --> Notion2[Notion: Lead Declined]
 ```
 
-**Disqualification Criteria (Hard No):**
+**What This Achieves:**
 
-- System not ready ("still building")
-- Cannot provide access
-- Needs regular calls or ongoing support
-- Needs it faster than 14 days
-- Needs compliance certification
-- Slow responsiveness (3+ days)
-- Any acknowledgment checkbox unchecked
+- Bad fits filtered before payment
+- Credential objections eliminated upfront
+- Disagreement can't spiral (scope boundary set early)
+- Refund pressure drops
+- Authority is procedural, not personal
 
-See [../products/collapse_ready_sprint/templates/eligibility_gate_spec.md](../products/collapse_ready_sprint/templates/eligibility_gate_spec.md) for full specification.
+See [../products/collapse_ready_sprint/templates/eligibility_gate_spec.md](../products/collapse_ready_sprint/templates/eligibility_gate_spec.md) for full form specification.
 
 ---
 

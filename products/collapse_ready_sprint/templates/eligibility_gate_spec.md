@@ -47,198 +47,184 @@ Make.com validates responses (Scenario 0)
 
 ---
 
+## Form Copy (Production-Ready)
+
+**Title:** Collapse-Ready Sprint — Eligibility Check
+
+**Subheading:** This engagement is artifact-based, async-only, and fixed-scope. Please confirm fit before proceeding.
+
+---
+
 ## Form Sections
 
-### Section 1: Contact Information
+### Section A — System Reality
 
-| Field | Type | Required |
-| --- | --- | --- |
-| Email | Email | Yes |
-| Organization Name | Text | No |
-| Role/Title | Text | No |
+**1. What are you asking to be reviewed?**
 
----
+| Option | Eligible |
+| --- | --- |
+| ☐ Software handling sensitive data | ✅ |
+| ☐ Evidence / documentation system under dispute or audit | ✅ |
+| ☐ Other (describe) | ✅ |
 
-### Section 2: System Readiness
+**2. Do you control access to the system?**
 
-| Field | Type | Required | Disqualifies If |
-| --- | --- | --- | --- |
-| Do you have a system ready for assessment? | Radio | Yes | "No, we're still building" |
-| Can you provide read-only access or documentation? | Radio | Yes | "No" or "We need to discuss" |
-| Is this a production or production-equivalent system? | Radio | Yes | "No, it's a prototype" |
+| Option | Eligible |
+| --- | --- |
+| ☐ Yes (repo / configs / docs) | ✅ |
+| ☐ Partial | ✅ |
+| ☐ No | ❌ AUTO-DISQUALIFY |
 
-**Options for "System Ready":**
-- Yes, it's in production
-- Yes, it's in staging/pre-production
-- No, we're still building ❌
-- Not sure (describe below)
+**3. Primary risk you're trying to reduce (select up to 2):**
 
-**Options for "Access":**
-- Yes, we can provide access
-- Yes, we can provide documentation
-- No ❌
-- We need to discuss first ❌
-
-**Options for "Production-equivalent":**
-- Yes, production
-- Yes, staging/pre-production
-- No, it's a prototype ❌
-- Not sure
+| Option | Eligible |
+| --- | --- |
+| ☐ Privacy / data exposure | ✅ |
+| ☐ Legal or regulatory scrutiny | ✅ |
+| ☐ Procedural failure (lost evidence, ambiguity) | ✅ |
+| ☐ Release risk / regressions | ✅ |
 
 ---
 
-### Section 3: Engagement Fit
+### Section B — Engagement Constraints (Hard)
 
-| Field | Type | Required | Disqualifies If |
-| --- | --- | --- | --- |
-| What is your primary goal? | Checkboxes | Yes | See below |
-| Communication preference | Radio | Yes | "We need calls" |
-| Timeline expectations | Radio | Yes | "We need it faster" |
-| Do you need compliance certification? | Radio | Yes | "Yes, we need certification" |
+**4. Communication model**
 
-**Primary Goal Options (select all that apply):**
-- [ ] Identify security vulnerabilities ✅
-- [ ] Understand data flows and risks ✅
-- [ ] Get hardening recommendations ✅
-- [ ] Validate compliance ❌ (disqualifies if ONLY this)
-- [ ] Get a security stamp/credential ❌ (disqualifies if ONLY this)
-- [ ] Due diligence for acquisition ✅
-- [ ] Pre-audit preparation ✅
+| Option | Eligible |
+| --- | --- |
+| ☐ Async-only by default | ✅ REQUIRED |
+| ☐ Written deliverables only | ✅ REQUIRED |
+| Any other selection | ❌ AUTO-DISQUALIFY |
 
-**Communication Preference:**
-- Async-only is fine (email) ✅
-- We prefer async but may need one call ✅
-- We need regular calls ❌
-- We need ongoing support ❌
+**5. Scope model**
 
-**Timeline Expectations:**
-- 14 days works for us ✅
-- 14 days is tight but acceptable ✅
-- We need it faster ❌
-- We're flexible ✅
+| Option | Eligible |
+| --- | --- |
+| ☐ Fixed scope, no creep | ✅ REQUIRED |
+| ☐ I accept that assumptions and out-of-scope items will be documented, not negotiated | ✅ REQUIRED |
 
-**Compliance Certification:**
-- No, we understand this is not certification ✅
-- We'd like artifacts to support compliance ✅
-- Yes, we need certification ❌
+**6. Evaluation standard**
+
+| Option | Eligible |
+| --- | --- |
+| ☐ I will evaluate outputs by inspection/testing, not credentials | ✅ REQUIRED |
+| ☐ I understand this is not a compliance certification | ✅ REQUIRED |
 
 ---
 
-### Section 4: Access Confirmation
+### Section C — Authority & Intent
 
-| Field | Type | Required | Disqualifies If |
-| --- | --- | --- | --- |
-| Repository access | Radio | Yes | "We cannot provide any" |
-| Third-party service documentation | Radio | Yes | N/A |
-| Responsiveness commitment | Radio | Yes | "We may be slow" |
+**7. What would make this a failure for you?** (short answer; required)
 
-**Repository Access:**
-- GitHub/GitLab read-only access ✅
-- Documentation export ✅
-- We'll need to arrange separately ✅
-- We cannot provide any ❌
+_Free text field — captures client expectations for review_
 
-**Third-party Services:**
-- Yes, we can document them ✅
-- Partially ✅
-- No ⚠️ (warning, not disqualifying)
+**8. Do you require credentials, titles, or certifications as a condition of acceptance?**
 
-**Responsiveness Commitment:**
-- We can respond within 24h during sprint ✅
-- We may need 48h ✅
-- We may be slow (3+ days) ❌
+| Option | Eligible |
+| --- | --- |
+| ☐ No | ✅ |
+| ☐ Yes | ❌ AUTO-DISQUALIFY |
 
 ---
 
-### Section 5: Acknowledgments
+### Final Acknowledgement (Required)
 
-| Field | Type | Required | Disqualifies If |
-| --- | --- | --- | --- |
-| Async communication | Checkbox | Yes | Unchecked |
-| Fixed scope | Checkbox | Yes | Unchecked |
-| 14-day timeline | Checkbox | Yes | Unchecked |
-| Written deliverables only | Checkbox | Yes | Unchecked |
+**9. I acknowledge:**
 
-**Checkbox Text:**
+- Async-only engagement
+- Fixed scope
+- Artifact-based evaluation
+- Conditional refunds (pre-sprint only)
+- No authority claims or certifications
 
-- [ ] I understand this engagement is async-only (no calls unless purchased separately)
-- [ ] I understand scope is fixed and changes require a new engagement
-- [ ] I understand the 14-day timeline is fixed
-- [ ] I understand deliverables are written documents, not certifications
+| Option | Eligible |
+| --- | --- |
+| ☐ I agree | ✅ REQUIRED |
+| Unchecked | ❌ AUTO-DISQUALIFY |
 
 ---
 
-## Disqualification Logic
+## Eligibility Logic (Make Router)
+
+**Eligible IF ALL TRUE:**
+
+| Condition | Check |
+| --- | --- |
+| Access control | ≠ "No" |
+| Communication model | = "Async-only by default" AND "Written deliverables only" |
+| Scope acknowledged | Both scope checkboxes checked |
+| Evaluation standard | Both evaluation checkboxes checked |
+| Credentials requirement | = "No" |
+| Final acknowledgement | Checked |
+
+**Else: REJECT**
 
 ### Automatic Disqualification (Hard No)
 
-Reject if ANY of these:
+Reject immediately if ANY of these:
 
-| Condition | Reason |
-| --- | --- |
-| System not ready | "No, we're still building" |
-| Cannot provide access | "No" or "We need to discuss" |
-| Prototype only | "No, it's a prototype" |
-| Goal is only certification | Only "Validate compliance" selected |
-| Goal is only credential | Only "Get a security stamp" selected |
-| Needs regular calls | "We need regular calls" |
-| Needs ongoing support | "We need ongoing support" |
-| Needs it faster | "We need it faster" |
-| Needs certification | "Yes, we need certification" |
-| Cannot provide any repo access | "We cannot provide any" |
-| Slow responsiveness | "We may be slow (3+ days)" |
-| Any acknowledgment unchecked | Missing required understanding |
+| Condition | Field | Value |
+| --- | --- | --- |
+| No system access control | Q2 | "No" |
+| Requires synchronous communication | Q4 | Missing either checkbox |
+| Requires credentials | Q8 | "Yes" |
+| Final acknowledgement missing | Q9 | Unchecked |
 
-### Warning (Proceed with Caution)
+### Warning Flags (Proceed with Caution)
 
 Flag but allow if:
 
-| Condition | Warning |
+| Condition | Action |
 | --- | --- |
-| Third-party services partial | "Partially documented" |
-| Not sure about system status | "Not sure" responses |
-| May need one call | "We prefer async but may need one call" |
+| Partial system access | Note in lead record |
+| "Other" system type | Review description before checkout |
 
 ---
 
-## Automation (Make Scenario 0)
+## Automation (Make Scenario: Eligibility_Gate)
 
-### Eligible Flow
+**Trigger:** Tally → Form Submitted
 
-```mermaid
-flowchart LR
-    Tally[Tally Submission] --> Check[Check Disqualifiers]
-    Check -->|Eligible| Stripe[Generate Stripe Link]
-    Stripe --> Email[Send Checkout Email]
-    Email --> Track[Log in Notion: Lead]
-```
-
-**Steps:**
-
-1. **Tally → Make webhook**
-2. **Validate responses against disqualification rules**
-3. **If eligible:**
-   - Generate unique Stripe checkout session
-   - Send "You're Eligible — Complete Purchase" email
-   - Create Notion lead record (Status: Qualified)
-
-### Not Eligible Flow
+### Path A — Eligible
 
 ```mermaid
 flowchart LR
     Tally[Tally Submission] --> Check[Check Disqualifiers]
-    Check -->|Not Eligible| Reject[Polite Rejection]
-    Reject --> Resources[Send Resources Email]
-    Resources --> Track[Log in Notion: Disqualified]
+    Check -->|Eligible| Token[Generate Checkout Token]
+    Token --> Stripe[Create Stripe Checkout Session]
+    Stripe --> Email[Send Eligible Email]
+    Email --> Notion[Create Lead: Eligible/Awaiting Payment]
 ```
 
 **Steps:**
 
-1. **Tally → Make webhook**
-2. **Validate responses against disqualification rules**
-3. **If not eligible:**
-   - Send "Not a Fit Right Now" email with resources
-   - Create Notion lead record (Status: Disqualified, Reason: [specific])
+1. **Make: Generate unique Checkout Token**
+2. **Stripe: Create Checkout Session**
+   - Product: Collapse-Ready Systems Hardening™
+   - Add optional "Single Call" upsell
+3. **Gmail: Send "Eligible — Proceed to Checkout"**
+   - Includes Stripe link
+   - Reiterates constraints
+4. **Notion: Create Lead Record**
+   - Status = `Eligible / Awaiting Payment`
+
+### Path B — Rejected
+
+```mermaid
+flowchart LR
+    Tally[Tally Submission] --> Check[Check Disqualifiers]
+    Check -->|Not Eligible| Email[Send Rejection Email]
+    Email --> Notion[Create Lead: Declined]
+    Notion --> End[END]
+```
+
+**Steps:**
+
+1. **Gmail: Send "Not a Fit — Engagement Declined"**
+2. **Notion: Create Lead Record**
+   - Status = `Declined (Eligibility)`
+   - Reason = [specific disqualification]
+3. **END**
 
 ---
 
@@ -246,7 +232,7 @@ flowchart LR
 
 ### Eligible Email
 
-**Subject:** Collapse-Ready Sprint — You're Eligible
+**Subject:** Collapse-Ready Sprint — Eligible — Proceed to Checkout
 
 **Body:**
 
@@ -274,6 +260,7 @@ REMINDERS
 • Fixed scope, no changes mid-sprint
 • 14-day fixed timeline
 • Written deliverables only
+• Artifact-based evaluation (not credentials)
 
 If you have questions before purchasing, reply to this email.
 
@@ -281,41 +268,40 @@ If you have questions before purchasing, reply to this email.
 Collapse-Ready Sprint
 ```
 
-### Not Eligible Email
+### Rejection Email (Not a Fit)
 
-**Subject:** Collapse-Ready Sprint — Not a Fit Right Now
+**Subject:** Engagement Not a Fit — Next Steps
 
 **Body:**
 
 ```
-Thank you for your interest in the Collapse-Ready Sprint.
+Thanks for completing the eligibility check.
 
-Based on your responses, this engagement isn't the right fit at this time.
+Based on your responses, this engagement isn't a fit.
 
-REASON
+The Collapse-Ready Sprint is:
+• Async-only
+• Fixed-scope
+• Evaluated by inspectable artifacts, not credentials
 
-{{disqualification_reason}}
+If you need authority signaling, ongoing support, or certification, you'll be 
+better served by a traditional firm.
 
-WHAT YOU CAN DO INSTEAD
+This decision isn't a judgment — it's a scope boundary.
 
-{{alternative_resources}}
-
-If your situation changes, you're welcome to check eligibility again.
-
----
-Collapse-Ready Sprint
+Wishing you a clean outcome.
 ```
 
-### Disqualification Reasons + Alternatives
+**Note:** No apology. No debate hook. No alternative resources offered.
 
-| Reason | Message | Alternative |
-| --- | --- | --- |
-| System not ready | "Your system is still in development" | "Consider engaging once you have a production or staging environment" |
-| Cannot provide access | "You indicated you cannot provide system access or documentation" | "We require some form of access to perform the assessment" |
-| Needs calls | "You indicated a need for regular calls" | "This engagement is async-only; consider a consulting engagement instead" |
-| Needs certification | "You're looking for compliance certification" | "This engagement produces artifacts for evaluation, not certification" |
-| Timeline mismatch | "You need results faster than 14 days" | "Consider a shorter-scope engagement or expedited service" |
-| Slow responsiveness | "You indicated slow response times (3+ days)" | "This engagement requires timely responses to avoid delays" |
+### Disqualification Reason Mapping
+
+| Disqualifier | Internal Code |
+| --- | --- |
+| No system access control | `NO_ACCESS` |
+| Requires synchronous communication | `NEEDS_CALLS` |
+| Requires credentials for acceptance | `NEEDS_CREDENTIALS` |
+| Final acknowledgement not checked | `NO_ACKNOWLEDGEMENT` |
 
 ---
 
