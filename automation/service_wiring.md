@@ -239,19 +239,18 @@ See [../products/collapse_ready_sprint/templates/eligibility_gate_spec.md](../pr
      Email: {{1.customer_details.email}}
      Stripe Session ID: {{1.id}}
      Payment Intent: {{1.payment_intent}}
-     Eligibility Token: {{1.metadata.eligibility_token}}
+     Eligibility Token: {{ifempty(1.metadata.eligibility_token; "MISSING")}}
      
      Action required: Review payment and either:
      1. Refund via Stripe Dashboard
      2. Manually create eligibility record if legitimate
      ```
 
-3B-3. **Make: Stop scenario with error**
-   - Module: **Tools → Set variable** (for logging) then **Error handler**
-   - In Make, add an Error Handler to the Notion search module
-   - Configure: "Resume" = No (scenario stops)
-   - Or use: **Router with fallback** → **Break** module
-   - The Break module stops execution and optionally rolls back previous steps
+3B-3. **Make: Stop scenario**
+   - **Recommended approach:** Use Router fallback → Break module
+   - The Break module stops scenario execution immediately
+   - Alternative: Add Error Handler to the Notion search module with "Resume" = No
+   - Choose Break module for explicit control; Error Handler for automatic error catching
 
 **CONTINUE PATH (Route A):**
 
