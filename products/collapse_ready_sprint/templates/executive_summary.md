@@ -153,7 +153,7 @@ Title: _________________________________
 Date: _________________________________
 ```
 
-_This acknowledgment may be captured electronically via the delivery confirmation form._
+_This acknowledgment may be captured electronically via the receipt confirmation form (see email_templates.md, Scenario 6)._
 
 ---
 

@@ -86,7 +86,7 @@ If sprint closes due to client delay:
 **Body:**
 
 ```
-Your sprint started {{days_ago}} days ago, but we have not received the 
+Your sprint started {{days_since_start}} days ago, but we have not received the 
 access or documentation needed to proceed.
 
 ACTION REQUIRED

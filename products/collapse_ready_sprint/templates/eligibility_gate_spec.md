@@ -39,7 +39,7 @@ Prospect lands on sales page
        ↓
 Eligibility Gate form (Tally)
        ↓
-Automation validates responses
+Make.com validates responses (Scenario 0)
        ↓
     ├─→ Eligible → Generate Stripe checkout link → Email
     └─→ Not Eligible → Polite rejection email + resources
