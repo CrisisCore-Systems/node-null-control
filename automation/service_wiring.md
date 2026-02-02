@@ -188,38 +188,62 @@ See [../products/collapse_ready_sprint/templates/eligibility_gate_spec.md](../pr
 
 ---
 
-### Scenario 1 — Payment → Intake Gate
+### Scenario 1 — Payment → Intake Gate (CRS_01_Payment_Intake)
 
 **Trigger:** `Stripe → checkout.session.completed`
+
+**⚠️ ENFORCEMENT REQUIRED:** This scenario must validate eligibility before proceeding.
 
 **Steps:**
 
 1. **Stripe: Retrieve session**
    - Capture: client email, product, call add-on (yes/no), payment ID
+   - **Extract metadata:** `eligibility_token`, `source`
 
-2. **Make: Generate intake token**
+2. **Notion: Validate eligibility token (NEW - CRITICAL)**
+   - Search CRS Leads database
+   - Query: `Eligibility Token = {{eligibility_token}} AND Status = "Eligible / Awaiting Payment"`
+   - **If no match found → ABORT scenario**
+   - Log error, send alert to operator
+
+3. **Make: Generate intake token**
    - UUID for engagement tracking
+   - Link to eligibility token for auditability
 
-3. **Tally: Generate unique intake link**
-   - Prefill: email, token, purchase ID
+4. **Notion: Update lead record**
+   - Status: `Converted`
+   - Converted At: `{{now()}}`
+   - Stripe Payment ID: `{{payment_id}}`
 
-4. **Gmail: Send "Sprint Intake Required" email**
+5. **Tally: Generate unique intake link**
+   - Prefill: email, intake token, purchase ID
+
+6. **Gmail: Send "Sprint Intake Required" email**
    - Subject: `Collapse-Ready Sprint — Intake Required (48h)`
    - Body: intake link, deadline, refund policy, constraint reminder
 
-5. **Notion: Create client record**
-   - Fields: client name, email, Stripe payment ID
+7. **Notion: Create client record**
+   - Fields: client name, email, Stripe payment ID, eligibility token
    - Intake status: `Pending`
    - Sprint status: `Not Started`
 
 ```mermaid
 flowchart LR
-    Stripe[Stripe Webhook] --> Make[Make Scenario 1]
-    Make --> Token[Generate Token]
-    Token --> Tally[Generate Intake Link]
+    Stripe[Stripe Webhook] --> Validate{Validate Eligibility Token}
+    Validate -->|Valid| Token[Generate Intake Token]
+    Validate -->|Invalid| Abort[ABORT + Alert]
+    Token --> Update[Update Lead: Converted]
+    Update --> Tally[Generate Intake Link]
     Tally --> Gmail[Send Intake Email]
     Gmail --> Notion[Create Client Record]
 ```
+
+**What This Prevents:**
+
+- Manual Stripe links (bypassing eligibility)
+- Shared checkout URLs from ineligible prospects
+- "But I already paid" edge cases
+- Bad-faith actors who find checkout links
 
 ---
 

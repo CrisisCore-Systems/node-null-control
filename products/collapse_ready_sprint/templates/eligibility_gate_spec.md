@@ -181,98 +181,213 @@ Flag but allow if:
 
 ---
 
-## Automation (Make Scenario: Eligibility_Gate)
+## Make Scenario: CRS_00_Eligibility_Gate
 
-**Trigger:** Tally → Form Submitted
+**Scenario Name:** `CRS_00_Eligibility_Gate`
 
-### Path A — Eligible
-
-```mermaid
-flowchart LR
-    Tally[Tally Submission] --> Check[Check Disqualifiers]
-    Check -->|Eligible| Token[Generate Checkout Token]
-    Token --> Stripe[Create Stripe Checkout Session]
-    Stripe --> Email[Send Eligible Email]
-    Email --> Notion[Create Lead: Eligible/Awaiting Payment]
-```
-
-**Steps:**
-
-1. **Make: Generate unique Checkout Token**
-2. **Stripe: Create Checkout Session**
-   - Product: Collapse-Ready Systems Hardening™
-   - Add optional "Single Call" upsell
-3. **Gmail: Send "Eligible — Proceed to Checkout"**
-   - Includes Stripe link
-   - Reiterates constraints
-4. **Notion: Create Lead Record**
-   - Status = `Eligible / Awaiting Payment`
-
-### Path B — Rejected
-
-```mermaid
-flowchart LR
-    Tally[Tally Submission] --> Check[Check Disqualifiers]
-    Check -->|Not Eligible| Email[Send Rejection Email]
-    Email --> Notion[Create Lead: Declined]
-    Notion --> End[END]
-```
-
-**Steps:**
-
-1. **Gmail: Send "Not a Fit — Engagement Declined"**
-2. **Notion: Create Lead Record**
-   - Status = `Declined (Eligibility)`
-   - Reason = [specific disqualification]
-3. **END**
+**Purpose:** Block bad fits before Stripe checkout exists.
 
 ---
 
-## Email Templates
+### MODULE 1 — Trigger: Tally Form Submitted
 
-### Eligible Email
+| Setting | Value |
+| --- | --- |
+| App | Tally |
+| Event | New form response |
+| Form | Collapse-Ready Sprint — Eligibility Check |
 
-**Subject:** Collapse-Ready Sprint — Eligible — Proceed to Checkout
+**Fields to expose (IDs matter):**
 
-**Body:**
-
-```
-Thank you for completing the eligibility check.
-
-Based on your responses, the Collapse-Ready Sprint is a good fit for your needs.
-
-NEXT STEP
-
-Complete your purchase to begin:
-
-{{stripe_checkout_link}}
-
-WHAT HAPPENS AFTER PURCHASE
-
-1. You receive an intake form (48h to complete)
-2. We validate your submission
-3. Your sprint workspace is created
-4. Work begins, delivery in 14 days
-
-REMINDERS
-
-• Async-only communication
-• Fixed scope, no changes mid-sprint
-• 14-day fixed timeline
-• Written deliverables only
-• Artifact-based evaluation (not credentials)
-
-If you have questions before purchasing, reply to this email.
+| Field ID | Type | Description |
+| --- | --- | --- |
+| `system_type` | Multi-select | What is being reviewed |
+| `access_control` | Single-select | Yes / Partial / No |
+| `communication_model` | Single-select | Async-only by default / Other |
+| `scope_acknowledgement` | Checkbox | Fixed scope acceptance |
+| `credential_requirement` | Single-select | Yes / No |
+| `failure_definition` | Text | What would make this a failure |
+| `final_acknowledgement` | Checkbox | Final agreement |
+| `email` | Email | Contact email |
 
 ---
-Collapse-Ready Sprint
+
+### MODULE 2 — Normalize Inputs (Set Variables)
+
+| Setting | Value |
+| --- | --- |
+| App | Make → Tools → Set variables |
+
+**Create variables:**
+
+| Variable | Logic |
+| --- | --- |
+| `has_access` | `access_control != "No"` |
+| `async_only` | `communication_model = "Async-only by default"` |
+| `scope_ok` | `scope_acknowledgement = true` |
+| `no_credentials_required` | `credential_requirement = "No"` |
+| `acknowledged` | `final_acknowledgement = true` |
+
+---
+
+### MODULE 3 — Router: Eligibility Decision
+
+| Setting | Value |
+| --- | --- |
+| App | Make → Router |
+
+**ROUTE A — ELIGIBLE**
+
+Condition (ALL must be true):
+
+```
+has_access = true
+AND async_only = true
+AND scope_ok = true
+AND no_credentials_required = true
+AND acknowledged = true
 ```
 
-### Rejection Email (Not a Fit)
+**ROUTE B — REJECTED**
 
-**Subject:** Engagement Not a Fit — Next Steps
+Fallback route (no conditions — catches all failures)
 
-**Body:**
+---
+
+## ROUTE A — ELIGIBLE PATH
+
+### MODULE 4A — Generate Checkout Token
+
+| Setting | Value |
+| --- | --- |
+| App | Make → Tools → Generate UUID |
+| Output | `checkout_token` |
+
+**Critical:** This token becomes the single source of truth tying:
+- Eligibility
+- Payment
+- Intake
+- Sprint workspace
+
+---
+
+### MODULE 5A — Create Stripe Checkout Session
+
+| Setting | Value |
+| --- | --- |
+| App | Stripe |
+| Action | Create a Checkout Session |
+
+**Configuration:**
+
+| Parameter | Value |
+| --- | --- |
+| Mode | `payment` |
+| Line Item 1 | Product: Collapse-Ready Systems Hardening™, Price: $25,000 |
+| Line Item 2 (optional) | Product: Single Call (60 min), Price: $5,000 |
+| Success URL | `https://yourdomain.com/success?token={{checkout_token}}` |
+| Cancel URL | `https://yourdomain.com/cancel` |
+
+**Metadata (critical for downstream scenarios):**
+
+| Key | Value |
+| --- | --- |
+| `eligibility_token` | `{{checkout_token}}` |
+| `source` | `eligibility_gate` |
+
+---
+
+### MODULE 6A — Create Lead Record (Notion)
+
+| Setting | Value |
+| --- | --- |
+| App | Notion |
+| Action | Create database item |
+| Database | CRS Leads |
+
+**Fields:**
+
+| Notion Field | Value |
+| --- | --- |
+| Email | `{{email}}` |
+| Status | `Eligible / Awaiting Payment` |
+| Eligibility Token | `{{checkout_token}}` |
+| Credential Required | `No` |
+| Access Level | `{{access_control}}` |
+| Created At | `{{now()}}` |
+
+This provides auditability for downstream scenarios.
+
+---
+
+### MODULE 7A — Send "Eligible" Email
+
+| Setting | Value |
+| --- | --- |
+| App | Gmail |
+| Action | Send email |
+
+**Subject:**
+
+```
+Eligible — Proceed to Collapse-Ready Sprint Checkout
+```
+
+**Body (paste verbatim):**
+
+```
+You're eligible to proceed.
+
+This engagement is:
+• Async-only
+• Fixed-scope
+• Evaluated by inspectable artifacts, not credentials
+
+Checkout link (valid for 48 hours):
+{{Stripe Checkout URL}}
+
+Once payment is complete, you'll receive the intake form.
+
+No calls. No scope negotiation. Written deliverables only.
+```
+
+---
+
+## ROUTE B — REJECTED PATH
+
+### MODULE 4B — Create Rejection Record (Notion)
+
+| Setting | Value |
+| --- | --- |
+| App | Notion |
+| Action | Create database item |
+| Database | CRS Leads |
+
+**Fields:**
+
+| Notion Field | Value |
+| --- | --- |
+| Email | `{{email}}` |
+| Status | `Declined (Eligibility)` |
+| Rejection Reason | `Failed eligibility constraints` |
+| Created At | `{{now()}}` |
+
+---
+
+### MODULE 5B — Send Rejection Email
+
+| Setting | Value |
+| --- | --- |
+| App | Gmail |
+| Action | Send email |
+
+**Subject:**
+
+```
+Engagement Declined — Not a Fit
+```
+
+**Body (paste verbatim):**
 
 ```
 Thanks for completing the eligibility check.
@@ -284,66 +399,96 @@ The Collapse-Ready Sprint is:
 • Fixed-scope
 • Evaluated by inspectable artifacts, not credentials
 
-If you need authority signaling, ongoing support, or certification, you'll be better served by a traditional firm.
+If you require authority signaling, certification, or ongoing support, a traditional firm will serve you better.
 
-This decision isn't a judgment — it's a scope boundary.
-
-Wishing you a clean outcome.
+This decision is a scope boundary, not a judgment.
 ```
 
-**Note:** No apology. No debate hook. No alternative resources offered.
-
-### Disqualification Reason Mapping
-
-| Disqualifier | Internal Code |
-| --- | --- |
-| No system access control | `NO_ACCESS` |
-| Requires synchronous communication | `NEEDS_CALLS` |
-| Requires credentials for acceptance | `NEEDS_CREDENTIALS` |
-| Final acknowledgement not checked | `NO_ACKNOWLEDGEMENT` |
-
----
-
-## Notion Schema Addition
-
-### Leads Table
-
-| Field | Type | Values |
-| --- | --- | --- |
-| Email | Email | |
-| Organization | Text | |
-| Status | Select | Pending, Qualified, Disqualified, Converted |
-| Disqualification Reason | Text | (if applicable) |
-| Submitted At | Date | |
-| Stripe Link Sent | Checkbox | |
-| Converted At | Date | (if purchased) |
+**Note:** No reply-to. No follow-ups. No apology. No debate hook.
 
 ---
 
 ## Integration with Existing Flow
 
-The eligibility gate becomes **Scenario 0** in the automation sequence:
+### Required Change to Scenario 1 (Payment → Intake Gate)
+
+**Before (old flow):**
 
 ```
-Scenario 0: Eligibility Gate (NEW)
-       ↓
-Scenario 1: Payment → Intake Gate
-       ↓
-Scenario 2: Intake Submission → Validation
-       ...
+Stripe payment → Intake
 ```
 
-**Updated flow:**
+**After (new flow):**
 
-```mermaid
-flowchart TD
-    Sales[Sales Page] --> Eligibility[Scenario 0: Eligibility Gate]
-    Eligibility -->|Qualified| Checkout[Stripe Checkout]
-    Eligibility -->|Disqualified| Rejection[Rejection Email]
-    Checkout --> Payment[Payment Complete]
-    Payment --> S1[Scenario 1: Intake Gate]
-    S1 --> Rest[Remaining Scenarios...]
 ```
+Eligibility → Stripe → Intake
+```
+
+### Enforcement Rule
+
+In Scenario 1, **before generating intake link**, add validation:
+
+1. Confirm `eligibility_token` exists in Stripe metadata
+2. Confirm token matches a Notion record with:
+   - Status = `Eligible / Awaiting Payment`
+3. If validation fails → **abort scenario**
+
+**Add Module to Scenario 1:**
+
+| Module | App | Action |
+| --- | --- | --- |
+| New Module 1.5 | Notion | Search database |
+
+**Search criteria:**
+
+```
+Eligibility Token = {{Stripe metadata.eligibility_token}}
+AND Status = "Eligible / Awaiting Payment"
+```
+
+**If no match found:**
+
+- Do NOT generate intake link
+- Log error to Notion
+- Send alert email to operator
+
+### What This Prevents
+
+- Manual Stripe links (bypassing eligibility)
+- "But I already paid" edge cases
+- Bad-faith actors sharing checkout URLs
+
+---
+
+## Failure Modes Eliminated
+
+| Failure Mode | How It's Blocked |
+| --- | --- |
+| Credential debates | Disqualified at eligibility |
+| "Can we hop on a call?" | Async-only checkbox required |
+| Scope creep pre-payment | Fixed scope acknowledged |
+| Refund pressure | Bad fits never pay |
+| Bad-faith buyers | Explicit constraints accepted |
+| Authority-seeking orgs | Credentials question disqualifies |
+| Emotional labor | System handles rejection |
+
+**Your system now selects clients.**
+
+---
+
+## Notion Database Schema: CRS Leads
+
+| Field | Type | Values |
+| --- | --- | --- |
+| Email | Email | |
+| Status | Select | `Eligible / Awaiting Payment`, `Declined (Eligibility)`, `Converted`, `Expired` |
+| Eligibility Token | Text (UUID) | |
+| Credential Required | Checkbox | |
+| Access Level | Select | `Yes`, `Partial`, `No` |
+| Rejection Reason | Text | (if declined) |
+| Created At | Date | |
+| Converted At | Date | (if purchased) |
+| Stripe Session ID | Text | (after checkout created) |
 
 ---
 
