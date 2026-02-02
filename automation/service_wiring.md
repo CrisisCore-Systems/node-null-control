@@ -499,21 +499,167 @@ flowchart TD
 
 ---
 
-## 5) Artifact Integrity (Optional Enhancement)
+## 5) Artifact Integrity (SHA256 Hashing)
 
-Generate SHA256 hashes of delivery PDFs and include in README.
+Generate SHA256 hashes of all delivery PDFs for tamper-evident packaging.
 
-**Implementation:**
+**Full specification:** See [../products/collapse_ready_sprint/templates/artifact_integrity_spec.md](../products/collapse_ready_sprint/templates/artifact_integrity_spec.md)
 
-1. After PDF export, calculate SHA256 hash
-2. Store hashes in Make variable
-3. Include in README.md generation
+### Integration with Scenario 5
 
-**Value:**
+**Updated Module Flow:**
 
-- Demonstrates seriousness
-- Enables integrity verification
-- Professional-grade delivery
+1. **Google Docs → Export PDFs** (existing)
+2. **Calculate SHA256 hashes** (NEW)
+   - Hash each PDF file
+   - Store hashes in variables
+3. **Generate CHECKSUMS.sha256** (NEW)
+   - Create manifest file with all hashes
+4. **Generate README.md** (updated)
+   - Include hash table in README
+5. **Create ZIP package** (existing)
+6. **Calculate final ZIP hash** (NEW)
+7. **Update Notion with package hash** (NEW)
+
+### Hash Generation (Make Module)
+
+**Option 1: Google Apps Script**
+
+```javascript
+function calculateSHA256(fileId) {
+  var file = DriveApp.getFileById(fileId);
+  var blob = file.getBlob();
+  var hash = Utilities.computeDigest(
+    Utilities.DigestAlgorithm.SHA_256,
+    blob.getBytes()
+  );
+  return hash.map(function(b) {
+    return ('0' + (b & 0xFF).toString(16)).slice(-2);
+  }).join('');
+}
+```
+
+**Option 2: External API**
+
+Use Make HTTP module to call hash API service.
+
+### Manifest Format (CHECKSUMS.sha256)
+
+```
+# Collapse-Ready Sprint — Delivery Package Checksums
+# Generated: {{timestamp}}
+# Client: {{client_name}}
+# Engagement Token: {{engagement_token}}
+
+{{hash_threat_model}}  threat_model.pdf
+{{hash_data_flow_map}}  data_flow_map.pdf
+{{hash_findings_register}}  findings_register.pdf
+{{hash_pass_fail_gates}}  pass_fail_gates.pdf
+{{hash_executive_summary}}  executive_summary.pdf
+{{hash_scope_lock}}  scope_lock.pdf
+```
+
+### Notion Schema Addition
+
+| Field | Type |
+| --- | --- |
+| Delivery Package Hash | Text |
+| Hash Generated At | Date |
+
+---
+
+## 5.1) Pre-Delivery Quality Gates
+
+Before generating delivery package, validate quality checklist.
+
+**Full specification:** See [../products/collapse_ready_sprint/templates/pre_delivery_checklist.md](../products/collapse_ready_sprint/templates/pre_delivery_checklist.md)
+
+### Integration with Scenario 5
+
+Add pre-condition check before PDF export:
+
+**Module 0.5: Verify Pre-Delivery Checklist**
+
+| Setting | Value |
+| --- | --- |
+| App | Notion |
+| Action | Search objects |
+| Database | CRS Pre-Delivery Checks |
+| Filter | Client = {{client_id}} AND Checklist Status = "Complete" |
+
+**If no match:** Abort delivery, alert operator.
+
+### Checklist Categories
+
+- Section A: Completeness
+- Section B: Consistency
+- Section C: Evidence Quality
+- Section D: Hostile-Auditor Review
+- Section E: Pass/Fail Gate Integrity
+- Section F: Executive Summary Quality
+- Section G: Scope Boundary Enforcement
+- Section H: Defensive Documentation
+
+---
+
+## 5.2) Client Delay Kill Switch (Scenario 4A)
+
+Automatically close sprints when clients fail to provide required access.
+
+**Full specification:** See [../products/collapse_ready_sprint/templates/client_delay_kill_switch.md](../products/collapse_ready_sprint/templates/client_delay_kill_switch.md)
+
+### Scenario 4A — Access Monitoring
+
+**Trigger:** Daily schedule (09:00 UTC)
+
+**Flow:**
+
+```mermaid
+flowchart TD
+    Trigger[Daily Schedule] --> Search[Get Active Sprints Without Access]
+    Search --> Iterator[For Each Sprint]
+    Iterator --> Calc[Calculate Days Since Start]
+    Calc --> Router{Days Elapsed?}
+    Router -->|Day 3-4| Warn1[Send Warning #1]
+    Router -->|Day 5-6| Warn2[Send Warning #2 FINAL]
+    Router -->|Day 7+| AutoClose[Initiate Auto-Close]
+    Warn1 --> Update1[Update Notion]
+    Warn2 --> Update2[Update Notion + Set Auto-Close Date]
+    AutoClose --> MarkIncomplete[Mark Artifacts Incomplete]
+    MarkIncomplete --> Update3[Update Notion: Partial Delivery]
+```
+
+### Warning Email Subjects
+
+| Stage | Subject |
+| --- | --- |
+| Warning #1 | `Collapse-Ready Sprint — Access Required (Action Needed)` |
+| Warning #2 | `⚠️ FINAL WARNING — Access Required Within 48 Hours` |
+| Auto-Close | `Sprint Transitioned to Partial Delivery — Client Access Not Provided` |
+
+### Notion Schema Addition
+
+| Field | Type |
+| --- | --- |
+| Access Granted | Checkbox |
+| Access Granted Date | Date |
+| Warning_1_Sent | Checkbox |
+| Warning_1_Date | Date |
+| Warning_2_Sent | Checkbox |
+| Warning_2_Date | Date |
+| Auto_Closed | Checkbox |
+| Auto_Close_Date | Date |
+| Partial_Delivery_Reason | Text |
+
+### Partial Delivery Protocol
+
+If auto-close triggers:
+
+1. Mark all artifacts with "INCOMPLETE - CLIENT DELAY" notice
+2. Document scope limitations in Executive Summary
+3. Proceed to Scenario 5 with partial artifacts
+4. Full fee remains due (sprint started, work performed)
+5. No refund available
 
 ---
 
@@ -523,7 +669,7 @@ Generate SHA256 hashes of delivery PDFs and include in README.
 flowchart TD
     Sales[Sales Page] --> S0[Scenario 0: Eligibility Gate]
     S0 -->|Qualified| Checkout[Stripe Checkout]
-    S0 -->|Disqualified| Reject[Rejection + Resources]
+    S0 -->|Disqualified| Reject[Rejection Email]
     Checkout --> Payment[Payment Complete]
     Payment --> S1[Scenario 1: Intake Gate]
     S1 --> Intake[Tally Intake Form]
@@ -531,30 +677,60 @@ flowchart TD
     S2 -->|Invalid| S2A[Scenario 2A: Failed]
     S2 -->|Valid| S3[Scenario 3: Sprint Start]
     S3 --> S4[Scenario 4: Internal Execution]
-    S4 --> S5[Scenario 5: Package Generation]
+    S3 --> S4A[Scenario 4A: Access Monitor - Daily]
+    S4A -->|No Access Day 7+| AutoClose[Auto-Close: Partial Delivery]
+    S4 --> PreCheck[Pre-Delivery Checklist]
+    AutoClose --> PreCheck
+    PreCheck -->|Complete| S5[Scenario 5: Package + Hashing]
+    PreCheck -->|Incomplete| Block[Block Delivery]
     S5 --> S6[Scenario 6: Delivery & Closure]
     
     S2A -->|Retry| Intake
     S2A -->|Timeout| Refund[Refund & Close]
-    
-    S4 -->|Client Delay| Partial[Partial Delivery]
-    Partial --> S6
 ```
+
+### Scenario Summary
+
+| Scenario | Name | Trigger | Purpose |
+| --- | --- | --- | --- |
+| 0 | Eligibility Gate | Tally form | Filter bad fits before payment |
+| 1 | Payment → Intake | Stripe webhook | Validate eligibility, send intake form |
+| 2 | Intake Validation | Tally form | Validate required fields |
+| 2A | Intake Failed | Validation failure | Request corrections, deadline |
+| 3 | Sprint Start | Valid intake | Create workspace, lock refunds |
+| 4 | Internal Execution | Manual | Task management, reminders |
+| 4A | Access Monitor | Daily schedule | Enforce time-box, auto-close on delay |
+| 5 | Package Generation | Ready to deliver | PDF export, hashing, ZIP |
+| 6 | Delivery & Closure | Package ready | Send delivery, confirm receipt |
 
 ---
 
 ## 7) Notion Database Schema
 
-### Client Records Table
+### CRS Leads Table
+
+| Field | Type | Values |
+| --- | --- | --- |
+| Email | Email | |
+| Status | Select | Eligible / Awaiting Payment, Declined (Eligibility), Converted |
+| Eligibility Token | Text (UUID) | |
+| Rejection Reason | Text | (if declined) |
+| Access Level | Select | Yes, Partial, No |
+| Created At | Date | |
+| Converted At | Date | |
+| Stripe Session ID | Text | |
+
+### CRS Clients Table
 
 | Field | Type | Values |
 | --- | --- | --- |
 | Client Name | Text | |
 | Email | Email | |
+| Eligibility Token | Text (UUID) | |
 | Intake Token | Text (UUID) | |
 | Stripe Payment ID | Text | |
 | Intake Status | Select | Pending, Incomplete, Accepted, Rejected |
-| Sprint Status | Select | Not Started, Active, Ready to Deliver, Closed |
+| Sprint Status | Select | Not Started, Active, Partial Delivery, Ready to Deliver, Closed |
 | Sprint Start Date | Date | |
 | Delivery Date | Date | |
 | Call Add-On | Checkbox | |
@@ -562,13 +738,52 @@ flowchart TD
 | Drive Folder URL | URL | |
 | Delivery Link | URL | |
 | Notes | Long Text | |
+| Access Granted | Checkbox | |
+| Access Granted Date | Date | |
+| Warning_1_Sent | Checkbox | |
+| Warning_1_Date | Date | |
+| Warning_2_Sent | Checkbox | |
+| Warning_2_Date | Date | |
+| Auto_Closed | Checkbox | |
+| Auto_Close_Date | Date | |
+| Partial_Delivery_Reason | Text | |
+| Delivery Package Hash | Text | |
+| Hash Generated At | Date | |
+
+### CRS Pre-Delivery Checks Table
+
+| Field | Type | Values |
+| --- | --- | --- |
+| Client | Relation | CRS Clients |
+| Checklist Status | Select | Incomplete, Complete |
+| Section_A_Complete | Checkbox | |
+| Section_B_Complete | Checkbox | |
+| Section_C_Complete | Checkbox | |
+| Section_D_Complete | Checkbox | |
+| Section_E_Complete | Checkbox | |
+| Section_F_Complete | Checkbox | |
+| Section_G_Complete | Checkbox | |
+| Section_H_Complete | Checkbox | |
+| Final Approval Date | Date | |
+| Approver Notes | Text | |
+
+### CRS Errors Table
+
+| Field | Type | Values |
+| --- | --- | --- |
+| Type | Select | ELIGIBILITY_BYPASS_ATTEMPT, WEBHOOK_FAILURE, etc. |
+| Email | Email | |
+| Stripe Session ID | Text | |
+| Eligibility Token | Text | |
+| Details | Text | |
+| Timestamp | Date | |
 
 ### Tasks Table (Optional)
 
 | Field | Type | Values |
 | --- | --- | --- |
 | Task Name | Text | |
-| Client | Relation | Client Records |
+| Client | Relation | CRS Clients |
 | Status | Select | To Do, In Progress, Done |
 | Due Date | Date | |
 

@@ -187,7 +187,7 @@ products/
   collapse_ready_sprint/
     README.md
     templates/
-      eligibility_gate_spec.md    # Pre-purchase qualification
+      eligibility_gate_spec.md        # Pre-purchase qualification
       threat_model.md
       data_flow_map.md
       findings_register.md
@@ -198,6 +198,9 @@ products/
       refund_policy.md
       email_templates.md
       drive_structure.md
+      pre_delivery_checklist.md       # Quality gates before delivery
+      artifact_integrity_spec.md      # SHA256 hashing for delivery
+      client_delay_kill_switch.md     # Auto-close on access timeout
     runs/
       YYYY-Www/
         inputs/
