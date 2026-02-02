@@ -284,8 +284,7 @@ The Collapse-Ready Sprint is:
 • Fixed-scope
 • Evaluated by inspectable artifacts, not credentials
 
-If you need authority signaling, ongoing support, or certification, you'll be 
-better served by a traditional firm.
+If you need authority signaling, ongoing support, or certification, you'll be better served by a traditional firm.
 
 This decision isn't a judgment — it's a scope boundary.
 
