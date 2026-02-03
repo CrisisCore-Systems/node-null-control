@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Displacement Risk Atlas - Preview</title>
+    <link rel="stylesheet" href="../assets/theme.css">
+    <style>
+        /* Inline critical styles for PDF generation */
+        @page {
+            size: letter;
+            margin: 0.75in 0.75in 1in 0.75in;
+        }
+    </style>
+</head>
+<body>
+    <!-- Cover Page -->
+    <div class="cover">
+        <h1>Displacement Risk Atlas</h1>
+        <div class="subtitle">
+            Procedural analysis of 10 sectors<br>
+            approaching automation thresholds
+        </div>
+        <div class="version">Version {{ version }} - PREVIEW</div>
+        <div class="disclaimer">
+            NOT career advice. NOT financial advice.<br>
+            Pattern documentation only.
+        </div>
+        <div class="organization">CrisisCore Systems</div>
+        <div class="date">{{ build_date }}</div>
+    </div>
+
+    <!-- Preview Notice -->
+    <div class="page-break">
+        <div class="preview-notice">
+            <h2>Preview Version</h2>
+            <p><strong>This preview includes:</strong></p>
+            <ul>
+                <li>Framework overview (leverage destruction mechanism)</li>
+                <li>Sample sector analysis ({{ sample_sector.name }})</li>
+                <li>What's inside the full atlas</li>
+            </ul>
+        </div>
+
+        <h2>What's Inside the Full Atlas</h2>
+        <div class="mb-3">
+            <h3>Part 1: Complete Framework (5 pages)</h3>
+            <ul>
+                <li>Leverage Destruction Mechanism</li>
+                <li>Bargaining Power Threshold Model</li>
+                <li>Cascading Displacement Pattern</li>
+                <li>Mitigation Framework Overview</li>
+            </ul>
+        </div>
+
+        <div class="mb-3">
+            <h3>Part 2: 10 Sector Analyses (10 pages)</h3>
+            <p>Detailed analysis of sectors approaching automation thresholds:</p>
+            <ul>
+                {% for sector in all_sectors %}
+                <li>{{ sector.name }} ({{ sector.penetration }}% penetration, {{ sector.proximity }}/10 proximity)</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="mb-3">
+            <h3>Part 3: Mitigation Patterns (3 pages)</h3>
+            <ul>
+                <li>Pattern Category 1: Leverage Preservation</li>
+                <li>Pattern Category 2: Non-Commoditizable Skills</li>
+                <li>Pattern Category 3: Market Position Shifting</li>
+                <li>Pattern Category 4: Portfolio Approaches</li>
+            </ul>
+        </div>
+
+        <div class="mb-3">
+            <h3>Part 4: Data Methodology &amp; Disclaimers</h3>
+            <ul>
+                <li>Data assumptions and limitations</li>
+                <li>Source documentation</li>
+                <li>Usage guidelines</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Framework Excerpt -->
+    <div class="page-break">
+        <div class="section-header">
+            <div class="part-header">Framework Excerpt</div>
+        </div>
+
+        <section class="avoid-break">
+            <h2>Leverage Destruction Mechanism</h2>
+            <p>How automation reduces worker bargaining power:</p>
+            <ul>
+                <li>Task commoditization vs. irreplaceability</li>
+                <li>Bargaining Power = f(Task Complexity, Replacement Cost)</li>
+                <li>Threshold: When replacement cost &lt; automation cost</li>
+            </ul>
+            <p class="mb-3">
+                When automation can do your work, your bargaining power collapses.
+            </p>
+            <p class="mb-3">
+                Not because the job disappears immediately.
+                Because your leverage disappears first.
+            </p>
+        </section>
+
+        <section class="avoid-break">
+            <h2>The 50% Threshold</h2>
+            <p>
+                When &gt;50% of routine tasks in a sector can be automated,
+                worker leverage approaches zero. This creates a cascading effect:
+            </p>
+            <ul>
+                <li>Displaced workers flood adjacent markets</li>
+                <li>Supply/demand imbalance drives wages down</li>
+                <li>Junior positions disappear first</li>
+                <li>AI era: 10-20 year timelines compressed to 2-5 years</li>
+            </ul>
+        </section>
+    </div>
+
+    <!-- Sample Sector -->
+    <div class="page-break">
+        <div class="section-header">
+            <div class="part-header">Sample Sector Analysis</div>
+        </div>
+
+        <div class="sector-page">
+            <div class="sector-header">
+                <div class="sector-name">{{ sample_sector.name }}</div>
+            </div>
+
+            <div class="sector-metrics">
+                <div class="metric">
+                    <div class="metric-label">Current Automation Penetration</div>
+                    <div class="metric-value">{{ sample_sector.penetration }}%</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Threshold Proximity</div>
+                    <div class="metric-value">{{ sample_sector.proximity }}/10</div>
+                </div>
+            </div>
+
+            <div class="task-list">
+                <h4>Task Commoditization Indicators:</h4>
+                <ul>
+                    {% for task in sample_sector.routine_tasks %}
+                    <li>{{ task }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="task-list">
+                <h4>Adjacent Market Pressure Points:</h4>
+                <ul>
+                    {% for market in sample_sector.adjacent_markets %}
+                    <li>{{ market }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="timeline">
+                <h4>Timeline Estimate (procedural, not predictive):</h4>
+                <ul>
+                    <li><strong>Near-term (0-2 years):</strong> {{ sample_sector.near_term }}</li>
+                    <li><strong>Mid-term (2-5 years):</strong> {{ sample_sector.mid_term }}</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="disclaimer-box emphasis mt-4">
+            The full atlas includes 9 additional sector analyses with the same level of detail.
+        </div>
+
+        <!-- Call to Action -->
+        <div class="cta-box mt-4">
+            <div>Get the Full Displacement Risk Atlas</div>
+            <div class="price">$19 (Personal) | $99 (Commercial)</div>
+            <div class="url">forge.crisiscore.systems</div>
+        </div>
+
+        <div class="mt-4">
+            <h3>What You Get:</h3>
+            <ul>
+                <li>Complete 20-page PDF with all 10 sectors</li>
+                <li>Full framework analysis</li>
+                <li>Complete mitigation patterns</li>
+                <li>Data methodology documentation</li>
+                <li>SHA256 manifest for integrity verification</li>
+            </ul>
+        </div>
+
+        <div class="disclaimer-box mt-3">
+            NOT ADVICE. Pattern documentation only. Use at your own discretion.
+        </div>
+
+        <div class="footer-meta mt-4">
+            Preview generated: {{ generated_at }}<br>
+            Full atlas version: {{ version }}<br>
+            Contact: support@crisiscore.systems
+        </div>
+    </div>
+</body>
+</html>
