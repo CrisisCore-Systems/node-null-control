@@ -1,0 +1,117 @@
+DISPLACEMENT RISK ATLAS — COMMERCIAL USE LICENSE v1.0
+
+Copyright © 2026 CrisisCore Systems. All rights reserved.
+
+GRANT OF LICENSE
+
+CrisisCore Systems grants you a non-exclusive, non-transferable, commercial 
+use license to use the Displacement Risk Atlas ("Product") within a single 
+organization, subject to the terms and conditions set forth below.
+
+PERMITTED USES
+
+You may:
+- View, read, and study the Product for commercial purposes
+- Store the Product on organizational devices
+- Distribute the Product to employees/team members within your organization
+- Print multiple copies for internal use
+- Use insights from the Product for internal strategy, planning, and decision-making
+- Reference the Product in internal presentations and documents
+
+PROHIBITED USES
+
+You may NOT:
+- Resell, sublicense, or transfer the Product to third parties outside your organization
+- Distribute the Product publicly (e.g., post online, share via social media)
+- Use the Product as the primary basis for paid consulting or advisory services to external clients
+- Modify, adapt, or create derivative products for public sale
+- Claim the Product as your own original work
+- Remove or alter copyright notices or attributions
+
+DEFINITION OF "ORGANIZATION"
+
+For purposes of this license, "organization" means:
+- A single legal entity (company, non-profit, government agency)
+- Employees and contractors working directly for that entity
+- Does NOT include subsidiaries, affiliates, or partner organizations (each requires separate license)
+
+ATTRIBUTION
+
+If you reference or cite the Product in external communications, you must attribute 
+it to "CrisisCore Systems — Displacement Risk Atlas" and include a link to 
+forge.crisiscore.systems if applicable.
+
+DISCLAIMER OF WARRANTIES
+
+THE PRODUCT IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT.
+
+NOT ADVICE
+
+This Product is provided for informational and educational purposes only. 
+It does NOT constitute:
+
+- Career advice
+- Financial advice
+- Investment advice
+- Professional consulting services
+- Guaranteed outcomes or predictions
+- Prescriptive recommendations
+
+The Product documents observable patterns and mechanisms only. All decisions 
+based on information in the Product are made at your own risk. CrisisCore 
+Systems assumes no liability for outcomes resulting from use of this Product.
+
+LIMITATION OF LIABILITY
+
+IN NO EVENT SHALL CRISISCORE SYSTEMS BE LIABLE FOR ANY DIRECT, INDIRECT, 
+INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES ARISING OUT OF OR 
+RELATED TO THE USE OR INABILITY TO USE THE PRODUCT, EVEN IF CRISISCORE 
+SYSTEMS HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+This limitation applies to any claims for loss of profits, business interruption, 
+loss of data, or any other commercial damages or losses arising from strategic 
+decisions informed by the Product.
+
+Your sole remedy for dissatisfaction with the Product is to cease using it 
+and request a refund within 30 days of purchase.
+
+REFUND POLICY
+
+You may request a full refund within 30 days of purchase by contacting 
+support@crisiscore.systems. No questions asked.
+
+GOVERNING LAW
+
+This license shall be governed by and construed in accordance with the laws 
+of [Jurisdiction], without regard to its conflict of law provisions.
+
+TERMINATION
+
+This license is effective until terminated. Your rights under this license 
+will terminate automatically without notice if you fail to comply with any 
+term of this license. Upon termination, you must:
+
+- Destroy all copies of the Product in your organization's possession
+- Ensure all employees/team members delete their copies
+- Cease referencing the Product in any organizational materials
+
+ENTIRE AGREEMENT
+
+This license constitutes the entire agreement between you and CrisisCore 
+Systems regarding the Product and supersedes all prior or contemporaneous 
+understandings.
+
+CONTACT
+
+For questions about this license or to purchase additional licenses for 
+subsidiaries/affiliates, contact: support@crisiscore.systems
+
+---
+
+By purchasing and using the Displacement Risk Atlas under this Commercial 
+Use License, you acknowledge that you have read, understood, and agree to 
+be bound by the terms of this license.
+
+Last updated: February 2026
