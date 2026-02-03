@@ -201,6 +201,19 @@ body {
   cursor: pointer;
   color: rgba(255, 255, 255, 0.84);
 }
+.details--spaced {
+  margin-top: 1.5rem;
+}
+.details-box {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 4px;
+}
+.details-box .muted {
+  margin: 0;
+  font-size: 0.9rem;
+}
 .links {
   margin: 10px 0 0;
   padding-left: 18px;
