@@ -230,10 +230,31 @@ No funnel required.
 Optional funnel layer.
 
 ```text
-Content → value asset → product
+Content → value asset → email capture → product
+```
+
+**Example: Displacement Risk Atlas funnel**
+
+```text
+YouTube Short (pattern preview) → 
+Pinned comment → 
+Landing page (field notes signup) → 
+5-email sequence (value delivery) → 
+Product offer (Displacement Risk Atlas)
 ```
 
 Funnel design must not change content incentives.
+
+**Key principles:**
+- Content provides standalone value (no bait-and-switch)
+- Email sequence delivers genuine insights (no pure promotion)
+- Product offer is optional (continue field notes if no purchase)
+- No urgency/scarcity tactics
+- Clear unsubscribe in every email
+
+**Documentation:**
+- Email automation: [../automation/email_automation.md](../automation/email_automation.md)
+- Email sequence: [../forge/email_sequences/displacement_atlas_welcome.md](../forge/email_sequences/displacement_atlas_welcome.md)
 
 ---
 
@@ -284,7 +305,22 @@ Buyers: creators, analysts, marketers, operators, founders.
   - incentive models
   - distribution rules
 
-#### Product 3 — Signal API (future)
+#### Product 3 — Displacement Risk Atlas (NEW)
+
+- Type: data product
+- Format: PDF report (20 pages)
+- Content:
+  - Leverage destruction mechanism framework
+  - 10-sector displacement analysis
+  - Task commoditization indicators
+  - Mitigation pattern documentation
+- Price: $19 (personal), $99 (commercial)
+- Conversion surface: YouTube Shorts → Email → Product
+- Distribution: Gumroad (primary), LemonSqueezy (backup)
+- Status: Active (2026-W06)
+- Documentation: [../products/displacement_risk_atlas/README.md](../products/displacement_risk_atlas/README.md)
+
+#### Product 4 — Signal API (future)
 
 - Type: tool
 - Format: API
@@ -397,3 +433,9 @@ Choose your first product artifact:
 - Option 2 — Pattern Engine Report
 - Option 3 — Signal Dashboard
 - Option 4 — Tool prototype
+- **Option 5 — Displacement Risk Atlas** ✅ **(ACTIVE)**
+  - Status: Launched 2026-W06
+  - Format: PDF report (20 pages)
+  - Price: $19 personal, $99 commercial
+  - Conversion: YouTube Shorts → Email → Product
+  - Documentation: [../products/displacement_risk_atlas/README.md](../products/displacement_risk_atlas/README.md)

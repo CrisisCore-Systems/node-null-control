@@ -5,6 +5,7 @@ How automation connects the system end-to-end **without** breaking governance, i
 Hard boundaries: [docs/01_rules.md](../docs/01_rules.md)
 Workflow reference: [docs/02_workflow.md](../docs/02_workflow.md)
 Analytics rules: [analytics/schema.md](../analytics/schema.md)
+Email funnel automation: [email_automation.md](email_automation.md)
 
 ---
 
@@ -69,6 +70,12 @@ This repo is documentation-first; implementation can be done with any stack. The
 7. **Incident Orchestrator**
    - Monitors: warnings/restrictions, toxic comment signals
    - Output: freezes, alerts, audit trails
+
+8. **Email Funnel Automation** (NEW)
+   - Captures: email signups from landing page
+   - Delivers: 5-email nurture sequence
+   - Tracks: conversion funnel (YouTube → Email → Product)
+   - See: [email_automation.md](email_automation.md)
 
 ---
 

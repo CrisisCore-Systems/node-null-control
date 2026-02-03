@@ -4,6 +4,8 @@ The tracker is the **decision engine**: metric definitions, formulas, thresholds
 
 Governance trumps analytics: [docs/01_rules.md](../docs/01_rules.md)
 
+**YouTube Shorts extension:** [tracker_youtube_extension.md](tracker_youtube_extension.md)
+
 ---
 
 ## 0) Scope + non-negotiables
@@ -12,6 +14,7 @@ Governance trumps analytics: [docs/01_rules.md](../docs/01_rules.md)
 - **No retroactive rewriting:** do not change historic labels to fit a narrative. If taxonomy changes, map old → new.
 - **One post = one row:** each upload event gets its own row.
 - **Comparability first:** only compare samples within the same experiment block unless explicitly normalized.
+- **Platform-specific fields:** See [tracker_youtube_extension.md](tracker_youtube_extension.md) for YouTube Shorts additional fields (title, thumbnail_style, impressions, CTR, etc.)
 
 ---
 
