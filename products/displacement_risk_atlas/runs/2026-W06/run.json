@@ -3,7 +3,7 @@
   "product_id": "NNASSET-0004-displacement-risk-atlas",
   "version": "1.0",
   "build_date": "2026-02-03",
-  "status": "pending",
+  "status": "completed",
   "inputs": {
     "sectors_data": "inputs/sectors_data.csv",
     "templates": [
@@ -69,5 +69,10 @@
     "Create preview PDF (3 pages)",
     "Upload to Gumroad",
     "Test download delivery"
-  ]
+  ],
+  "build_completed_at": "2026-02-03T04:25:50Z",
+  "builder": {
+    "name": "build_displacement_atlas",
+    "version": "v1.0"
+  }
 }
