@@ -70,9 +70,9 @@
     "Upload to Gumroad",
     "Test download delivery"
   ],
-  "build_completed_at": "2026-02-03T05:10:56Z",
+  "build_completed_at": "2026-02-03T06:23:00Z",
   "builder": {
     "name": "build_displacement_atlas",
-    "version": "v1.0"
+    "version": "v1.1"
   }
 }

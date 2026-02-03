@@ -96,7 +96,8 @@ def main(argv: Sequence[str]) -> int:
     ensure_dir(out_dir)
 
     repo_root = find_repo_root(run_json_path)
-    product_dir = run_json_path.parent.parent
+    # Product directory is two levels up from run.json (products/displacement_risk_atlas/)
+    product_dir = run_json_path.parent.parent.parent
     template_dir = product_dir / "templates"
     repo_commit = git_head_commit(repo_root) or "unknown"
     generated_at = utc_now_iso()
