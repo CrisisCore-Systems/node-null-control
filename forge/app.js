@@ -10,6 +10,8 @@ function getConfig() {
     ASSETS_URL: assetsOverride || cfg.ASSETS_URL || '../monetization/assets/assets.json',
     IDENTITY_POST_URL: cfg.IDENTITY_POST_URL || null,
     SHOW_DRAFT_ASSETS: Boolean(cfg.SHOW_DRAFT_ASSETS),
+    EMAIL_SIGNUP_URL: cfg.EMAIL_SIGNUP_URL || null,
+    EMAIL_API_KEY: cfg.EMAIL_API_KEY || null,
   };
 }
 
@@ -208,4 +210,68 @@ function wireAccess() {
 document.addEventListener('DOMContentLoaded', () => {
   loadAssets();
   wireAccess();
+  
+  // ------------------------------------
+  // Email signup handler
+  // ------------------------------------
+  const emailForm = document.getElementById('email-signup');
+  const signupStatus = document.getElementById('signup_status');
+
+  if (emailForm) {
+    emailForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const email = emailForm.email.value.trim();
+      if (!email) return;
+
+      // Get UTM parameters from URL for tracking
+      const urlParams = new URLSearchParams(window.location.search);
+      const utmSource = urlParams.get('utm_source') || 'direct';
+      const utmMedium = urlParams.get('utm_medium') || 'web';
+      const utmCampaign = urlParams.get('utm_campaign') || 'field-notes';
+      const utmContent = urlParams.get('utm_content') || 'forge';
+
+      signupStatus.textContent = 'Subscribing...';
+      signupStatus.className = 'status';
+
+      try {
+        const cfg = getConfig();
+        
+        // If EMAIL_SIGNUP_URL is configured, send to server
+        if (cfg.EMAIL_SIGNUP_URL) {
+          const response = await fetch(cfg.EMAIL_SIGNUP_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              api_key: cfg.EMAIL_API_KEY,
+              email: email,
+              tags: ['displacement-atlas-sequence'],
+              fields: {
+                utm_source: utmSource,
+                utm_medium: utmMedium,
+                utm_campaign: utmCampaign,
+                utm_content: utmContent,
+              },
+            }),
+          });
+
+          if (response.ok) {
+            signupStatus.textContent = 'Success! Check your email for your first dispatch.';
+            signupStatus.className = 'status status--success';
+            emailForm.reset();
+          } else {
+            throw new Error('Signup failed');
+          }
+        } else {
+          // No endpoint configured - store locally and show message
+          signupStatus.textContent = 'Email signup not configured. Set EMAIL_SIGNUP_URL in config.js to enable server integration.';
+          signupStatus.className = 'status';
+        }
+      } catch (error) {
+        console.error('Email signup error:', error);
+        signupStatus.textContent = 'Something went wrong. Please try again.';
+        signupStatus.className = 'status';
+      }
+    });
+  }
 });
