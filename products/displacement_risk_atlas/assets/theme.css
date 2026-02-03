@@ -1,0 +1,417 @@
+/* Displacement Risk Atlas - Clinical Dossier Theme */
+
+/* ============================================
+   CLINICAL DOSSIER AESTHETIC
+   Minimal, high-legibility, regulator-ready
+   ============================================ */
+
+@page {
+  size: letter;
+  margin: 0.75in 0.75in 1in 0.75in;
+  
+  @bottom-center {
+    content: counter(page);
+    font-family: 'Courier New', monospace;
+    font-size: 9pt;
+    color: #666;
+  }
+}
+
+/* Reset and Base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  font-size: 11pt;
+  line-height: 1.6;
+  color: #1a1a1a;
+  background: white;
+}
+
+/* Typography Scale */
+h1 {
+  font-size: 24pt;
+  font-weight: bold;
+  letter-spacing: 0.5pt;
+  margin-bottom: 24pt;
+  text-transform: uppercase;
+  page-break-after: avoid;
+}
+
+h2 {
+  font-size: 14pt;
+  font-weight: bold;
+  letter-spacing: 0.3pt;
+  margin-top: 18pt;
+  margin-bottom: 12pt;
+  text-transform: uppercase;
+  page-break-after: avoid;
+  border-bottom: 1pt solid #333;
+  padding-bottom: 4pt;
+}
+
+h3 {
+  font-size: 12pt;
+  font-weight: bold;
+  margin-top: 14pt;
+  margin-bottom: 8pt;
+  page-break-after: avoid;
+}
+
+h4 {
+  font-size: 11pt;
+  font-weight: bold;
+  margin-top: 10pt;
+  margin-bottom: 6pt;
+  page-break-after: avoid;
+}
+
+p {
+  margin-bottom: 10pt;
+  text-align: left;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Lists */
+ul, ol {
+  margin-left: 20pt;
+  margin-bottom: 10pt;
+}
+
+li {
+  margin-bottom: 4pt;
+  line-height: 1.5;
+}
+
+/* Code and Monospace */
+code, .mono {
+  font-family: 'Courier New', 'Courier', monospace;
+  font-size: 10pt;
+  background: #f5f5f5;
+  padding: 1pt 3pt;
+}
+
+pre {
+  font-family: 'Courier New', 'Courier', monospace;
+  font-size: 9pt;
+  line-height: 1.4;
+  background: #f8f8f8;
+  padding: 8pt;
+  margin-bottom: 10pt;
+  border-left: 2pt solid #ccc;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 12pt;
+  font-size: 10pt;
+}
+
+th {
+  background: #f0f0f0;
+  font-weight: bold;
+  text-align: left;
+  padding: 6pt 8pt;
+  border-bottom: 2pt solid #333;
+}
+
+td {
+  padding: 6pt 8pt;
+  border-bottom: 1pt solid #ddd;
+}
+
+/* Cover Page */
+.cover {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  page-break-after: always;
+}
+
+.cover h1 {
+  font-size: 32pt;
+  margin-bottom: 20pt;
+  letter-spacing: 2pt;
+}
+
+.cover .subtitle {
+  font-size: 12pt;
+  margin-bottom: 40pt;
+  color: #555;
+  max-width: 80%;
+}
+
+.cover .version {
+  font-family: 'Courier New', monospace;
+  font-size: 10pt;
+  margin-bottom: 12pt;
+  color: #666;
+}
+
+.cover .disclaimer {
+  font-size: 10pt;
+  font-weight: bold;
+  margin-top: 30pt;
+  padding: 12pt;
+  border: 2pt solid #333;
+  max-width: 80%;
+  text-transform: uppercase;
+}
+
+.cover .organization {
+  margin-top: 50pt;
+  font-size: 11pt;
+  font-weight: bold;
+}
+
+.cover .date {
+  font-size: 10pt;
+  color: #666;
+  margin-top: 8pt;
+}
+
+/* Section Headers */
+.section-header {
+  page-break-before: always;
+  margin-bottom: 20pt;
+}
+
+.part-header {
+  font-size: 18pt;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1pt;
+  border-bottom: 3pt solid #333;
+  padding-bottom: 8pt;
+  margin-bottom: 20pt;
+}
+
+/* Sector Analysis Layout */
+.sector-page {
+  page-break-before: always;
+}
+
+.sector-header {
+  background: #f0f0f0;
+  padding: 10pt;
+  margin-bottom: 16pt;
+  border-left: 4pt solid #333;
+}
+
+.sector-name {
+  font-size: 16pt;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 8pt;
+}
+
+.sector-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12pt;
+  margin-bottom: 16pt;
+  font-family: 'Courier New', monospace;
+  font-size: 10pt;
+}
+
+.metric {
+  background: #f8f8f8;
+  padding: 8pt;
+  border-left: 2pt solid #666;
+}
+
+.metric-label {
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 9pt;
+  color: #666;
+  margin-bottom: 4pt;
+}
+
+.metric-value {
+  font-size: 14pt;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Task Lists */
+.task-list {
+  margin-bottom: 16pt;
+}
+
+.task-list h4 {
+  font-size: 11pt;
+  font-weight: bold;
+  margin-bottom: 8pt;
+  text-transform: uppercase;
+}
+
+.task-list ul {
+  margin-left: 0;
+  list-style: none;
+}
+
+.task-list li {
+  padding-left: 16pt;
+  position: relative;
+  margin-bottom: 6pt;
+}
+
+.task-list li:before {
+  content: "▪";
+  position: absolute;
+  left: 0;
+  font-weight: bold;
+}
+
+/* Timeline Section */
+.timeline {
+  background: #f8f8f8;
+  padding: 10pt;
+  margin-top: 12pt;
+  border: 1pt solid #ddd;
+}
+
+.timeline h4 {
+  margin-top: 0;
+}
+
+/* Disclaimers and Warnings */
+.disclaimer-box {
+  background: #fff;
+  border: 2pt solid #333;
+  padding: 12pt;
+  margin: 16pt 0;
+  font-weight: bold;
+}
+
+.disclaimer-box.emphasis {
+  background: #f0f0f0;
+}
+
+/* Footer Metadata */
+.footer-meta {
+  font-family: 'Courier New', monospace;
+  font-size: 8pt;
+  color: #999;
+  margin-top: 20pt;
+  padding-top: 8pt;
+  border-top: 1pt solid #ddd;
+}
+
+/* Pattern Categories */
+.pattern-category {
+  margin-bottom: 20pt;
+  page-break-inside: avoid;
+}
+
+.pattern-category h3 {
+  background: #f0f0f0;
+  padding: 8pt;
+  margin-bottom: 10pt;
+}
+
+/* About Page */
+.about-section {
+  margin-bottom: 20pt;
+}
+
+.contact-info {
+  font-family: 'Courier New', monospace;
+  font-size: 10pt;
+  background: #f8f8f8;
+  padding: 10pt;
+  margin-top: 12pt;
+}
+
+/* Preview-Specific Styles */
+.preview-notice {
+  background: #fff3cd;
+  border: 2pt solid #ffc107;
+  padding: 16pt;
+  margin: 20pt 0;
+  text-align: center;
+}
+
+.preview-notice h2 {
+  color: #856404;
+  border: none;
+  margin-bottom: 12pt;
+}
+
+.cta-box {
+  background: #333;
+  color: white;
+  padding: 16pt;
+  text-align: center;
+  margin: 20pt 0;
+  font-weight: bold;
+}
+
+.cta-box .price {
+  font-size: 18pt;
+  margin: 10pt 0;
+}
+
+.cta-box .url {
+  font-family: 'Courier New', monospace;
+  font-size: 11pt;
+  color: #ffc107;
+}
+
+/* Utility Classes */
+.page-break {
+  page-break-after: always;
+}
+
+.avoid-break {
+  page-break-inside: avoid;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-mono {
+  font-family: 'Courier New', monospace;
+}
+
+.text-uppercase {
+  text-transform: uppercase;
+}
+
+.text-muted {
+  color: #666;
+}
+
+.text-small {
+  font-size: 9pt;
+}
+
+.mb-1 { margin-bottom: 8pt; }
+.mb-2 { margin-bottom: 12pt; }
+.mb-3 { margin-bottom: 16pt; }
+.mb-4 { margin-bottom: 20pt; }
+
+.mt-1 { margin-top: 8pt; }
+.mt-2 { margin-top: 12pt; }
+.mt-3 { margin-top: 16pt; }
+.mt-4 { margin-top: 20pt; }
+
+/* Print Optimizations */
+@media print {
+  body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+}
