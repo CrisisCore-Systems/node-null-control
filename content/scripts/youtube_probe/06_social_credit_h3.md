@@ -1,66 +1,70 @@
-# Script 06 — Social Credit H3 (Contrast Hook)
+# Script 06 — Social Credit H3 (Threat-First Hook)
 
 **Vertical:** Social Credit  
-**Hook Type:** H3 (Contrast)  
-**Duration Target:** 25-30 seconds  
-**Visual Style:** Abstract comparison visuals, dual systems, parallel structures
+**Hook Type:** H3 (Threat-First — Loss)  
+**Duration Target:** 30-35 seconds  
+**Visual Style:** Abstract ban notices, account termination graphics, silent lockout visuals
 
 ---
 
 ## Title
 
-"Social credit isn't dystopian fiction — it's platform infrastructure"
+"Banned. No explanation. No appeal."
+
+## On-Screen Text (First Frame)
+
+**BANNED WITHOUT APPEAL**
 
 ## Script
 
-**[0-2s] Hook (Contrast)**  
-Social credit isn't dystopian fiction. It's platform infrastructure.
+**[0-2s] Hook (Threat-First)**  
+Banned. No explanation. No appeal.
 
-**[2-7s] Threat Framing**  
-We think of social credit as a Chinese surveillance tool.  
-But every platform you use operates on the same principle:  
-Behavior tracking. Reputation scoring. Access control.
+**[2-4s] Immediate Follow-Up**  
+That's not dystopia. That's platform policy.
 
-**[7-16s] Disturbing Insight**  
-Uber bans riders with low ratings.  
-PayPal freezes accounts based on transaction patterns.  
-Twitter shadow-bans users without explanation.  
-Your reputation score determines your platform access.
+**[4-12s] Mechanism (Aggressive)**  
+Uber bans riders without telling them why.  
+PayPal freezes accounts based on patterns.  
+Twitter shadow-bans without notification.  
+Your access disappears. The reason doesn't.
 
-**[16-24s] Escalation**  
-The mechanism is identical.  
-Centralized or distributed doesn't matter.  
-If your score drops, your access shrinks.  
-The enforcement is just outsourced to private companies.
+**[12-22s] Escalation**  
+There's no court. No due process.  
+One algorithmic flag and you're out.  
+Years of history. Gone.  
+Reputation you built. Erased.
 
-**[24-28s] Open Loop (Unresolved)**  
-This isn't coming.  
-It's already here.
+**[22-30s] Pattern Stamp (Open Loop)**  
+This isn't social credit with Chinese characteristics.  
+It's social credit with terms of service.
 
-We just call it "community standards."
+Same mechanism. Different branding.
 
 ---
 
 ## Production Notes
 
 - **Voice:** Neutral synthetic (ElevenLabs or similar)
-- **Pacing:** Deliberate, analytical
-- **Visuals:** Platform interfaces → ban notices → access denied screens (abstract)
-- **Subtitles:** Auto-generated, white text, black outline
+- **Pacing:** Fast hook, aggressive body, deliberate close
+- **Visuals:** Ban notices appearing → account termination → blank screens (abstract)
+- **Subtitles:** Bold text, high contrast
+- **First Frame:** Must change visually in <0.5s with "BANNED WITHOUT APPEAL"
 - **End Frame:** No CTA, no logo — let it loop
 
 ## Thumbnail
 
-- Text overlay: "Already Here"
-- Visual: Social credit score card morphing into platform UI
-- Color scheme: Dark red/grey tones (matches infrastructure aesthetic)
+- Text overlay: "BANNED WITHOUT APPEAL"
+- Visual: Account terminated screen with gavel/no gavel imagery
+- Color scheme: Dark red/grey tones (matches enforcement aesthetic)
 
 ## Metadata
 
 - **Platform:** YouTube Shorts
 - **Vertical:** Social Credit
-- **Hook Type:** H3 (Contrast)
-- **Target Duration:** 28s
+- **Hook Type:** H3 (Threat-First — Loss)
+- **Target Duration:** 30s
+- **Target Metrics:** ≥35% stayed-to-watch, ≥15s avg view duration
 - **Experiment Block ID:** YT-PROBE-2026-W07
 
 ## Compliance Check

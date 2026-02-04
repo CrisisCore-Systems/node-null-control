@@ -8,17 +8,38 @@
 
 ## Test Matrix Structure
 
-**3 Verticals × 3 Hooks = 9 Scripts**
+**3 Verticals × 3 Hook Types = 9 Scripts**
 
 ### Verticals
 1. **AI Displacement** — Labor market disruption mechanisms
 2. **Social Credit** — Distributed reputation/scoring systems
 3. **Attention Economy** — Infrastructure of modern attention capture
 
-### Hook Types
-- **H1 (Question)** — Open-ended question hook (curiosity)
-- **H2 (Statement)** — Bold declarative statement (tension)
-- **H3 (Contrast)** — "Not X. Actually Y." (pattern interrupt)
+### Hook Types (Threat-First Strategy)
+
+Based on analytics feedback showing that threat-first framing dramatically improves stayed-to-watch rates:
+
+- **H1 (Consequence)** — Open with an immediate consequence ("Your job doesn't disappear. It gets cheaper.")
+- **H2 (Trap)** — Open with a trap the viewer is already in ("The ladder is being pulled up.")
+- **H3 (Loss)** — Open with something already lost ("You still have a job. You just lost your leverage.")
+
+### Hook Rules (Mandatory)
+
+- First sentence must be **under 10 words**
+- **No questions** as hooks (questions don't stop thumbs)
+- **No corrections** ("Why X is wrong", "People misunderstand...")
+- **No academic language** ("mechanism", "paradigm", "metric")
+- First frame must **change visually in <0.5s** with one brutal sentence
+- Open with **consequence/trap/loss/timeline** — corrections come later
+
+### Anti-Patterns (Kill These)
+
+❌ "Why X is the wrong metric"  
+❌ "People misunderstand..."  
+❌ "The real issue is..."  
+❌ "What if..." (rhetorical questions)  
+❌ Calm framing in first 0.8 seconds  
+❌ Analytical language that requires effort to process
 
 ---
 
@@ -36,10 +57,10 @@ Examples:
 ## Test Objectives
 
 ### Primary Metrics (per docs/02_workflow.md)
-- Completion %
-- Average view duration
-- Loop/replay rate
-- Saves + Shares (distribution intent)
+- **Stayed to watch:** ≥35% (critical)
+- **Avg view duration:** ≥15s on ~30s video
+- **Loop/replay rate**
+- **Saves + Shares** (distribution intent)
 
 ### Secondary Signals
 - Impressions (YouTube Studio metric)
@@ -69,6 +90,24 @@ Examples:
 
 **Publishing schedule:** 1 video every 2-3 days  
 **Capture windows:** 2h, 24h, 48h
+
+---
+
+## On-Screen Text Requirements
+
+Each script includes mandatory first-frame text:
+
+| Script | First Frame Text |
+| :--- | :--- |
+| 01 | WAGES COLLAPSE FIRST |
+| 02 | THE LADDER IS GONE |
+| 03 | LEVERAGE DESTROYED |
+| 04 | ACCESS DENIED |
+| 05 | YOU'RE BEING SCORED |
+| 06 | BANNED WITHOUT APPEAL |
+| 07 | YOU'RE THE INVENTORY |
+| 08 | ENGINEERED COMPULSION |
+| 09 | RAGE GETS REWARDED |
 
 ---
 

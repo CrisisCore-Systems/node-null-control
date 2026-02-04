@@ -1,66 +1,70 @@
-# Script 04 — Social Credit H1 (Question Hook)
+# Script 04 — Social Credit H1 (Threat-First Hook)
 
 **Vertical:** Social Credit  
-**Hook Type:** H1 (Question)  
-**Duration Target:** 25-30 seconds  
-**Visual Style:** Abstract network graphs, scoring interfaces, social connectivity visuals
+**Hook Type:** H1 (Threat-First — Consequence)  
+**Duration Target:** 30-35 seconds  
+**Visual Style:** Abstract scoring interfaces, access denied graphics, network surveillance visuals
 
 ---
 
 ## Title
 
-"What if your reputation became a credit score?"
+"One bad review. Access denied."
+
+## On-Screen Text (First Frame)
+
+**ACCESS DENIED**
 
 ## Script
 
-**[0-2s] Hook (Question)**  
-What if your reputation became a credit score?
+**[0-2s] Hook (Threat-First)**  
+One bad review. Access denied.
 
-**[2-7s] Threat Framing**  
-China's social credit system isn't just surveillance.  
-It's a distributed reputation mechanism that determines access.  
-Travel. Loans. Jobs. School enrollment.
+**[2-4s] Immediate Follow-Up**  
+That's not dystopian fiction. That's how platforms work now.
 
-**[7-16s] Disturbing Insight**  
-The West doesn't call it social credit.  
-But LinkedIn endorsements, GitHub contributions, Twitter engagement metrics—  
-They all function as reputation collateral.  
-Your social graph determines your opportunities.
+**[4-12s] Mechanism (Aggressive)**  
+Your reputation is already a credit score.  
+LinkedIn ranks your employability.  
+Airbnb controls your travel access.  
+Uber can lock you out permanently.
 
-**[16-24s] Escalation**  
-The difference isn't the mechanism.  
-It's who controls the ledger.  
-In China, it's centralized.  
-Here, it's fragmented across platforms.
+**[12-22s] Escalation**  
+These aren't just ratings.  
+They're gatekeeping mechanisms.  
+One controversial post. One gap in your history.  
+And doors start closing.
 
-**[24-28s] Open Loop (Unresolved)**  
-Either way, your behavior is being scored.  
-And the score determines access.
+**[22-30s] Pattern Stamp (Open Loop)**  
+China calls it social credit.  
+We call it community standards.
 
-The architecture is the same.
+The architecture is identical. The enforcement is just privatized.
 
 ---
 
 ## Production Notes
 
 - **Voice:** Neutral synthetic (ElevenLabs or similar)
-- **Pacing:** Steady, analytical tone
-- **Visuals:** Network graphs → scoring dashboards → access gates (abstract)
-- **Subtitles:** Auto-generated, white text, black outline
+- **Pacing:** Fast hook, aggressive body, deliberate close
+- **Visuals:** Score dropping → access denied screens → locked doors (abstract)
+- **Subtitles:** Bold text, high contrast
+- **First Frame:** Must change visually in <0.5s with "ACCESS DENIED"
 - **End Frame:** No CTA, no logo — let it loop
 
 ## Thumbnail
 
-- Text overlay: "Reputation = Credit Score"
-- Visual: Person silhouette with floating numerical score above head
+- Text overlay: "ACCESS DENIED"
+- Visual: Digital lock with reputation score below threshold
 - Color scheme: Dark green/grey tones (matches surveillance aesthetic)
 
 ## Metadata
 
 - **Platform:** YouTube Shorts
 - **Vertical:** Social Credit
-- **Hook Type:** H1 (Question)
-- **Target Duration:** 28s
+- **Hook Type:** H1 (Threat-First — Consequence)
+- **Target Duration:** 30s
+- **Target Metrics:** ≥35% stayed-to-watch, ≥15s avg view duration
 - **Experiment Block ID:** YT-PROBE-2026-W07
 
 ## Compliance Check

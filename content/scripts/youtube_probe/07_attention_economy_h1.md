@@ -1,66 +1,70 @@
-# Script 07 — Attention Economy H1 (Question Hook)
+# Script 07 — Attention Economy H1 (Threat-First Hook)
 
 **Vertical:** Attention Economy  
-**Hook Type:** H1 (Question)  
-**Duration Target:** 25-30 seconds  
-**Visual Style:** Abstract feed interfaces, infinite scroll visuals, engagement metrics
+**Hook Type:** H1 (Threat-First — Consequence)  
+**Duration Target:** 30-35 seconds  
+**Visual Style:** Abstract auction interfaces, bidding graphics, inventory tagging visuals
 
 ---
 
 ## Title
 
-"Why does every app feel like a slot machine?"
+"You're being auctioned every 8 seconds."
+
+## On-Screen Text (First Frame)
+
+**YOU'RE THE INVENTORY**
 
 ## Script
 
-**[0-2s] Hook (Question)**  
-Why does every app feel like a slot machine?
+**[0-2s] Hook (Threat-First)**  
+You're being auctioned every 8 seconds.
 
-**[2-7s] Threat Framing**  
-It's not an accident.  
-Pull-to-refresh. Infinite scroll. Variable rewards.  
-These are deliberate mechanisms borrowed from gambling psychology.
+**[2-4s] Immediate Follow-Up**  
+Every scroll. Every pause. Another bid.
 
-**[7-16s] Disturbing Insight**  
-Social platforms don't sell products.  
-They sell your attention to advertisers.  
-The longer you stay, the more they earn.  
-So they architect compulsion loops into the interface.
+**[4-12s] Mechanism (Aggressive)**  
+Advertisers bid on your eyeballs in real-time.  
+The algorithm sells to the highest bidder.  
+You see the ad. Platform gets paid.  
+That's the entire business model.
 
-**[16-24s] Escalation**  
-Red notification badges. Autoplay. Endless feeds.  
-Every design choice optimizes for one metric:  
-Time on platform.  
-Your attention is the product.
+**[12-22s] Escalation**  
+The feed isn't designed for relevance.  
+It's designed for extraction.  
+Rage keeps you scrolling. Outrage keeps you clicking.  
+Whatever works, gets promoted.
 
-**[24-28s] Open Loop (Unresolved)**  
-You're not the customer.  
-You're the inventory.
+**[22-30s] Pattern Stamp (Open Loop)**  
+You're not browsing. You're being farmed.  
+You're not the customer. You're the product.
 
-And the auction never stops.
+And the auction runs every time you open the app.
 
 ---
 
 ## Production Notes
 
 - **Voice:** Neutral synthetic (ElevenLabs or similar)
-- **Pacing:** Steady, analytical
-- **Visuals:** App interfaces → slot machine mechanics → attention metrics (abstract)
-- **Subtitles:** Auto-generated, white text, black outline
+- **Pacing:** Fast hook, aggressive body, deliberate close
+- **Visuals:** Auction counters → bidding wars → inventory tags on users (abstract)
+- **Subtitles:** Bold text, high contrast
+- **First Frame:** Must change visually in <0.5s with "YOU'RE THE INVENTORY"
 - **End Frame:** No CTA, no logo — let it loop
 
 ## Thumbnail
 
-- Text overlay: "Apps = Slot Machines"
-- Visual: Phone screen with slot machine reels instead of feed
-- Color scheme: Dark neon/grey tones (matches gambling aesthetic)
+- Text overlay: "YOU'RE THE INVENTORY"
+- Visual: User silhouette with price tags and bid counters
+- Color scheme: Dark neon/grey tones (matches marketplace aesthetic)
 
 ## Metadata
 
 - **Platform:** YouTube Shorts
 - **Vertical:** Attention Economy
-- **Hook Type:** H1 (Question)
-- **Target Duration:** 28s
+- **Hook Type:** H1 (Threat-First — Consequence)
+- **Target Duration:** 30s
+- **Target Metrics:** ≥35% stayed-to-watch, ≥15s avg view duration
 - **Experiment Block ID:** YT-PROBE-2026-W08
 
 ## Compliance Check

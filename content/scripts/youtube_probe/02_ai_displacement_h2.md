@@ -1,64 +1,70 @@
-# Script 02 — AI Displacement H2 (Statement Hook)
+# Script 02 — AI Displacement H2 (Threat-First Hook)
 
 **Vertical:** AI Displacement  
-**Hook Type:** H2 (Statement)  
-**Duration Target:** 25-30 seconds  
-**Visual Style:** Abstract data visualization, automation metrics, threshold graphics
+**Hook Type:** H2 (Threat-First — Trap)  
+**Duration Target:** 30-35 seconds  
+**Visual Style:** Abstract pipeline graphics, broken ladder visuals, closed door imagery
 
 ---
 
 ## Title
 
-"Junior roles are disappearing — but not how you think"
+"The ladder is being pulled up."
+
+## On-Screen Text (First Frame)
+
+**THE LADDER IS GONE**
 
 ## Script
 
-**[0-2s] Hook (Statement)**  
-Junior roles are disappearing. But not how you think.
+**[0-2s] Hook (Threat-First)**  
+The ladder is being pulled up.
 
-**[2-7s] Threat Framing**  
-Companies aren't firing people.  
-They're just not replacing them when they leave.  
-The hiring pipeline is drying up.
+**[2-4s] Immediate Follow-Up**  
+And no one's telling the people still climbing.
 
-**[7-16s] Disturbing Insight**  
-AI handles the onboarding tasks that used to train juniors.  
-Code reviews. Documentation. Bug fixes.  
-The learning ladder is being removed while people are still on it.
+**[4-12s] Mechanism (Aggressive)**  
+Companies aren't firing juniors.  
+They're just not hiring new ones.  
+AI handles the tasks that used to train people.  
+The entry points are closing.
 
-**[16-24s] Escalation**  
+**[12-22s] Escalation**  
+Code reviews. Documentation. Research.  
+The work that built careers now gets automated.  
 No junior roles means no path to senior positions.  
-The system doesn't collapse suddenly.  
-It just stops creating new entry points.
+The pipeline doesn't break — it disappears.
 
-**[24-28s] Open Loop (Unresolved)**  
-This applies to law. Medicine. Finance.  
-Any field where leverage comes from repetition.
+**[22-30s] Pattern Stamp (Open Loop)**  
+Law. Medicine. Finance. Engineering.  
+Every field with repetitive entry work faces the same trap.
 
-The bottleneck is tightening.
+By the time you notice, the path is already gone.
 
 ---
 
 ## Production Notes
 
 - **Voice:** Neutral synthetic (ElevenLabs or similar)
-- **Pacing:** Steady, methodical delivery
-- **Visuals:** Hiring pipeline graphics → empty interview rooms → closed doors (abstract)
-- **Subtitles:** Auto-generated, white text, black outline
+- **Pacing:** Fast hook, aggressive body, deliberate close
+- **Visuals:** Ladder being removed → closed doors → empty pipelines (abstract)
+- **Subtitles:** Bold text, high contrast
+- **First Frame:** Must change visually in <0.5s with "THE LADDER IS GONE"
 - **End Frame:** No CTA, no logo — let it loop
 
 ## Thumbnail
 
-- Text overlay: "Junior Roles Are Disappearing"
-- Visual: Fading silhouettes ascending a ladder that ends mid-air
-- Color scheme: Dark red/grey tones (matches tension aesthetic)
+- Text overlay: "THE LADDER IS GONE"
+- Visual: Broken ladder with silhouette reaching for missing rungs
+- Color scheme: Dark red/grey tones (matches urgency aesthetic)
 
 ## Metadata
 
 - **Platform:** YouTube Shorts
 - **Vertical:** AI Displacement
-- **Hook Type:** H2 (Statement)
-- **Target Duration:** 28s
+- **Hook Type:** H2 (Threat-First — Trap)
+- **Target Duration:** 30s
+- **Target Metrics:** ≥35% stayed-to-watch, ≥15s avg view duration
 - **Experiment Block ID:** YT-PROBE-2026-W06
 
 ## Compliance Check

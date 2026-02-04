@@ -1,67 +1,70 @@
-# Script 08 — Attention Economy H2 (Statement Hook)
+# Script 08 — Attention Economy H2 (Threat-First Hook)
 
 **Vertical:** Attention Economy  
-**Hook Type:** H2 (Statement)  
-**Duration Target:** 25-30 seconds  
-**Visual Style:** Abstract engagement metrics, algorithmic flows, attention graphs
+**Hook Type:** H2 (Threat-First — Trap)  
+**Duration Target:** 30-35 seconds  
+**Visual Style:** Abstract slot machine mechanics, compulsion loop graphics, gambling interface visuals
 
 ---
 
 ## Title
 
-"Your attention is being auctioned in real-time"
+"That app is a slot machine."
+
+## On-Screen Text (First Frame)
+
+**ENGINEERED COMPULSION**
 
 ## Script
 
-**[0-2s] Hook (Statement)**  
-Your attention is being auctioned in real-time.
+**[0-2s] Hook (Threat-First)**  
+That app is a slot machine.
 
-**[2-7s] Threat Framing**  
-Every time you open an app, an auction runs.  
-Advertisers bid on your eyeballs.  
-The algorithm sells to the highest bidder.  
-You see the ad. The platform gets paid.
+**[2-4s] Immediate Follow-Up**  
+Same psychology. Same mechanics. Different interface.
 
-**[7-16s] Disturbing Insight**  
-The feed isn't chronological because that's inefficient.  
-It's algorithmic because that maximizes attention extraction.  
-Every post, every video, every notification—  
-Optimized to keep you scrolling.
+**[4-12s] Mechanism (Aggressive)**  
+Pull-to-refresh is a lever pull.  
+Infinite scroll eliminates stopping points.  
+Variable rewards trigger dopamine.  
+These aren't features. They're compulsion loops.
 
-**[16-24s] Escalation**  
-This isn't about showing you relevant content.  
-It's about maximizing session duration.  
-Rage-bait gets engagement. Outrage gets clicks.  
-The algorithm rewards what keeps you here.
+**[12-22s] Escalation**  
+Red badges create urgency.  
+Autoplay eliminates choices.  
+The feed never ends.  
+Every design decision optimizes for one metric: time on platform.
 
-**[24-28s] Open Loop (Unresolved)**  
-You're not browsing.  
-You're being farmed.
+**[22-30s] Pattern Stamp (Open Loop)**  
+Casinos need licenses.  
+Apps just need downloads.
 
-And the harvest never ends.
+Same extraction. Zero regulation.
 
 ---
 
 ## Production Notes
 
 - **Voice:** Neutral synthetic (ElevenLabs or similar)
-- **Pacing:** Measured, methodical
-- **Visuals:** Auction counters → feed algorithms → attention graphs (abstract)
-- **Subtitles:** Auto-generated, white text, black outline
+- **Pacing:** Fast hook, aggressive body, deliberate close
+- **Visuals:** Slot machine mechanics → app interfaces → compulsion loops (abstract)
+- **Subtitles:** Bold text, high contrast
+- **First Frame:** Must change visually in <0.5s with "ENGINEERED COMPULSION"
 - **End Frame:** No CTA, no logo — let it loop
 
 ## Thumbnail
 
-- Text overlay: "Attention = Auction"
-- Visual: User silhouette with bidding price tags floating around head
-- Color scheme: Dark orange/grey tones (matches marketplace aesthetic)
+- Text overlay: "ENGINEERED COMPULSION"
+- Visual: Phone screen morphing into slot machine
+- Color scheme: Dark orange/grey tones (matches gambling aesthetic)
 
 ## Metadata
 
 - **Platform:** YouTube Shorts
 - **Vertical:** Attention Economy
-- **Hook Type:** H2 (Statement)
-- **Target Duration:** 28s
+- **Hook Type:** H2 (Threat-First — Trap)
+- **Target Duration:** 30s
+- **Target Metrics:** ≥35% stayed-to-watch, ≥15s avg view duration
 - **Experiment Block ID:** YT-PROBE-2026-W08
 
 ## Compliance Check
