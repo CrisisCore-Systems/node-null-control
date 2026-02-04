@@ -1,170 +1,88 @@
 # node-null-control
-Anonymous attention-harvesting network control plane: templates, automation, analytics, and decision systems for Ghost → Brand emergence.
 
-Start here (plain-language mental model): [docs/00_mental_model.md](docs/00_mental_model.md)
+Control plane for a persona-less content operation: schemas, decision workflow, automation scripts, and build tooling for Ghost Network artifacts.
 
-Quick start (dev + governance gates): [docs/QUICKSTART.md](docs/QUICKSTART.md)
+Start here:
 
-Contributing (pre-commit, CI, conventions): [CONTRIBUTING.md](CONTRIBUTING.md)
+- Mental model: [docs/00_mental_model.md](docs/00_mental_model.md)
+- Rules/constitution: [docs/01_rules.md](docs/01_rules.md)
+- Operations workflow: [docs/02_workflow.md](docs/02_workflow.md)
+- Quickstart (dev + gates): [docs/QUICKSTART.md](docs/QUICKSTART.md)
 
-**Rule:** raw clips, renders, CapCut projects, audio, thumbnails = Drive only.
+This repo intentionally does **not** store raw media/working files (clips, renders, CapCut projects, audio, thumbnails). Keep those outside git.
 
----
+## Repo map
 
-## Content Rules (Non-Negotiable)
+- `products/` — product definitions, templates, and run inputs
+- `scripts/` — build/release/packaging utilities (Python, dependency-minimal)
+- `analytics/` — schema + decision logs
+- `ops/` — governance configs (forbidden phrases, audit ignore lists, checklists)
+- `build/` — generated outputs (smoke builds, release builds, weekly runs)
+- `docs/` — rules + operations manuals
 
-### What we do
-- Systems, incentives, patterns, mechanisms
-- Short, unresolved, loop-friendly narratives
-- Neutral synthetic voice (no personality)
-- Abstract/dystopian visuals (no face required)
+## Requirements
 
-### What we don’t do
-- No political targeting
-- No medical claims
-- No financial advice
-- No incitement/violence
-- No “call to action” begging
-- No identity story
+- Python `>=3.11` (CI uses `3.13`)
+- Node `>=20` (for lint/format tooling)
 
-**We are building distribution infrastructure, not a persona.**
+## Setup
 
----
+```bash
+python -m venv .venv
+. .venv/bin/activate  # PowerShell: .venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install -e ".[dev]"
 
-## Short-Form Format Spec
+npm install
+```
 
-**Length:** 20–35s (default)  
-**Structure:**
-- 0.0–1.5s: Hook
-- 1.5–5s: Threat framing
-- 5–13s: Disturbing insight
-- 13–22s: Escalation
-- 22–28s: Open loop (no resolution)
+## Common commands
 
-**Always end unresolved** (forces comments + rewatch + follow-up demand).
+- Validate schemas: `python scripts/validate_schemas.py`
+- Run tests: `pytest`
+- Lint Python: `ruff check .`
+- Format Python: `black .`
+- Lint JS: `npm run lint:js`
+- Check JS formatting: `npm run format:js`
 
----
+## Governance gates (CI-aligned)
 
-## Tracking (Single Source of Truth)
+- Forbidden phrase scan (configured in `ops/forbidden_phrases.txt`):
 
-Use one Google Sheet (recommended) named: `NODE_NULL_TRACKER`.
+```bash
+python scripts/scan_forbidden_phrases.py --paths build/smoke
+```
 
-Tabs:
-- Posts (every upload = one row)
-- Hooks (hook type performance)
-- Verticals (topic performance)
-- Weekly Summary
-- Kill/Scale Decisions
+- Product smoke checks (builds what is buildable, validates the rest):
 
-Minimum columns for `Posts`:
-- Date
-- Platform
-- Vertical
-- Hook Type
-- First line / Hook text
-- Duration (sec)
-- Visual Style
-- Voice Style
-- Views 1h
-- Views 24h
-- Avg view duration
-- Completion %
-- Loop %
-- Shares
-- Saves
-- Comments
-- Notes
-- Decision (keep / iterate / kill)
+```bash
+python scripts/smoke_products.py --keep
+```
 
----
+## Building artifacts
 
-## Operating Cadence
+Individual builders live under `scripts/build_*.py` (e.g. weekly brief, indices, reports, dashboards). Outputs land under `build/`.
 
-### Daily (15–25 min)
-- Publish scheduled posts
-- Record metrics for yesterday’s posts
-- Tag winners/losers
+For the Weekly Signal Brief, see the end-to-end flow in [docs/OPERATIONS.md](docs/OPERATIONS.md):
 
-### Weekly (45–60 min)
-- Rank verticals by: retention, loop rate, shares/saves
-- Kill ~30–50% of underperformers
-- Double down on top 20%
-- Document decisions in:
-  - `analytics/decisions/killlog.md`
-  - `analytics/decisions/scalelog.md`
+- Export weekly inputs into `products/weekly_signal_brief/runs/<WEEK_ID>/inputs/`
+- Aggregate rollups: `python scripts/aggregate_weekly_inputs.py --run-json products/weekly_signal_brief/runs/<WEEK_ID>/run.json`
+- Render brief: `python scripts/build_weekly_signal_brief.py --run products/weekly_signal_brief/runs/<WEEK_ID>/run.json --outdir build/weekly_signal_brief/<WEEK_ID>`
 
-### Monthly
-- If a vertical dominates consistently → begin **Forge** phase (brand emergence)
-- Otherwise keep harvesting patterns
+## Release builds (real deliverables)
 
----
+Smoke builds default to dependency-light placeholders. Release builds opt into heavier artifacts (PDF packaging, dashboard bundling):
 
-## Kill / Scale Logic (Simple, brutal)
+```bash
+python scripts/release_products.py --pdf-adapter wkhtmltopdf --bundle-dashboard-webapp
+```
 
-Kill if (after enough samples):
-- weak retention + weak shares/saves
-- no improvement after 2 iterations
+If you don’t have `wkhtmltopdf` installed, keep `--pdf-adapter none` (placeholder PDFs), or provide a custom command.
 
-Scale if:
-- high completion + high loop + strong shares/saves
-- consistent across multiple posts (not a one-off spike)
+## Forge / gateway UI
 
-**You are not optimizing content. You are selecting a winning pattern.**
+The public routing interface is a separate repo:
 
----
+- https://github.com/CrisisCore-Systems/ghost-network-interface
 
-## Tooling Notes
-
-Stack:
-- Scripts: ChatGPT
-- Voice: ElevenLabs (neutral synthetic)
-- Visuals: Runway / Pika / stock loops
-- Edit: CapCut templates (auto subtitles + loop cut)
-- Cross-post: Repurpose.io
-- Schedule: Buffer
-- Automations: Make.com / Zapier
-
-Keep credentials outside the repo.
-
----
-
-## Getting Started (Checklist)
-
-1) Create accounts (TikTok / Shorts / Reels / FB Reels)
-2) Build 1 CapCut master template (subtitles + loop ending)
-3) Create Drive structure + naming conventions
-4) Create the Google Sheet tracker
-5) Start Week 1: controlled publishing + clean data collection
-
----
-
-## Naming Conventions
-
-**Short IDs:**
-`YYYY-MM-DD_platform_vertical_hookstyle_v01`
-
-Example:
-`2026-01-22_yt_AIThreat_H1_v01`
-
----
-
-## License / Compliance
-
-Templates and analytics schema only.
-No copyrighted assets, personal data, or credentials in this repo.
-
----
-
-## Status
-
-- Phase: **Ghost Network (Harvest)**
-- Goal: **Extract the winning vertical + hook pattern**
-- Next: **Brand Emergence (Forge) only after dominance**
-
----
-
-## Forge (Routing Interface)
-
-Neutral conversion interface (no personal branding):
-
-- Forge node: [forge/README.md](forge/README.md)
+This repo owns the *artifacts and control logic*; the interface repo owns the *privacy-first gateway*.
