@@ -98,7 +98,7 @@ Examples:
 Each script includes mandatory first-frame text:
 
 | Script | First Frame Text |
-| --- | --- |
+| :--- | :--- |
 | 01 | WAGES COLLAPSE FIRST |
 | 02 | THE LADDER IS GONE |
 | 03 | LEVERAGE DESTROYED |
