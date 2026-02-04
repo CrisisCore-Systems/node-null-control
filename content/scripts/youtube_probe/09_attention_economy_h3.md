@@ -1,66 +1,70 @@
-# Script 09 — Attention Economy H3 (Contrast Hook)
+# Script 09 — Attention Economy H3 (Threat-First Hook)
 
 **Vertical:** Attention Economy  
-**Hook Type:** H3 (Contrast)  
-**Duration Target:** 25-30 seconds  
-**Visual Style:** Abstract comparison visuals, algorithm mechanics, retention loops
+**Hook Type:** H3 (Threat-First — Loss)  
+**Duration Target:** 30-35 seconds  
+**Visual Style:** Abstract harvesting graphics, extraction pipelines, rage amplification visuals
 
 ---
 
 ## Title
 
-"Social media isn't social — it's an extraction economy"
+"Rage gets rewarded. That's the business model."
+
+## On-Screen Text (First Frame)
+
+**RAGE GETS REWARDED**
 
 ## Script
 
-**[0-2s] Hook (Contrast)**  
-Social media isn't social. It's an extraction economy.
+**[0-2s] Hook (Threat-First)**  
+Rage gets rewarded. That's the business model.
 
-**[2-7s] Threat Framing**  
-We think of platforms as communication tools.  
-But their revenue model depends on attention extraction.  
-You're not connecting. You're being harvested.
+**[2-4s] Immediate Follow-Up**  
+The algorithm doesn't care about truth. It cares about time.
 
-**[7-16s] Disturbing Insight**  
-The "algorithm" isn't neutral.  
-It amplifies whatever keeps you scrolling.  
-Outrage. Envy. Fear. Curiosity.  
-If it stops you from leaving, it gets promoted.
+**[4-12s] Mechanism (Aggressive)**  
+Outrage stops thumbs.  
+Anger triggers shares.  
+Fear drives clicks.  
+Whatever keeps you engaged gets amplified.
 
-**[16-24s] Escalation**  
-Platforms don't care about truth or nuance.  
-They optimize for engagement metrics.  
-Rage-bait outperforms thoughtful discussion.  
-Because rage keeps you here longer.
+**[12-22s] Escalation**  
+Nuance doesn't perform.  
+Thoughtful takes get buried.  
+The feed optimizes for reaction, not quality.  
+That's why everything feels more extreme.
 
-**[24-28s] Open Loop (Unresolved)**  
-This isn't a bug.  
-It's the business model.
+**[22-30s] Pattern Stamp (Open Loop)**  
+You're not being informed. You're being harvested.  
+Your attention is the commodity. Your emotions are the extraction method.
 
-Your attention is the commodity.
+And the algorithm never stops optimizing.
 
 ---
 
 ## Production Notes
 
 - **Voice:** Neutral synthetic (ElevenLabs or similar)
-- **Pacing:** Deliberate, analytical
-- **Visuals:** Social icons → extraction pipelines → engagement graphs (abstract)
-- **Subtitles:** Auto-generated, white text, black outline
+- **Pacing:** Fast hook, aggressive body, deliberate close
+- **Visuals:** Rage metrics rising → extraction pipelines → emotional harvesting (abstract)
+- **Subtitles:** Bold text, high contrast
+- **First Frame:** Must change visually in <0.5s with "RAGE GETS REWARDED"
 - **End Frame:** No CTA, no logo — let it loop
 
 ## Thumbnail
 
-- Text overlay: "Extraction Economy"
-- Visual: Social platform logos arranged as mining operation
+- Text overlay: "RAGE GETS REWARDED"
+- Visual: Engagement graph with anger emoji dominating
 - Color scheme: Dark teal/grey tones (matches industrial aesthetic)
 
 ## Metadata
 
 - **Platform:** YouTube Shorts
 - **Vertical:** Attention Economy
-- **Hook Type:** H3 (Contrast)
-- **Target Duration:** 28s
+- **Hook Type:** H3 (Threat-First — Loss)
+- **Target Duration:** 30s
+- **Target Metrics:** ≥35% stayed-to-watch, ≥15s avg view duration
 - **Experiment Block ID:** YT-PROBE-2026-W08
 
 ## Compliance Check

@@ -1,62 +1,69 @@
-# Script 01 — AI Displacement H1 (Question Hook)
+# Script 01 — AI Displacement H1 (Threat-First Hook)
 
 **Vertical:** AI Displacement  
-**Hook Type:** H1 (Question)  
-**Duration Target:** 25-30 seconds  
-**Visual Style:** Abstract data visualization, code interfaces, automation graphics
+**Hook Type:** H1 (Threat-First — Consequence)  
+**Duration Target:** 30-35 seconds  
+**Visual Style:** Abstract data visualization, wage collapse graphics, automation metrics
 
 ---
 
 ## Title
 
-"What happens when AI gets too good at junior dev work?"
+"Your job doesn't disappear. It gets cheaper."
+
+## On-Screen Text (First Frame)
+
+**WAGES COLLAPSE FIRST**
 
 ## Script
 
-**[0-2s] Hook (Question)**  
-What happens when AI gets too good at junior dev work?
+**[0-2s] Hook (Threat-First)**  
+Your job doesn't disappear. It gets cheaper.
 
-**[2-7s] Threat Framing**  
-The mechanism is simple. AI reduces the value of repetitive tasks.  
-Junior roles are mostly repetitive tasks.
+**[2-4s] Immediate Follow-Up**  
+That's how AI displacement actually works.
 
-**[7-16s] Disturbing Insight**  
-When your leverage depends on doing what a model can now do in seconds,  
-your bargaining power approaches zero.
+**[4-12s] Mechanism (Aggressive)**  
+When automation handles part of a role, the rest becomes interchangeable.  
+If anyone can do it, no one can demand more pay.  
+Wages collapse first. Layoffs come later.
 
-**[16-24s] Escalation**  
-Companies don't need to fire you. They just stop hiring replacements.  
-The junior pipeline collapses.  
-Senior roles become unreachable.
+**[12-22s] Escalation**  
+Companies don't need to fire you.  
+They just stop paying what you're worth.  
+Your title stays. Your leverage disappears.  
+The job market doesn't shrink — it deflates.
 
-**[24-28s] Open Loop (Unresolved)**  
-And this isn't just software.  
-This is legal research. Radiology. Financial analysis.
+**[22-30s] Pattern Stamp (Open Loop)**  
+That's why "AI taking jobs" is the wrong conversation.  
+The real damage starts earlier.
 
-The threshold is closer than it looks.
+And most people won't notice until it's already happened.
 
 ---
 
 ## Production Notes
 
 - **Voice:** Neutral synthetic (ElevenLabs or similar)
-- **Pacing:** Steady, no dramatic pauses
-- **Visuals:** Code interfaces → automation dashboards → empty office spaces (abstract)
-- **Subtitles:** Auto-generated, white text, black outline
+- **Pacing:** Fast hook, measured body, deliberate close
+- **Visuals:** Wage graphs dropping → interchangeable worker icons → deflating dollar signs (abstract)
+- **Subtitles:** Bold text, high contrast
+- **First Frame:** Must change visually in <0.5s with "WAGES COLLAPSE FIRST"
 - **End Frame:** No CTA, no logo — let it loop
 
 ## Thumbnail
 
-- Text overlay: "When AI Gets Too Good"
-- Visual: Split screen — human at desk vs AI code interface
-- Color scheme: Dark blue/grey tones (matches dystopian aesthetic)
+- Text overlay: "WAGES COLLAPSE FIRST"
+- Visual: Downward trending wage graph with worker silhouettes
+- Color scheme: Dark red/grey tones (matches urgency aesthetic)
 
 ## Metadata
 
 - **Platform:** YouTube Shorts
 - **Vertical:** AI Displacement
-- **Hook Type:** H1 (Question)
-- **Target Duration:** 28s
+- **Hook Type:** H1 (Threat-First — Consequence)
+- **Target Duration:** 30s
+- **Target Metrics:** ≥35% stayed-to-watch, ≥15s avg view duration
 - **Experiment Block ID:** YT-PROBE-2026-W06
 
 ## Compliance Check

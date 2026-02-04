@@ -1,66 +1,70 @@
-# Script 03 — AI Displacement H3 (Contrast Hook)
+# Script 03 — AI Displacement H3 (Threat-First Hook)
 
 **Vertical:** AI Displacement  
-**Hook Type:** H3 (Contrast)  
-**Duration Target:** 25-30 seconds  
-**Visual Style:** Abstract split-screen visuals, before/after comparisons
+**Hook Type:** H3 (Threat-First — Loss)  
+**Duration Target:** 30-35 seconds  
+**Visual Style:** Abstract balance scales, leverage destruction graphics, interchangeable worker icons
 
 ---
 
 ## Title
 
-"AI won't replace workers — it'll make them replaceable"
+"You still have a job. You just lost your leverage."
+
+## On-Screen Text (First Frame)
+
+**LEVERAGE DESTROYED**
 
 ## Script
 
-**[0-2s] Hook (Contrast)**  
-AI won't replace workers. It'll make them replaceable.
+**[0-2s] Hook (Threat-First)**  
+You still have a job. You just lost your leverage.
 
-**[2-7s] Threat Framing**  
-The threat isn't automation.  
-The threat is leverage destruction.  
-When a machine can do your work, your bargaining power collapses.
+**[2-4s] Immediate Follow-Up**  
+That's the part no one talks about.
 
-**[7-16s] Disturbing Insight**  
-A junior developer used to have leverage.  
-Companies needed humans to write code, review PRs, fix bugs.  
-Now, AI handles those tasks in seconds.  
-The leverage is gone before the job is.
+**[4-12s] Mechanism (Aggressive)**  
+AI doesn't need to replace you.  
+It just needs to make you replaceable.  
+When a machine does your work faster, your bargaining power collapses.  
+Same job. Less value.
 
-**[16-24s] Escalation**  
-The jobs might still exist.  
-But the pay drops. The hours increase.  
-You become interchangeable.  
-That's the mechanism.
+**[12-22s] Escalation**  
+Pay drops. Hours increase. Demands get ignored.  
+You're still employed — but you're interchangeable.  
+The title stays. The leverage disappears.  
+That's not job loss. That's value extraction.
 
-**[24-28s] Open Loop (Unresolved)**  
-This isn't just tech workers.  
-Radiologists. Legal researchers. Financial analysts.
+**[22-30s] Pattern Stamp (Open Loop)**  
+Developers. Radiologists. Legal researchers. Analysts.  
+Anyone whose work can be described faces the same math.
 
-If your work can be described, it can be automated.
+The job survives. The worker doesn't.
 
 ---
 
 ## Production Notes
 
 - **Voice:** Neutral synthetic (ElevenLabs or similar)
-- **Pacing:** Measured, deliberate
-- **Visuals:** Worker silhouettes → AI interfaces → balance scales tipping (abstract)
-- **Subtitles:** Auto-generated, white text, black outline
+- **Pacing:** Fast hook, aggressive body, deliberate close
+- **Visuals:** Balance scales tipping → interchangeable icons → value extraction graphics (abstract)
+- **Subtitles:** Bold text, high contrast
+- **First Frame:** Must change visually in <0.5s with "LEVERAGE DESTROYED"
 - **End Frame:** No CTA, no logo — let it loop
 
 ## Thumbnail
 
-- Text overlay: "AI Makes You Replaceable"
-- Visual: Chess piece (pawn) replaced by transparent hologram version
-- Color scheme: Dark purple/grey tones (matches contrast aesthetic)
+- Text overlay: "LEVERAGE DESTROYED"
+- Visual: Balance scale with worker on one side, AI on the other (tipped)
+- Color scheme: Dark purple/grey tones (matches loss aesthetic)
 
 ## Metadata
 
 - **Platform:** YouTube Shorts
 - **Vertical:** AI Displacement
-- **Hook Type:** H3 (Contrast)
-- **Target Duration:** 28s
+- **Hook Type:** H3 (Threat-First — Loss)
+- **Target Duration:** 30s
+- **Target Metrics:** ≥35% stayed-to-watch, ≥15s avg view duration
 - **Experiment Block ID:** YT-PROBE-2026-W06
 
 ## Compliance Check
