@@ -346,14 +346,23 @@ This creates `site/` containing only:
 
 ### Vercel Deployment
 
-The repository includes `vercel.json` for direct deployment:
+The repository includes `vercel.json` and automatic deployment via GitHub Actions.
 
-1. Connect repository to Vercel
-2. Set root directory to repository root (Vercel will use `vercel.json`)
-3. The rewrite rules route `/` to `/forge/`
+**Automatic deployment** (recommended):
+1. See [VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md) for setup instructions
+2. Configure GitHub Secrets (VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID)
+3. Push to any branch to trigger automatic deployment
+4. Main branch deploys to production, other branches create preview deployments
+
+**Manual deployment**:
+1. Install Vercel CLI: `npm install -g vercel`
+2. Login: `vercel login`
+3. Deploy: `vercel` (preview) or `vercel --prod` (production)
+
+The rewrite rules in `vercel.json` route `/` to `/forge/`.
 
 **Warning**: Direct Vercel deployment exposes the entire repository.
-For production, use the bundle script output instead.
+For production, consider using the bundle script output instead.
 
 ---
 

@@ -168,3 +168,4 @@ No copyrighted assets, personal data, or credentials in this repo.
 Neutral conversion interface (no personal branding):
 
 - Forge node: [forge/README.md](forge/README.md)
+- Deployment: [docs/VERCEL_DEPLOYMENT.md](docs/VERCEL_DEPLOYMENT.md)
