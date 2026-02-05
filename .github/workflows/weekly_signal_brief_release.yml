@@ -1,0 +1,99 @@
+name: Weekly Signal Brief release (public datasets)
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: "Run ID / week_id under products/weekly_signal_brief/runs/"
+        required: true
+        default: "2099-W01-fixture"
+      publish_release:
+        description: "Create/update a GitHub Release and upload assets"
+        required: true
+        default: "true"
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    env:
+      RUN_ID: ${{ inputs.run_id }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: |
+            pyproject.toml
+            scripts/requirements.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+
+      - name: Guardrail: no artifacts tracked
+        run: |
+          set -euo pipefail
+
+          if git ls-files | grep -qE '^build/'; then
+            echo "build/ is tracked";
+            git ls-files | grep -E '^build/' || true
+            exit 1;
+          fi
+
+      - name: Build Weekly Signal Brief
+        run: |
+          set -euo pipefail
+          python scripts/build_weekly_signal_brief.py \
+            --run products/weekly_signal_brief/runs/${RUN_ID}/run.json \
+            --outdir build/weekly_signal_brief/${RUN_ID} \
+            --strict-context \
+            --strict-csv-headers
+
+      - name: Forbidden phrase scan (rendered outputs)
+        run: python scripts/scan_forbidden_phrases.py --paths build/weekly_signal_brief/${RUN_ID}
+
+      - name: Write checksums
+        run: |
+          set -euo pipefail
+          cd build/weekly_signal_brief/${RUN_ID}
+          sha256sum * > CHECKSUMS.sha256
+
+      - name: Upload build artifact (CI)
+        uses: actions/upload-artifact@v4
+        with:
+          name: weekly-signal-brief-${{ env.RUN_ID }}
+          path: build/weekly_signal_brief/${{ env.RUN_ID }}
+          if-no-files-found: error
+          retention-days: 21
+
+      - name: Create/update GitHub Release + upload assets
+        if: ${{ inputs.publish_release == 'true' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          TAG="weekly-${RUN_ID}"
+          TITLE="Weekly Signal Brief — ${RUN_ID}"
+
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release exists: $TAG"
+          else
+            gh release create "$TAG" \
+              --title "$TITLE" \
+              --notes "Automated release: Weekly Signal Brief build + public appendix datasets."
+          fi
+
+          gh release upload "$TAG" build/weekly_signal_brief/${RUN_ID}/* --clobber
+
+      - name: Cleanup build outputs
+        if: always()
+        run: rm -rf build/weekly_signal_brief/${RUN_ID}

@@ -604,6 +604,43 @@ def build_appendix_csv(out_path: Path, schema_path: Path, inputs: Dict[str, Path
             f.write("\n")
 
 
+def build_dataset_health_csv(out_path: Path, *, run: Dict[str, Any], dataset_health: Dict[str, Any]) -> None:
+    """Emit a single-row dataset health CSV.
+
+    This is intended for public appendix publishing and tooling.
+    """
+
+    counts = dataset_health.get("counts", {})
+    rates = dataset_health.get("rates", {})
+
+    header = [
+        "week_id",
+        "dataset_total_posts",
+        "dataset_valid_posts",
+        "dataset_invalid_posts",
+        "invalid_rate",
+        "missing_metrics_rate",
+        "drift_flags",
+        "incident_flags",
+    ]
+
+    row = [
+        str(run.get("week_id", "")),
+        str(counts.get("total_posts", "")),
+        str(counts.get("valid_posts", "")),
+        str(counts.get("invalid_posts", "")),
+        fmt_rate(rates.get("invalid_rate", "")),
+        fmt_rate(rates.get("missing_metrics_rate", "")),
+        join_list(dataset_health.get("drift_flags", [])),
+        join_list(dataset_health.get("incident_flags", [])),
+    ]
+
+    with out_path.open("w", encoding="utf-8", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(header)
+        writer.writerow(row)
+
+
 def main(argv: Sequence[str]) -> int:
     parser = argparse.ArgumentParser(description="Build Weekly Signal Brief v01 artifacts from a run.json")
     parser.add_argument("--run-file", "--run", dest="run_file", required=True, help="Path to run.json")
@@ -838,11 +875,23 @@ def main(argv: Sequence[str]) -> int:
     out_css = out_dir / "weekly_brief_styles.css"
     out_appendix = out_dir / f"weekly_signal_brief_{run['week_id']}_{BUILDER_VERSION}_appendix.csv"
 
+    # Split appendix datasets (stable names for Release assets).
+    out_hook_metrics = out_dir / "hook_metrics.csv"
+    out_vertical_metrics = out_dir / "vertical_metrics.csv"
+    out_decisions = out_dir / "decisions.csv"
+    out_dataset_health = out_dir / "dataset_health.csv"
+
     out_md.write_text(rendered_md, encoding="utf-8")
     out_html.write_text(rendered_html, encoding="utf-8")
     out_css.write_text(css_path.read_text(encoding="utf-8"), encoding="utf-8")
 
     build_appendix_csv(out_appendix, appendix_schema_path, input_paths)
+
+    # Emit split datasets for public publishing.
+    shutil.copyfile(input_paths["hooks_rollup"], out_hook_metrics)
+    shutil.copyfile(input_paths["verticals_rollup"], out_vertical_metrics)
+    shutil.copyfile(input_paths["decisions"], out_decisions)
+    build_dataset_health_csv(out_dataset_health, run=run, dataset_health=dataset_health)
 
     pdf_adapter_meta: Optional[Dict[str, Any]] = None
     out_pdf: Optional[Path] = None
@@ -865,7 +914,16 @@ def main(argv: Sequence[str]) -> int:
 
     manifest_schema_ref = f"artifacts/manifest.schema.json@{head_commit}"
 
-    output_files: List[Path] = [out_md, out_html, out_css, out_appendix]
+    output_files: List[Path] = [
+        out_md,
+        out_html,
+        out_css,
+        out_appendix,
+        out_hook_metrics,
+        out_vertical_metrics,
+        out_decisions,
+        out_dataset_health,
+    ]
     if out_pdf and out_pdf.exists():
         output_files.append(out_pdf)
 
