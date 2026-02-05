@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Displacement Risk Atlas v{{ version }}</title>
+    <link rel="stylesheet" href="../assets/theme.css">
+    <style>
+        /* Inline critical styles for PDF generation */
+        @page {
+            size: letter;
+            margin: 0.75in 0.75in 1in 0.75in;
+        }
+    </style>
+</head>
+<body>
+    <!-- Cover Page -->
+    <div class="cover">
+        <h1>Displacement Risk Atlas</h1>
+        <div class="subtitle">
+            Procedural analysis of 10 sectors<br>
+            approaching automation thresholds
+        </div>
+        <div class="version">Version {{ version }} ({{ run_id }})</div>
+        <div class="disclaimer">
+            NOT career advice. NOT financial advice.<br>
+            Pattern documentation only.
+        </div>
+        <div class="organization">CrisisCore Systems</div>
+        <div class="date">{{ build_date }}</div>
+        <div class="footer-meta mt-4">
+            Build: {{ repo_commit[:8] if repo_commit else 'unknown' }}<br>
+            SHA256: Available in manifest.json
+        </div>
+    </div>
+
+    <!-- Part 1: Framework -->
+    <div class="section-header">
+        <div class="part-header">Part 1: Framework</div>
+    </div>
+
+    <section class="avoid-break">
+        <h2>1. Leverage Destruction Mechanism</h2>
+        <p>How automation reduces worker bargaining power:</p>
+        <ul>
+            <li>Task commoditization vs. irreplaceability</li>
+            <li>Bargaining Power = f(Task Complexity, Replacement Cost)</li>
+            <li>Threshold: When replacement cost &lt; automation cost</li>
+        </ul>
+        <p class="mb-3">
+            When automation can do your work, your bargaining power collapses.
+        </p>
+        <p class="mb-3">
+            Not because the job disappears immediately.
+            Because your leverage disappears first.
+        </p>
+    </section>
+
+    <section class="avoid-break">
+        <h2>2. Bargaining Power Threshold Model</h2>
+        <p>Junior vs. Senior dynamics:</p>
+        <ul>
+            <li>Juniors: Lower replacement cost, routine tasks</li>
+            <li>Seniors: Higher replacement cost, judgment tasks</li>
+        </ul>
+        <p class="mb-3"><strong>The 50% automation penetration threshold:</strong></p>
+        <p class="mb-3">
+            When &gt;50% of tasks are automated, leverage approaches zero.
+        </p>
+    </section>
+
+    <section class="avoid-break">
+        <h2>3. Cascading Displacement Pattern</h2>
+        <p>Historical precedent:</p>
+        <ul>
+            <li>Manufacturing (1980s-2000s)</li>
+            <li>Clerical work (1990s-2010s)</li>
+            <li>Customer service (2010s-2020s)</li>
+        </ul>
+        <p class="mb-2"><strong>Labor flood mechanism:</strong></p>
+        <p class="mb-3">Displaced workers seek adjacent markets.</p>
+        <p class="mb-3">
+            <strong>AI era:</strong> Timeline compression from 10-20 years to 2-5 years.
+        </p>
+    </section>
+
+    <section class="avoid-break">
+        <h2>4. Mitigation Framework</h2>
+        <p>Four pattern categories:</p>
+        <ol>
+            <li>Leverage preservation strategies</li>
+            <li>Non-commoditizable skill identification</li>
+            <li>Market position shifting</li>
+            <li>Portfolio approaches</li>
+        </ol>
+        <div class="disclaimer-box mt-3">
+            NOT prescriptive. Pattern identification only.
+        </div>
+    </section>
+
+    <!-- Part 2: Sector Analysis -->
+    <div class="section-header">
+        <div class="part-header">Part 2: Sector Analysis (10 Sectors)</div>
+    </div>
+
+    {% for sector in sectors %}
+    <div class="sector-page">
+        <div class="sector-header">
+            <div class="sector-name">{{ sector.name }}</div>
+        </div>
+
+        <div class="sector-metrics">
+            <div class="metric">
+                <div class="metric-label">Current Automation Penetration</div>
+                <div class="metric-value">{{ sector.penetration }}%</div>
+            </div>
+            <div class="metric">
+                <div class="metric-label">Threshold Proximity</div>
+                <div class="metric-value">{{ sector.proximity }}/10</div>
+            </div>
+        </div>
+
+        <div class="task-list">
+            <h4>Task Commoditization Indicators:</h4>
+            <ul>
+                {% for task in sector.routine_tasks %}
+                <li>{{ task }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="task-list">
+            <h4>Adjacent Market Pressure Points:</h4>
+            <ul>
+                {% for market in sector.adjacent_markets %}
+                <li>{{ market }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="timeline">
+            <h4>Timeline Estimate (procedural, not predictive):</h4>
+            <ul>
+                <li><strong>Near-term (0-2 years):</strong> {{ sector.near_term }}</li>
+                <li><strong>Mid-term (2-5 years):</strong> {{ sector.mid_term }}</li>
+            </ul>
+        </div>
+    </div>
+    {% endfor %}
+
+    <!-- Part 3: Mitigation Patterns -->
+    <div class="section-header">
+        <div class="part-header">Part 3: Mitigation Patterns</div>
+    </div>
+
+    <div class="disclaimer-box emphasis mb-4">
+        NOT PRESCRIPTIVE. NOT ADVICE. PATTERN DOCUMENTATION.
+    </div>
+
+    <div class="pattern-category">
+        <h3>Pattern Category 1: Leverage Preservation</h3>
+        <p><strong>Observable patterns:</strong></p>
+        <ul>
+            <li>Shifting to non-routine tasks</li>
+            <li>Building cross-functional knowledge</li>
+            <li>Developing judgment-intensive skills</li>
+        </ul>
+    </div>
+
+    <div class="pattern-category">
+        <h3>Pattern Category 2: Non-Commoditizable Skills</h3>
+        <p><strong>Observable patterns:</strong></p>
+        <ul>
+            <li>High-context, high-ambiguity domains</li>
+            <li>Interpersonal dynamics, negotiation</li>
+            <li>Creative synthesis</li>
+        </ul>
+    </div>
+
+    <div class="pattern-category page-break">
+        <h3>Pattern Category 3: Market Position Shifting</h3>
+        <p><strong>Observable patterns:</strong></p>
+        <ul>
+            <li>Moving to adjacent roles before displacement</li>
+            <li>Geographic arbitrage considerations</li>
+            <li>Sector rotation timing</li>
+        </ul>
+    </div>
+
+    <div class="pattern-category">
+        <h3>Pattern Category 4: Portfolio Approaches</h3>
+        <p><strong>Observable patterns:</strong></p>
+        <ul>
+            <li>Multiple income streams</li>
+            <li>Skill diversification</li>
+            <li>Platform vs. full-time employment</li>
+        </ul>
+    </div>
+
+    <!-- Limitations & Disclaimers -->
+    <div class="page-break">
+        <h2>Limitations &amp; Disclaimers</h2>
+        
+        <div class="mb-3">
+            <h3>This atlas is NOT:</h3>
+            <ul>
+                <li>Career advice</li>
+                <li>Financial advice</li>
+                <li>Guaranteed outcomes</li>
+                <li>Prescriptive recommendations</li>
+            </ul>
+        </div>
+
+        <div class="mb-3">
+            <h3>This atlas IS:</h3>
+            <ul>
+                <li>Mechanism analysis</li>
+                <li>Pattern documentation</li>
+                <li>Procedural observation</li>
+                <li>System description</li>
+            </ul>
+        </div>
+
+        <div class="disclaimer-box emphasis mt-3">
+            Use at your own discretion. No guarantees or promises.
+            Timeline estimates are not predictions.
+        </div>
+
+        <div class="mt-4">
+            <h3>Data Assumptions</h3>
+            <p>
+                All proximity scores and penetration percentages are heuristic indicators,
+                not precise measurements. See <code>data/DATA_ASSUMPTIONS.md</code> for
+                detailed methodology and limitations.
+            </p>
+        </div>
+    </div>
+
+    <!-- About & Contact -->
+    <div class="page-break">
+        <h2>About CrisisCore Systems</h2>
+        
+        <div class="about-section">
+            <p>
+                CrisisCore Systems analyzes displacement mechanisms,
+                distributed credit systems, and attention infrastructure.
+            </p>
+            <p>
+                No hype. No predictions. Pattern recognition only.
+            </p>
+        </div>
+
+        <div class="contact-info">
+            <strong>Field Notes:</strong> Subscribe at forge.crisiscore.systems<br>
+            <strong>Contact:</strong> support@crisiscore.systems
+        </div>
+
+        <div class="mt-4">
+            <h3>Version History</h3>
+            <ul>
+                <li>v1.0 (2026-W06): Initial release</li>
+            </ul>
+        </div>
+
+        <div class="mt-4">
+            <h3>License</h3>
+            <p>
+                <strong>Personal use:</strong> $19<br>
+                <strong>Commercial use:</strong> $99
+            </p>
+            <p class="text-small text-muted">
+                See licenses/ directory for full terms.
+            </p>
+        </div>
+
+        <div class="footer-meta mt-4">
+            Document generated: {{ generated_at }}<br>
+            Run ID: {{ run_id }}<br>
+            Builder: {{ builder_name }} {{ builder_version }}<br>
+            Repository: {{ repo_commit[:12] if repo_commit else 'unknown' }}
+        </div>
+    </div>
+</body>
+</html>

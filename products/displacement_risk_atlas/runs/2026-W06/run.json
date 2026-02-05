@@ -1,0 +1,78 @@
+{
+  "run_id": "RUN-2026-W06-displacement-atlas-v1",
+  "product_id": "NNASSET-0004-displacement-risk-atlas",
+  "version": "1.0",
+  "build_date": "2026-02-03",
+  "status": "completed",
+  "inputs": {
+    "sectors_data": "inputs/sectors_data.csv",
+    "templates": [
+      "../templates/atlas_template.md",
+      "../templates/sector_analysis.md",
+      "../templates/mitigation_framework.md"
+    ]
+  },
+  "outputs": {
+    "pdf": "outputs/displacement_risk_atlas_v1.0.pdf",
+    "preview_pdf": "outputs/displacement_risk_atlas_preview.pdf"
+  },
+  "data_sources": [
+    {
+      "name": "Bureau of Labor Statistics",
+      "url": "https://www.bls.gov/",
+      "date_accessed": "2026-02-03",
+      "notes": "Employment projections, occupational outlook"
+    },
+    {
+      "name": "McKinsey Global Institute",
+      "report": "Future of Work Reports",
+      "date": "2025",
+      "notes": "Automation penetration estimates"
+    },
+    {
+      "name": "World Economic Forum",
+      "report": "Future of Jobs Report 2025",
+      "date": "2025",
+      "notes": "Skills gap analysis, displacement estimates"
+    },
+    {
+      "name": "GitHub",
+      "data": "Copilot usage statistics",
+      "date": "2025-2026",
+      "notes": "AI coding tool adoption rates"
+    },
+    {
+      "name": "StackOverflow",
+      "report": "Developer Survey 2025",
+      "date": "2025",
+      "notes": "Developer tool usage, job market trends"
+    }
+  ],
+  "compliance_checks": {
+    "no_career_advice": true,
+    "no_financial_advice": true,
+    "no_guaranteed_outcomes": true,
+    "procedural_framing_only": true,
+    "pattern_documentation_only": true
+  },
+  "build_notes": [
+    "First version of Displacement Risk Atlas",
+    "Manual build process - PDF created via LaTeX/InDesign",
+    "Preview version (3 pages) created for landing page",
+    "All data sources accessed between 2026-01-15 and 2026-02-03",
+    "Compliance review completed 2026-02-03"
+  ],
+  "next_actions": [
+    "Complete sector research",
+    "Populate templates with data",
+    "Generate full PDF",
+    "Create preview PDF (3 pages)",
+    "Upload to Gumroad",
+    "Test download delivery"
+  ],
+  "build_completed_at": "2026-02-03T08:18:44Z",
+  "builder": {
+    "name": "build_displacement_atlas",
+    "version": "v1.1"
+  }
+}

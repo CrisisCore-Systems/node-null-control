@@ -1,0 +1,164 @@
+{
+  "sectors": [
+    {
+      "name": "AI/ML Engineering (Junior)",
+      "penetration": "35",
+      "proximity": "7.5",
+      "routine_tasks": [
+        "Boilerplate code generation (HIGH automation)",
+        "Bug fixing (HIGH automation)",
+        "Documentation writing (HIGH automation)"
+      ],
+      "adjacent_markets": [
+        "QA/Testing (HIGH saturation risk)",
+        "Technical writing (MEDIUM saturation risk)"
+      ],
+      "near_term": "Slower hiring, first eliminations",
+      "mid_term": "Junior pipeline reduced"
+    },
+    {
+      "name": "Legal Research",
+      "penetration": "40",
+      "proximity": "7.8",
+      "routine_tasks": [
+        "Case law research (HIGH automation)",
+        "Document review (HIGH automation)",
+        "Contract generation (MEDIUM automation)"
+      ],
+      "adjacent_markets": [
+        "Contract management (MEDIUM saturation)",
+        "Compliance roles (MEDIUM saturation)"
+      ],
+      "near_term": "60% time savings reported",
+      "mid_term": "Significant displacement likely"
+    },
+    {
+      "name": "Medical Diagnostics (Radiology)",
+      "penetration": "30",
+      "proximity": "6.5",
+      "routine_tasks": [
+        "X-ray analysis (HIGH automation)",
+        "Pattern recognition (HIGH automation)",
+        "Preliminary diagnosis (MEDIUM automation)"
+      ],
+      "adjacent_markets": [
+        "Other medical specialties (LOW saturation)",
+        "Medical consulting (LOW saturation)"
+      ],
+      "near_term": "AI accuracy exceeding human in some areas",
+      "mid_term": "3-5 years to displacement (regulation delays)"
+    },
+    {
+      "name": "Financial Analysis",
+      "penetration": "45",
+      "proximity": "7.2",
+      "routine_tasks": [
+        "Market research (HIGH automation)",
+        "Report generation (HIGH automation)",
+        "Trend analysis (HIGH automation)"
+      ],
+      "adjacent_markets": [
+        "Financial advising (MEDIUM saturation)",
+        "Portfolio management (MEDIUM saturation)"
+      ],
+      "near_term": "Algorithmic analysis dominant",
+      "mid_term": "Junior analyst roles largely automated"
+    },
+    {
+      "name": "Content Production (Media)",
+      "penetration": "38",
+      "proximity": "6.8",
+      "routine_tasks": [
+        "Copywriting (HIGH automation)",
+        "Basic editing (HIGH automation)",
+        "Template-based content (HIGH automation)"
+      ],
+      "adjacent_markets": [
+        "Social media management (HIGH saturation)",
+        "Content strategy (MEDIUM saturation)"
+      ],
+      "near_term": "GPT-class tools widely adopted",
+      "mid_term": "Routine content fully automated"
+    },
+    {
+      "name": "Customer Service (Enterprise)",
+      "penetration": "55",
+      "proximity": "8.1",
+      "routine_tasks": [
+        "Support tickets (HIGH automation)",
+        "Chat handling (HIGH automation)",
+        "Email triage (HIGH automation)"
+      ],
+      "adjacent_markets": [
+        "Customer success (HIGH saturation)",
+        "Account management (MEDIUM saturation)"
+      ],
+      "near_term": "80%+ queries handled by AI",
+      "mid_term": "Human-only for complex issues"
+    },
+    {
+      "name": "Data Entry/Processing",
+      "penetration": "60",
+      "proximity": "8.5",
+      "routine_tasks": [
+        "Form filling (HIGH automation)",
+        "Database management (HIGH automation)",
+        "Clerical tasks (HIGH automation)"
+      ],
+      "adjacent_markets": [
+        "Administrative work (HIGH saturation)",
+        "Operations roles (HIGH saturation)"
+      ],
+      "near_term": "OCR + RPA eliminating manual work",
+      "mid_term": "Near-complete automation"
+    },
+    {
+      "name": "Junior Software Development",
+      "penetration": "32",
+      "proximity": "7.0",
+      "routine_tasks": [
+        "Bug fixes (HIGH automation)",
+        "Boilerplate code (HIGH automation)",
+        "Routine refactoring (HIGH automation)"
+      ],
+      "adjacent_markets": [
+        "QA engineering (HIGH saturation)",
+        "DevOps (MEDIUM saturation)"
+      ],
+      "near_term": "AI pair programmers standard",
+      "mid_term": "Junior roles significantly reduced"
+    },
+    {
+      "name": "Graphic Design (Template-Based)",
+      "penetration": "42",
+      "proximity": "7.3",
+      "routine_tasks": [
+        "Social media graphics (HIGH automation)",
+        "Basic layouts (HIGH automation)",
+        "Asset generation (HIGH automation)"
+      ],
+      "adjacent_markets": [
+        "Brand strategy (MEDIUM saturation)",
+        "UX design (LOW saturation)"
+      ],
+      "near_term": "Generative tools widely adopted",
+      "mid_term": "Template work fully automated"
+    },
+    {
+      "name": "Administrative Coordination",
+      "penetration": "48",
+      "proximity": "7.6",
+      "routine_tasks": [
+        "Scheduling (HIGH automation)",
+        "Email management (HIGH automation)",
+        "Meeting coordination (HIGH automation)"
+      ],
+      "adjacent_markets": [
+        "Executive assistance (MEDIUM saturation)",
+        "Operations management (MEDIUM saturation)"
+      ],
+      "near_term": "AI assistants handling routine tasks",
+      "mid_term": "Human-only for complex coordination"
+    }
+  ]
+}

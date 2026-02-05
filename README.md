@@ -86,3 +86,53 @@ The public routing interface is a separate repo:
 - https://github.com/CrisisCore-Systems/ghost-network-interface
 
 This repo owns the *artifacts and control logic*; the interface repo owns the *privacy-first gateway*.
+
+## Tooling notes
+
+Typical stack:
+
+- Scripts: ChatGPT
+- Voice: ElevenLabs (neutral synthetic)
+- Visuals: Runway / Pika / stock loops
+- Edit: CapCut templates (auto subtitles + loop cut)
+- Cross-post: Repurpose.io
+- Schedule: Buffer
+- Automations: Make.com / Zapier
+
+Keep credentials outside the repo.
+
+## Getting started (checklist)
+
+1) Create accounts (TikTok / Shorts / Reels / FB Reels)
+2) Build 1 CapCut master template (subtitles + loop ending)
+3) Create Drive structure + naming conventions
+4) Create the Google Sheet tracker
+5) Start Week 1: controlled publishing + clean data collection
+
+## Naming conventions
+
+Short IDs:
+
+`YYYY-MM-DD_platform_vertical_hookstyle_v01`
+
+Example:
+
+`2026-01-22_yt_AIThreat_H1_v01`
+
+## License / compliance
+
+Templates and analytics schema only.
+No copyrighted assets, personal data, or credentials in this repo.
+
+## Status
+
+- Phase: **Ghost Network (Harvest)**
+- Goal: **Extract the winning vertical + hook pattern**
+- Next: **Brand Emergence (Forge) only after dominance**
+
+## Forge (routing interface)
+
+Neutral conversion interface (no personal branding):
+
+- Forge node: [forge/README.md](forge/README.md)
+- Deployment: [docs/VERCEL_DEPLOYMENT.md](docs/VERCEL_DEPLOYMENT.md)

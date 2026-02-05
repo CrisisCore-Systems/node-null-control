@@ -1,0 +1,51 @@
+# Development files
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+node_modules/
+
+# Build artifacts
+build/
+dist/
+site/
+
+# Tests
+tests/
+pytest.ini
+
+# CI/CD
+.github/
+.pre-commit-config.yaml
+
+# Development tools
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Python dependencies (not needed for static site + serverless functions)
+pyproject.toml
+setup.py
+requirements*.txt
+
+# Product runs (artifacts)
+products/**/runs/**/outputs/**
+
+# Scripts (not needed for deployment)
+scripts/
+
+# Documentation (not needed for deployment, unless serving docs)
+CONTRIBUTING.md
+IMPLEMENTATION_SUMMARY.md
+
+# Operations and internal docs
+ops/
+analytics/
+automation/
+docs/
+
+# Keep only what's needed for deployment:
+# - forge/ (static site)
+# - api/ (serverless functions)
+# - monetization/assets/ (if needed by forge)
+# - vercel.json (deployment config)

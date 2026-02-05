@@ -63,3 +63,28 @@ Outputs land under `build/release/<product>/<run_id>/`.
 pre-commit install
 pre-commit run --all-files
 ```
+
+## 5) Deployment
+
+### Vercel (Automatic)
+
+The repository is configured for automatic Vercel deployment on every push.
+
+**Setup** (one-time):
+1. Create a Vercel project and link this repository
+2. Add GitHub Secrets: `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`
+3. See [VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md) for detailed instructions
+
+**Usage**:
+- Push to `main` → deploys to production
+- Push to other branches → creates preview deployment
+- Pull requests → creates preview deployment
+
+### Manual Deployment
+
+```bash
+npm install -g vercel
+vercel login
+vercel          # Deploy preview
+vercel --prod   # Deploy to production
+```

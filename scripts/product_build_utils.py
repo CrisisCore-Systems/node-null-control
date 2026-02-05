@@ -419,3 +419,91 @@ def write_minimal_pdf(path: Path, *, title: str, body_lines: Iterable[str]) -> N
     )
 
     path.write_bytes(bytes(out))
+
+
+def write_html_to_pdf(html_path: Path, pdf_path: Path, *, wait_for_fonts: bool = True) -> None:
+    """
+    Convert HTML file to PDF using Playwright's Chromium print-to-PDF.
+    
+    Args:
+        html_path: Path to HTML file to convert
+        pdf_path: Path where PDF should be written
+        wait_for_fonts: If True, waits for fonts to load (default: True)
+    """
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError as exc:
+        raise BuildError(
+            "Missing dependency 'playwright' required for PDF generation. "
+            "Install it: pip install playwright && playwright install chromium"
+        ) from exc
+
+    if not html_path.exists():
+        raise BuildError(f"HTML file not found: {html_path}")
+
+    html_uri = html_path.resolve().as_uri()
+
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch()
+            page = browser.new_page()
+            page.goto(html_uri, wait_until="networkidle")
+            
+            if wait_for_fonts:
+                # Wait for fonts to load
+                page.wait_for_timeout(500)
+            
+            # Generate PDF with specific settings for consistency
+            page.pdf(
+                path=str(pdf_path),
+                format="Letter",
+                print_background=True,
+                margin={
+                    "top": "0.75in",
+                    "right": "0.75in", 
+                    "bottom": "1in",
+                    "left": "0.75in"
+                },
+                prefer_css_page_size=False,
+            )
+            browser.close()
+    except Exception as exc:
+        raise BuildError(f"Failed to generate PDF from HTML: {exc}") from exc
+
+
+def count_pdf_pages(pdf_path: Path) -> int:
+    """
+    Count the number of pages in a PDF file.
+    
+    Args:
+        pdf_path: Path to PDF file
+        
+    Returns:
+        Number of pages in the PDF
+    """
+    if not pdf_path.exists():
+        raise BuildError(f"PDF file not found: {pdf_path}")
+    
+    try:
+        # Read PDF and count page objects
+        content = pdf_path.read_bytes()
+        # Simple page count by finding "/Type /Page" objects (not in "/Pages")
+        # More robust: look for the /Count in the /Pages object
+        import re
+        
+        # Look for /Pages dictionary with /Count
+        pages_pattern = rb'/Pages\s+\d+\s+\d+\s+R.*?/Count\s+(\d+)'
+        match = re.search(pages_pattern, content, re.DOTALL)
+        if match:
+            return int(match.group(1))
+        
+        # Fallback: count individual /Page objects (not /Pages)
+        # This is less reliable but works for simple PDFs
+        page_pattern = rb'/Type\s*/Page[^s]'
+        pages = len(re.findall(page_pattern, content))
+        if pages > 0:
+            return pages
+            
+        raise BuildError("Could not determine page count from PDF")
+    except Exception as exc:
+        raise BuildError(f"Failed to count PDF pages: {exc}") from exc
