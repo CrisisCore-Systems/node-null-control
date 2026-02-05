@@ -1,0 +1,13 @@
+name: Dispatch permissions smoke
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "ok"
