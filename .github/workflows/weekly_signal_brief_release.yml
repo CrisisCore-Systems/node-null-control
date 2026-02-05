@@ -1,6 +1,6 @@
 name: Weekly Signal Brief release (public datasets)
 
-on:
+"on":
   workflow_dispatch:
     inputs:
       run_id:
