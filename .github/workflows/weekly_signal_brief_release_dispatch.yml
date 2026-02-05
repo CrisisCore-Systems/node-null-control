@@ -1,6 +1,9 @@
 name: Weekly Signal Brief release (dispatch)
 
 on:
+  push:
+    branches:
+      - __never__
   workflow_dispatch:
 
 jobs:
