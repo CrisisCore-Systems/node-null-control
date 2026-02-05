@@ -1,0 +1,13 @@
+name: Release lite
+
+on:
+  workflow_dispatch:
+
+jobs:
+  lite:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo
+        run: |
+          echo "ok"
+          date -u
