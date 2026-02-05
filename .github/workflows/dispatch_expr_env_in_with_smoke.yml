@@ -1,0 +1,16 @@
+name: Dispatch expr env-in-with smoke
+
+on:
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    env:
+      RUN_ID: "x"
+    steps:
+      - run: echo "hi" > hi.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: artifact-${{ env.RUN_ID }}
+          path: hi.txt
