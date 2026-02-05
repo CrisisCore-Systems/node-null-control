@@ -76,7 +76,7 @@ jobs:
           set -euo pipefail
 
           TAG="weekly-${RUN_ID}"
-          TITLE="Weekly Signal Brief — ${RUN_ID}"
+          TITLE="Weekly Signal Brief - ${RUN_ID}"
 
           if gh release view "$TAG" >/dev/null 2>&1; then
             echo "Release exists: $TAG"
