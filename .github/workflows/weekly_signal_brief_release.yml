@@ -3,11 +3,11 @@ name: Weekly Signal Brief release (public datasets)
 on:
   workflow_dispatch:
     inputs:
-      run_id:
+      runId:
         description: "Run ID / week_id under products/weekly_signal_brief/runs/"
         required: true
         default: "2099-W01-fixture"
-      publish_release:
+      publishRelease:
         description: "Create/update a GitHub Release and upload assets"
         required: true
         default: "true"
@@ -18,7 +18,7 @@ jobs:
     permissions:
       contents: write
     env:
-      RUN_ID: ${{ inputs.run_id }}
+      RUN_ID: ${{ inputs.runId }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -74,7 +74,7 @@ jobs:
           retention-days: 21
 
       - name: Create/update GitHub Release + upload assets
-        if: ${{ inputs.publish_release == 'true' }}
+        if: ${{ inputs.publishRelease == 'true' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
