@@ -25,6 +25,23 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e ".[dev]"
 
+      - name: Vulnerability audit (pip-audit)
+        run: |
+          python -m pip install --upgrade pip-audit
+          IGNORE_ARGS=()
+          if [ -f ops/pip_audit_ignore.txt ]; then
+            while IFS= read -r line; do
+              line="${line%%#*}"
+              line="${line//[[:space:]]/}"
+              if [ -n "$line" ]; then
+                IGNORE_ARGS+=("--ignore-vuln" "$line")
+              fi
+            done < ops/pip_audit_ignore.txt
+          fi
+
+          # Strict by default; allow temporary exceptions via ops/pip_audit_ignore.txt
+          pip-audit --strict -s osv "${IGNORE_ARGS[@]}"
+
       - name: Lint (ruff)
         run: ruff check .
 
@@ -37,11 +54,15 @@ jobs:
       - name: Schema validation
         run: python scripts/validate_schemas.py
 
-      - name: Forbidden phrase scan (outputs)
-        run: python scripts/scan_forbidden_phrases.py --paths products
-
       - name: Product smoke checks
-        run: python scripts/smoke_products.py
+        run: python scripts/smoke_products.py --keep
+
+      - name: Forbidden phrase scan (rendered outputs)
+        run: python scripts/scan_forbidden_phrases.py --paths build/smoke
+
+      - name: Cleanup smoke outputs
+        if: always()
+        run: rm -rf build/smoke
 
   js-quality:
     runs-on: ubuntu-latest

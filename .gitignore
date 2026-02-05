@@ -25,3 +25,5 @@ products/**/runs/**/outputs/**
 
 # Allow keeping the outputs directory in-repo
 !products/**/runs/**/outputs/.gitkeep
+.vercel
+.env*.local

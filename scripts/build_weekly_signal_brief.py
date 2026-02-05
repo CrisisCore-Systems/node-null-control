@@ -18,7 +18,9 @@ import csv
 import datetime as dt
 import hashlib
 import json
+import os
 import re
+import shutil
 import subprocess
 import sys
 from dataclasses import dataclass
@@ -358,10 +360,42 @@ def run_pdf_adapter(
         return meta
 
     if adapter == "wkhtmltopdf":
-        cmd = ["wkhtmltopdf", str(html_path), str(pdf_path)]
+        exe = shutil.which("wkhtmltopdf")
+        if not exe:
+            env_path = os.environ.get("WKHTMLTOPDF_PATH") or os.environ.get("WKHTMLTOPDF")
+            if env_path and Path(env_path).exists():
+                exe = str(Path(env_path))
+
+        if not exe:
+            candidates = [
+                Path(r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"),
+                Path(r"C:\Program Files (x86)\wkhtmltopdf\bin\wkhtmltopdf.exe"),
+                Path(r"C:\Program Files\wkhtmltopdf\wkhtmltopdf.exe"),
+                Path(r"C:\Program Files (x86)\wkhtmltopdf\wkhtmltopdf.exe"),
+            ]
+            for c in candidates:
+                if c.exists():
+                    exe = str(c)
+                    break
+
+        if not exe:
+            raise BuildError(
+                "wkhtmltopdf not found on PATH. Install it or set WKHTMLTOPDF_PATH to the wkhtmltopdf executable."
+            )
+
+        cmd = [
+            exe,
+            "--enable-local-file-access",
+            "--load-error-handling",
+            "ignore",
+            "--load-media-error-handling",
+            "ignore",
+            str(html_path),
+            str(pdf_path),
+        ]
         meta["command_executed"] = " ".join(cmd)
         try:
-            v = subprocess.check_output(["wkhtmltopdf", "--version"], stderr=subprocess.STDOUT)
+            v = subprocess.check_output([exe, "--version"], stderr=subprocess.STDOUT)
             meta["version"] = v.decode("utf-8", errors="replace").strip()
         except Exception:
             meta["version"] = None
@@ -568,6 +602,43 @@ def build_appendix_csv(out_path: Path, schema_path: Path, inputs: Dict[str, Path
 
             # blank line between sections
             f.write("\n")
+
+
+def build_dataset_health_csv(out_path: Path, *, run: Dict[str, Any], dataset_health: Dict[str, Any]) -> None:
+    """Emit a single-row dataset health CSV.
+
+    This is intended for public appendix publishing and tooling.
+    """
+
+    counts = dataset_health.get("counts", {})
+    rates = dataset_health.get("rates", {})
+
+    header = [
+        "week_id",
+        "dataset_total_posts",
+        "dataset_valid_posts",
+        "dataset_invalid_posts",
+        "invalid_rate",
+        "missing_metrics_rate",
+        "drift_flags",
+        "incident_flags",
+    ]
+
+    row = [
+        str(run.get("week_id", "")),
+        str(counts.get("total_posts", "")),
+        str(counts.get("valid_posts", "")),
+        str(counts.get("invalid_posts", "")),
+        fmt_rate(rates.get("invalid_rate", "")),
+        fmt_rate(rates.get("missing_metrics_rate", "")),
+        join_list(dataset_health.get("drift_flags", [])),
+        join_list(dataset_health.get("incident_flags", [])),
+    ]
+
+    with out_path.open("w", encoding="utf-8", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(header)
+        writer.writerow(row)
 
 
 def main(argv: Sequence[str]) -> int:
@@ -804,11 +875,23 @@ def main(argv: Sequence[str]) -> int:
     out_css = out_dir / "weekly_brief_styles.css"
     out_appendix = out_dir / f"weekly_signal_brief_{run['week_id']}_{BUILDER_VERSION}_appendix.csv"
 
+    # Split appendix datasets (stable names for Release assets).
+    out_hook_metrics = out_dir / "hook_metrics.csv"
+    out_vertical_metrics = out_dir / "vertical_metrics.csv"
+    out_decisions = out_dir / "decisions.csv"
+    out_dataset_health = out_dir / "dataset_health.csv"
+
     out_md.write_text(rendered_md, encoding="utf-8")
     out_html.write_text(rendered_html, encoding="utf-8")
     out_css.write_text(css_path.read_text(encoding="utf-8"), encoding="utf-8")
 
     build_appendix_csv(out_appendix, appendix_schema_path, input_paths)
+
+    # Emit split datasets for public publishing.
+    shutil.copyfile(input_paths["hooks_rollup"], out_hook_metrics)
+    shutil.copyfile(input_paths["verticals_rollup"], out_vertical_metrics)
+    shutil.copyfile(input_paths["decisions"], out_decisions)
+    build_dataset_health_csv(out_dataset_health, run=run, dataset_health=dataset_health)
 
     pdf_adapter_meta: Optional[Dict[str, Any]] = None
     out_pdf: Optional[Path] = None
@@ -831,7 +914,16 @@ def main(argv: Sequence[str]) -> int:
 
     manifest_schema_ref = f"artifacts/manifest.schema.json@{head_commit}"
 
-    output_files: List[Path] = [out_md, out_html, out_css, out_appendix]
+    output_files: List[Path] = [
+        out_md,
+        out_html,
+        out_css,
+        out_appendix,
+        out_hook_metrics,
+        out_vertical_metrics,
+        out_decisions,
+        out_dataset_health,
+    ]
     if out_pdf and out_pdf.exists():
         output_files.append(out_pdf)
 

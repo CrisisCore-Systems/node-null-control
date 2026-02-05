@@ -20,11 +20,15 @@ from product_build_utils import (
     extract_template_vars,
     find_repo_root,
     git_head_commit,
+    html_escape,
     read_json,
+    run_pdf_adapter,
     utc_now_iso,
     validate_manifest_schema,
+    wrap_html_document,
     write_manifest,
     write_minimal_pdf,
+    write_text,
 )
 
 BUILDER_NAME = "build_content_template_pack"
@@ -55,6 +59,17 @@ def main(argv: Sequence[str]) -> int:
     ap = argparse.ArgumentParser(description="Build Content Template Pack v01")
     ap.add_argument("--run-json", required=True, help="Path to products/content_template_pack/runs/<id>/run.json")
     ap.add_argument("--out-dir", default=None, help="Output directory")
+    ap.add_argument(
+        "--pdf-adapter",
+        default="none",
+        choices=["none", "wkhtmltopdf", "command"],
+        help="PDF generator adapter for release builds (default: none)",
+    )
+    ap.add_argument(
+        "--pdf-cmd",
+        default=None,
+        help="Command template for --pdf-adapter=command. Use {html} and {pdf} placeholders.",
+    )
     args = ap.parse_args(list(argv))
 
     run_path = Path(args.run_json).resolve()
@@ -102,8 +117,13 @@ def main(argv: Sequence[str]) -> int:
     )
     ensure_dir(out_dir)
 
-    out_zip = out_dir / f"content_template_pack_{period_id}_{BUILDER_VERSION}.zip"
-    out_pdf = out_dir / f"content_template_pack_{period_id}_{BUILDER_VERSION}.pdf"
+    outputs_spec = run.get("outputs") if isinstance(run.get("outputs"), dict) else {}
+    zip_name = Path(str(outputs_spec.get("zip", f"content_template_pack_{period_id}_{BUILDER_VERSION}.zip"))).name
+    pdf_name = Path(str(outputs_spec.get("pdf", f"content_template_pack_{period_id}_{BUILDER_VERSION}.pdf"))).name
+
+    out_zip = out_dir / zip_name
+    out_pdf = out_dir / pdf_name
+    out_html = out_dir / f"{Path(pdf_name).stem}.html"
     manifest_path = out_dir / f"{period_id}.manifest.json"
 
     with zipfile.ZipFile(out_zip, "w", compression=zipfile.ZIP_DEFLATED) as z:
@@ -122,16 +142,51 @@ def main(argv: Sequence[str]) -> int:
         for p in caption_paths:
             z.write(p, arcname=f"caption_templates/{p.name}")
 
-    write_minimal_pdf(
-        out_pdf,
-        title=f"Content Template Pack {period_id} ({BUILDER_VERSION})",
-        body_lines=[
-            "Fixture PDF placeholder.",
-            f"Pack zip: {out_zip.name}",
-            f"Allowlisted vars: {len(allowlisted)}",
-            f"Vars used by templates: {len(used_vars)}",
-        ],
+    sections: list[str] = []
+    sections.append(f"<h1>{html_escape('Content Template Pack')}</h1>")
+    sections.append(f"<p><strong>period</strong>: {html_escape(period_id)}</p>")
+    sections.append(f"<p><strong>zip</strong>: {html_escape(out_zip.name)}</p>")
+
+    def _render_list(title: str, paths: list[Path]) -> None:
+        sections.append(f"<h2>{html_escape(title)}</h2>")
+        if not paths:
+            sections.append("<p><em>none</em></p>")
+            return
+        sections.append("<ul>")
+        for p in paths:
+            sections.append(f"<li>{html_escape(p.name)}</li>")
+        sections.append("</ul>")
+
+    _render_list("Hook templates", hook_paths)
+    _render_list("Structure templates", structure_paths)
+    _render_list("Script templates", script_paths)
+    _render_list("Caption templates", caption_paths)
+
+    sections.append("<hr />")
+    sections.append("<h2>Allowlist summary</h2>")
+    sections.append(f"<p>Allowlisted vars: {len(allowlisted)} • Vars used by templates: {len(used_vars)}</p>")
+    sections.append("<p>Full template contents are in the zip bundle.</p>")
+
+    rendered_html = wrap_html_document(
+        title=f"Content Template Pack {period_id}",
+        body_html='<main style="max-width: 900px; margin: 0 auto; padding: 24px;">' + "".join(sections) + "</main>",
+        css_text=None,
     )
+    write_text(out_html, rendered_html)
+
+    if args.pdf_adapter == "none":
+        write_minimal_pdf(
+            out_pdf,
+            title=f"Content Template Pack {period_id} ({BUILDER_VERSION})",
+            body_lines=[
+                "PDF adapter disabled; placeholder generated.",
+                f"Pack zip: {out_zip.name}",
+                f"Allowlisted vars: {len(allowlisted)}",
+                f"Vars used by templates: {len(used_vars)}",
+            ],
+        )
+    else:
+        run_pdf_adapter(adapter=args.pdf_adapter, html_path=out_html, pdf_path=out_pdf, pdf_cmd=args.pdf_cmd)
 
     head_commit = git_head_commit(repo_root) or str(run.get("repo_commit", ""))
     manifest_schema_ref = f"artifacts/manifest.schema.json@{head_commit}"
@@ -148,7 +203,7 @@ def main(argv: Sequence[str]) -> int:
         builder_version=BUILDER_VERSION,
         manifest_schema_ref=manifest_schema_ref,
         input_files=[variables_md] + hook_paths + structure_paths + script_paths + caption_paths,
-        output_files=[out_zip, out_pdf],
+        output_files=[out_zip, out_html, out_pdf],
         unresolved_template_vars=[],
     )
 

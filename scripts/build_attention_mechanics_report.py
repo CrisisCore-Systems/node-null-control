@@ -23,13 +23,17 @@ from product_build_utils import (
     find_repo_root,
     flatten_values,
     git_head_commit,
+    html_escape,
     read_json,
     render_template,
+    run_pdf_adapter,
     utc_now_iso,
     validate_manifest_schema,
+    wrap_html_document,
     write_json,
     write_manifest,
     write_minimal_pdf,
+    write_text,
 )
 
 BUILDER_NAME = "build_attention_mechanics_report"
@@ -48,6 +52,17 @@ def main(argv: Sequence[str]) -> int:
     ap.add_argument("--run-json", required=True, help="Path to products/attention_mechanics_report/runs/<id>/run.json")
     ap.add_argument("--out-dir", default=None, help="Output directory")
     ap.add_argument("--fail-on-unresolved", action="store_true", help="Fail if template vars remain unresolved")
+    ap.add_argument(
+        "--pdf-adapter",
+        default="none",
+        choices=["none", "wkhtmltopdf", "command"],
+        help="PDF generator adapter for release builds (default: none)",
+    )
+    ap.add_argument(
+        "--pdf-cmd",
+        default=None,
+        help="Command template for --pdf-adapter=command. Use {html} and {pdf} placeholders.",
+    )
     args = ap.parse_args(list(argv))
 
     run_path = Path(args.run_json).resolve()
@@ -114,6 +129,19 @@ def main(argv: Sequence[str]) -> int:
     rendered_md, unresolved = render_template(template, merged_ctx)
     unresolved_sorted = sorted(unresolved)
 
+    css_path = template_dir / "attention_report_styles.css"
+    css_text = css_path.read_text(encoding="utf-8") if css_path.exists() else None
+    body_html = (
+        '<main style="max-width: 900px; margin: 0 auto; padding: 24px;">'
+        f"<h1>{html_escape('Attention Mechanics Report')}</h1>"
+        f"<p><strong>period</strong>: {html_escape(period_id)}</p>"
+        '<pre style="white-space: pre-wrap;">' + html_escape(rendered_md) + "</pre>"
+        "</main>"
+    )
+    rendered_html = wrap_html_document(
+        title=f"Attention Mechanics Report {period_id}", body_html=body_html, css_text=css_text
+    )
+
     out_dir = (
         Path(args.out_dir).resolve()
         if args.out_dir
@@ -121,12 +149,21 @@ def main(argv: Sequence[str]) -> int:
     )
     ensure_dir(out_dir)
 
-    out_md = out_dir / f"attention_mechanics_report_{period_id}_{BUILDER_VERSION}.md"
-    out_data = out_dir / f"attention_mechanics_report_{period_id}_{BUILDER_VERSION}_data.json"
-    out_pdf = out_dir / f"attention_mechanics_report_{period_id}_{BUILDER_VERSION}.pdf"
+    outputs_spec = run.get("outputs") if isinstance(run.get("outputs"), dict) else {}
+    md_name = Path(str(outputs_spec.get("md", f"attention_mechanics_report_{period_id}_{BUILDER_VERSION}.md"))).name
+    data_name = Path(
+        str(outputs_spec.get("data_appendix", f"attention_mechanics_report_{period_id}_{BUILDER_VERSION}_data.json"))
+    ).name
+    pdf_name = Path(str(outputs_spec.get("pdf", f"attention_mechanics_report_{period_id}_{BUILDER_VERSION}.pdf"))).name
+
+    out_md = out_dir / md_name
+    out_data = out_dir / data_name
+    out_pdf = out_dir / pdf_name
+    out_html = out_dir / f"{Path(md_name).stem}.html"
     manifest_path = out_dir / f"{period_id}.manifest.json"
 
     out_md.write_text(rendered_md, encoding="utf-8")
+    write_text(out_html, rendered_html)
 
     data_appendix = {
         "asset_id": asset_id,
@@ -137,15 +174,18 @@ def main(argv: Sequence[str]) -> int:
     }
     write_json(out_data, data_appendix)
 
-    write_minimal_pdf(
-        out_pdf,
-        title=f"Attention Mechanics Report {period_id} ({BUILDER_VERSION})",
-        body_lines=[
-            "Fixture PDF placeholder.",
-            f"See {out_md.name} for rendered content.",
-            f"Unresolved vars: {len(unresolved_sorted)}",
-        ],
-    )
+    if args.pdf_adapter == "none":
+        write_minimal_pdf(
+            out_pdf,
+            title=f"Attention Mechanics Report {period_id} ({BUILDER_VERSION})",
+            body_lines=[
+                "PDF adapter disabled; placeholder generated.",
+                f"See {out_md.name} for rendered content.",
+                f"Unresolved vars: {len(unresolved_sorted)}",
+            ],
+        )
+    else:
+        run_pdf_adapter(adapter=args.pdf_adapter, html_path=out_html, pdf_path=out_pdf, pdf_cmd=args.pdf_cmd)
 
     head_commit = git_head_commit(repo_root) or str(run.get("repo_commit", ""))
     manifest_schema_ref = f"artifacts/manifest.schema.json@{head_commit}"
@@ -162,7 +202,7 @@ def main(argv: Sequence[str]) -> int:
         builder_version=BUILDER_VERSION,
         manifest_schema_ref=manifest_schema_ref,
         input_files=input_paths,
-        output_files=[out_md, out_data, out_pdf],
+        output_files=[out_md, out_html, out_data, out_pdf],
         unresolved_template_vars=unresolved_sorted,
     )
 

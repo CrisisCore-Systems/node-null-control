@@ -3,7 +3,9 @@ from __future__ import annotations
 import datetime as dt
 import hashlib
 import json
+import os
 import re
+import shutil
 import subprocess
 from pathlib import Path
 from typing import Any, Dict, Iterable, Optional, Sequence, Set, Tuple
@@ -13,6 +15,12 @@ VAR_PATTERN = re.compile(r"{{\s*([a-zA-Z0-9_\-\.]+)\s*}}")
 
 class BuildError(RuntimeError):
     pass
+
+
+def html_escape(s: str) -> str:
+    return (
+        s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;").replace("'", "&#39;")
+    )
 
 
 def utc_now_iso() -> str:
@@ -32,6 +40,10 @@ def read_json(path: Path) -> Dict[str, Any]:
 
 def write_json(path: Path, obj: Any) -> None:
     path.write_text(json.dumps(obj, indent=2, sort_keys=False) + "\n", encoding="utf-8")
+
+
+def write_text(path: Path, text: str) -> None:
+    path.write_text(text, encoding="utf-8")
 
 
 def sha256_file(path: Path) -> str:
@@ -84,6 +96,126 @@ def render_template(template_text: str, values: Dict[str, str]) -> Tuple[str, Se
 
     rendered = VAR_PATTERN.sub(repl, template_text)
     return rendered, unresolved
+
+
+def wrap_html_document(*, title: str, body_html: str, css_text: str | None = None) -> str:
+    css_block = f"<style>\n{css_text}\n</style>" if css_text else ""
+    return (
+        "<!doctype html>\n"
+        '<html lang="en">\n'
+        "  <head>\n"
+        '    <meta charset="utf-8"/>\n'
+        '    <meta name="viewport" content="width=device-width, initial-scale=1"/>\n'
+        f"    <title>{html_escape(title)}</title>\n"
+        f"    {css_block}\n"
+        "  </head>\n"
+        "  <body>\n"
+        f"    {body_html}\n"
+        "  </body>\n"
+        "</html>\n"
+    )
+
+
+def run_pdf_adapter(
+    *,
+    adapter: str,
+    html_path: Path,
+    pdf_path: Path,
+    pdf_cmd: str | None = None,
+) -> Dict[str, Any]:
+    """Standard adapter seam: given (html_path, pdf_path) produce a PDF."""
+
+    meta: Dict[str, Any] = {
+        "name": adapter,
+        "version": None,
+        "command_template": None,
+        "command_executed": None,
+        "exit_code": None,
+        "stdout_tail": None,
+        "stderr_tail": None,
+    }
+
+    if adapter == "none":
+        return meta
+
+    if adapter == "wkhtmltopdf":
+
+        def _find_wkhtmltopdf() -> str | None:
+            exe = shutil.which("wkhtmltopdf")
+            if exe:
+                return exe
+
+            env_path = os.environ.get("WKHTMLTOPDF_PATH") or os.environ.get("WKHTMLTOPDF")
+            if env_path:
+                p = Path(env_path)
+                if p.exists():
+                    return str(p)
+
+            candidates = [
+                Path(r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"),
+                Path(r"C:\Program Files (x86)\wkhtmltopdf\bin\wkhtmltopdf.exe"),
+                Path(r"C:\Program Files\wkhtmltopdf\wkhtmltopdf.exe"),
+                Path(r"C:\Program Files (x86)\wkhtmltopdf\wkhtmltopdf.exe"),
+            ]
+            for c in candidates:
+                if c.exists():
+                    return str(c)
+            return None
+
+        exe = _find_wkhtmltopdf()
+        if not exe:
+            raise BuildError(
+                "wkhtmltopdf not found on PATH. Install it or set WKHTMLTOPDF_PATH to the wkhtmltopdf executable."
+            )
+
+        cmd = [
+            exe,
+            "--enable-local-file-access",
+            "--load-error-handling",
+            "ignore",
+            "--load-media-error-handling",
+            "ignore",
+            str(html_path),
+            str(pdf_path),
+        ]
+        meta["command_executed"] = " ".join(cmd)
+        try:
+            v = subprocess.check_output([exe, "--version"], stderr=subprocess.STDOUT)
+            meta["version"] = v.decode("utf-8", errors="replace").strip()
+        except Exception:  # noqa: BLE001
+            meta["version"] = None
+
+        proc = subprocess.run(cmd, capture_output=True, text=True)
+        meta["exit_code"] = proc.returncode
+        meta["stdout_tail"] = (proc.stdout or "")[-4000:]
+        meta["stderr_tail"] = (proc.stderr or "")[-4000:]
+        if proc.returncode != 0:
+            raise BuildError(
+                f"wkhtmltopdf failed (exit {proc.returncode}): {(proc.stderr or proc.stdout or '').strip()}"
+            )
+        if not pdf_path.exists() or pdf_path.stat().st_size == 0:
+            raise BuildError("wkhtmltopdf reported success but PDF was not created")
+        return meta
+
+    if adapter == "command":
+        if not pdf_cmd:
+            raise BuildError("--pdf-cmd is required when --pdf-adapter=command")
+        meta["command_template"] = pdf_cmd
+        cmd_str = pdf_cmd.format(html=str(html_path), pdf=str(pdf_path))
+        meta["command_executed"] = cmd_str
+        proc = subprocess.run(cmd_str, shell=True, capture_output=True, text=True)
+        meta["exit_code"] = proc.returncode
+        meta["stdout_tail"] = (proc.stdout or "")[-4000:]
+        meta["stderr_tail"] = (proc.stderr or "")[-4000:]
+        if proc.returncode != 0:
+            raise BuildError(
+                f"pdf adapter command failed (exit {proc.returncode}): {(proc.stderr or proc.stdout or '').strip()}"
+            )
+        if not pdf_path.exists() or pdf_path.stat().st_size == 0:
+            raise BuildError("PDF adapter reported success but PDF was not created")
+        return meta
+
+    raise BuildError(f"Unknown --pdf-adapter: {adapter}")
 
 
 def join_list(value: Any) -> str:
