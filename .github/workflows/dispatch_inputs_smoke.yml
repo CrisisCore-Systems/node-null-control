@@ -1,0 +1,15 @@
+name: Dispatch inputs smoke
+
+on:
+  workflow_dispatch:
+    inputs:
+      foo:
+        description: "Required input"
+        required: true
+        default: "bar"
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "foo=${{ inputs.foo }}"
