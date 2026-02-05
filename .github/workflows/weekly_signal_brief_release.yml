@@ -12,12 +12,11 @@ on:
         required: true
         default: "true"
 
-permissions:
-  contents: write
-
 jobs:
   build-and-release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     env:
       RUN_ID: ${{ inputs.run_id }}
     steps:
