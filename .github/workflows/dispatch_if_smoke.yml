@@ -1,0 +1,19 @@
+name: Dispatch if smoke
+
+on:
+  workflow_dispatch:
+    inputs:
+      foo:
+        required: true
+        default: "bar"
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Always
+        run: echo "always"
+
+      - name: Conditional
+        if: ${{ inputs.foo == 'bar' }}
+        run: echo "conditional"
